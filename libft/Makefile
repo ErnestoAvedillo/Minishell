@@ -52,24 +52,25 @@ $(NAME): $(OBJS)
 -include: (DEPS_BONUS)
 
 $(HEAD_OBJS)%.o $(HEAD_DEPS)%.d : %.c $(INCLUDE)
-	mkdir -p  $(HEAD_OBJS)
-	mkdir -p  $(HEAD_DEPS)
-	$(CC) $(CFLAGS) -c $*.c -o $(HEAD_OBJS)$*.o
-	$(CC) -MM $(CFLAGS) -c $*.c > $(HEAD_DEPS)$*.d
+	@mkdir -p  $(HEAD_OBJS)
+	@mkdir -p  $(HEAD_DEPS)
+	@printf "\rCompiling: $(notdir $<).\r"
+	@$(CC) $(CFLAGS) -c $*.c -o $(HEAD_OBJS)$*.o
+	@$(CC) -MM $(CFLAGS) -c $*.c > $(HEAD_DEPS)$*.d
 
 all:$(NAME)
 
 bonus: $(BONUS)
 
 $(BONUS): $(OBJS) $(OBJS_BONUS) $(INCLUDE)
-	ar -rcs $(NAME) $(OBJS_BONUS) $(OBJS)
-	touch $@
+	@ar -rcs $(NAME) $(OBJS_BONUS) $(OBJS)
+	@touch $@
 
 clean:
-	$(RM) $(OBJS) $(DEPS) $(OBJS_BONUS) $(DEPS_BONUS) $(HEAD_DEPS) $(HEAD_OBJS)
+	@$(RM) $(OBJS) $(DEPS) $(OBJS_BONUS) $(DEPS_BONUS) $(HEAD_DEPS) $(HEAD_OBJS)
 
 fclean:     clean
-	$(RM) $(BONUS) $(NAME) 
+	@$(RM) $(BONUS) $(NAME) 
 
 re:         fclean $(NAME)
 

@@ -10,10 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minihell.h"
+#include "../inc/minishell.h"
 
-int main (int av, char **ac);
+//int main (int av, char **ac);
+int	main()
 {
+	char *line;
 
+	printf("Enter a line of text: ");
+	line = readline("Minishell> ");
+
+	printf("You entered: %s\n", line);
+	free(line);
+	return (0);
 }
-return (0);
