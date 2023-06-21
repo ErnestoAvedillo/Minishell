@@ -16,11 +16,13 @@
 int	main()
 {
 	char *line;
-
-	printf("Enter a line of text: ");
-	line = readline("Minishell> ");
-
-	printf("You entered: %s\n", line);
+	while (1)
+	{
+		printf("Enter a line of text: ");
+		line = readline("Minishell> ");
+		add_history(line);
+		printf("You entered: %s\n", line);
+	}
 	free(line);
 	return (0);
 }
