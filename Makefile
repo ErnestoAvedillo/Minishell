@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRC = $(NAME) #añadir nombres de ficheros.c  aqui
+SRC = $(NAME) cmd_echo cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init_vars free_vars utils work_command #añadir nombres de ficheros.c  aqui
 
 INC = $(NAME) #añadir nombres de ficheros.h  aqui
 
@@ -22,17 +22,17 @@ LIBFT = $(addprefix $(DIR_LIBFT),libft.a)
 
 CC:= gcc
 
-FLAGS:= -Werror -Wextra -Wall -O2 -fsanitize=address -g
+FLAGS:= -Werror -Wextra -Wall -O2 -g
 
 #-fsanitize=datarace -fsanitize=address
 RM := rm -rfd
 
-all:  $(NAME) $(LIBFT)
+all: $(LIBFT) $(NAME)
 
 -include $(DSTS)
 
 $(NAME): $(OBJS) 
-	$(CC) $(FLAGS) -static-libasan $(OBJS) -o $(NAME) -lreadline
+	$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline 
 
 #-static-libsan 
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d

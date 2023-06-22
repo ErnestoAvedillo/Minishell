@@ -12,17 +12,25 @@
 
 #include "../inc/minishell.h"
 
-//int main (int av, char **ac);
-int	main()
+int main (int av, char **ac, char **env)
 {
-	char *line;
+	int		val;
+	char	*line;
+	t_data	*data;
+
+	data = init_vars(env);
 	while (1)
 	{
 		printf("Enter a line of text: ");
-		line = readline("Minishell> ");
-		add_history(line);
-		printf("You entered: %s\n", line);
+		data->command = readline("Minishell> ");
+		add_history(data->command);
+		val = work_command(data);
+		if (val == -1)
+			printf("Command not found.\n");
 	}
 	free(line);
+	printf("Goodbye!\n");
 	return (0);
+	(void) av;
+	(void) ac;
 }
