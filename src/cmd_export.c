@@ -14,6 +14,6 @@
 
 int cmd_export(t_data * data)
 {
-    printf ("has entrado en export con el comando %s.", data->command);
+    printf ("has entrado en export con el comando %s.\n", data->command);
     return (1);
 }
