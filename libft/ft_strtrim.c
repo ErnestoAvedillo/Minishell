@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 #include"libft.h"
 
+/*
+*	Description: 
+*/
 static char	*get_min_pos(char const *str, char const *set)
 {
 	size_t	i;
@@ -25,6 +28,9 @@ static char	*get_min_pos(char const *str, char const *set)
 	return ((char *)str + ft_strlen(str));
 }
 
+/*
+*	Description: 
+*/
 static char	*get_max_pos(char const *str, char const *set)
 {
 	size_t	i;
@@ -39,6 +45,9 @@ static char	*get_max_pos(char const *str, char const *set)
 	return ((char *)str);
 }
 
+/*
+*	Description: Extract the 
+*/
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*start;

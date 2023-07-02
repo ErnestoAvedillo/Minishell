@@ -20,7 +20,7 @@ int    work_command(t_data *data)
 	out = 1;
 	i = -1;
 	while (++i <= EXIT_CMD)
-		if (!strcmp(data->command, data->cmd_list[i]))
+		if (!ft_strncmp(data->command, data->cmd_list[i],ft_strlen(data->command)))
 		{
 			out = ((int (*)(t_data *))((void **)data->functions_ptr)[i])(data);
 			return (out);
