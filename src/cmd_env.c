@@ -11,9 +11,19 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <unistd.h>
 
-int cmd_env(t_data * data)
+int cmd_env(t_data *data)
 {
+    char    **env;
+
     printf ("has entrado en env con el comando %s.\n", data->command);
+    env = data->env;
+    while(*env != NULL)
+    {
+        printf("%s\n",*env);
+        env++;
+    }
+
     return (1);
 }
