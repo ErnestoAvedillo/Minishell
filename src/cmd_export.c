@@ -14,6 +14,17 @@
 
 int cmd_export(t_data * data)
 {
-    printf ("has entrado en export con el comando %s.\n", data->command);
-    return (1);
+	char	**env;
+	char	*name;
+
+	env = data->env;
+	while(*env != NULL)
+	{
+		name = get_env_name(*env);
+		printf("%s\n", name);
+		if (getenv(name))
+		printf("%s\n",*env);
+		env++;
+	}
+	return (1);
 }

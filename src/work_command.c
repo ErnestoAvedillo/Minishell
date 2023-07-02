@@ -25,5 +25,5 @@ int    work_command(t_data *data)
 			out = ((int (*)(t_data *))((void **)data->functions_ptr)[i])(data);
 			return (out);
 		}
-	return (-1);
+	return (0);
 }

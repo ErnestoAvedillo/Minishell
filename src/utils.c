@@ -24,7 +24,7 @@ int get_pos ( char *str, char c)
     return (pos);
 }
 
-char *get_env_value (char *name_env, char **env)
+char *get_env_value(char *name_env, char **env)
 {
 	int		len;
 	char	*out;
@@ -34,13 +34,18 @@ char *get_env_value (char *name_env, char **env)
 	{
 		if (!ft_strncmp(name_env, *env, len))
 		{
-			printf("%s", *env);
 			break;
 		}
-		printf("%s", *env);
-		getchar();
+		env++;
     }
 	out = ft_strtrim (*env, name_env);
-	printf("%s", out);
 	return (out);
+}
+
+char *get_env_name(char *str)
+{
+	int pos;
+
+	pos = get_pos(str, '=');
+	return (ft_substr(str,0,pos));
 }

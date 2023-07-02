@@ -15,5 +15,5 @@
 int cmd_exit(t_data * data)
 {
     printf ("has entrado en exit con el comando %s.\n", data->command);
-    return (0);
+    return (-1);
 }

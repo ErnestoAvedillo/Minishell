@@ -22,23 +22,29 @@ LIBFT = $(addprefix $(DIR_LIBFT),libft.a)
 
 CC:= gcc
 
-FLAGS:= -Werror -Wextra -Wall -O2 -g
+FLAGS:= -Werror -Wextra -Wall -O2 -g -fsanitize=address
 
 #-fsanitize=datarace -fsanitize=address
 RM := rm -rfd
 
-all: $(LIBFT) $(NAME)
+SANIT = -libsan
+
+all: $(LIBFT) $(NAME) 
+
+linux: SANIT = -libasan
+linux: $(LIBFT) $(NAME) 
 
 -include $(DSTS)
 
-$(NAME): $(OBJS) 
+
+$(NAME): $(OBJS) Makefile
 	$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline 
 
 #-static-libsan 
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d
 	@mkdir -p $(DIR_OBJ_DST)
 	@printf "\rCompiling: $(notdir $<).\r"
-	@$(CC) $(FLAGS) -I$(INCDIR) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
+	@$(CC) $(FLAGS) -I$(INCDIR) -static$(SANIT) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
 
 $(DIR_OBJ_DST)%.d: $(DIR_SRC)%.c $(INCLUDE)
 	@mkdir -p $(DIR_OBJ_DST)

@@ -15,7 +15,6 @@
 int main (int av, char **ac, char **env)
 {
 	int		val;
-	char	*line;
 	t_data	*data;
 
 	data = init_vars(env);
@@ -25,10 +24,12 @@ int main (int av, char **ac, char **env)
 		data->command = readline("Minishell> ");
 		add_history(data->command);
 		val = work_command(data);
-		if (val == -1)
+		if (val == 0)
 			printf("Command not found.\n");
+		else if (val == -1)
+			break ;		
 	}
-	free(line);
+	free(data);
 	printf("Goodbye!\n");
 	return (0);
 	(void) av;

@@ -14,6 +14,10 @@
 
 int cmd_pwd(t_data * data)
 {
-    printf ("has entrado en pwd con el comando %s.\n", data->command);
+    char *pwd_value;
+
+    pwd_value = get_env_value("PWD=", data->env);
+    printf("%s\n", pwd_value);
+    free(pwd_value);
     return (1);
 }

@@ -15,13 +15,12 @@
 void    set_func_list(t_data *data)
 {
     data->functions_ptr = (void**) malloc ((EXIT_CMD + 1) * sizeof(void*));
-    data->functions_ptr[ECHO_CMD] = &cmd_echo;
-    data->functions_ptr[PWD_CMD] = &cmd_pwd;
-    data->functions_ptr[EXPORT_CMD] = &cmd_export;
+    data->functions_ptr[ECHO_CMD] = cmd_echo;
+    data->functions_ptr[PWD_CMD] = cmd_pwd;
+    data->functions_ptr[EXPORT_CMD] = cmd_export;
     data->functions_ptr[UNSET_CMD] = cmd_unset;
     data->functions_ptr[ENV_CMD] = cmd_env;
     data->functions_ptr[EXIT_CMD] = cmd_exit;
-    data->functions_ptr[EXIT_CMD] = NULL;
 }
 
 t_data  *init_vars(char **env)
