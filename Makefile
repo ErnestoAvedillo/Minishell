@@ -1,6 +1,7 @@
 NAME = minishell
 
-SRC = $(NAME) cmd_echo cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init_vars free_vars utils work_command #añadir nombres de ficheros.c  aqui
+SRC = $(NAME) cmd_echo cmd_cd cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init_vars \
+	free_vars utils work_command #añadir nombres de ficheros.c  aqui
 
 INC = $(NAME) #añadir nombres de ficheros.h  aqui
 

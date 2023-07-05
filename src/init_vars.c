@@ -16,6 +16,7 @@ void    set_func_list(t_data *data)
 {
     data->functions_ptr = (void**) malloc ((EXIT_CMD + 1) * sizeof(void*));
     data->functions_ptr[ECHO_CMD] = cmd_echo;
+    data->functions_ptr[CD_CMD] = cmd_cd;
     data->functions_ptr[PWD_CMD] = cmd_pwd;
     data->functions_ptr[EXPORT_CMD] = cmd_export;
     data->functions_ptr[UNSET_CMD] = cmd_unset;

@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Minishell.c                                        :+:      :+:    :+:   */
+/*   cmd_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 16:29:19 by eavedill          #+#    #+#             */
-/*   Updated: 2023/06/18 16:29:42 by eavedill         ###   ########.fr       */
+/*   Created: 2023/07/05 19:10:29 by eavedill          #+#    #+#             */
+/*   Updated: 2023/07/05 19:10:31 by eavedill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int main (int av, char **ac, char **env)
+int cmd_cd(t_data *data)
 {
-	int		val;
-	t_data	*data;
+	char **splited_cmd;
 
-	data = init_vars(env);
-	while (1)
-	{
-		printf("Enter a line of text: ");
-		data->command = readline("Minishell> ");
-		add_history(data->command);
-		val = work_command(data);
-		if (val == 0)
-			printf("Command not found.\n");
-		else if (val == -1)
-			break ;
-		free(data->command);
-	}
-	free_vars(data);
-	printf("Goodbye!\n");
-	return (0);
-	(void) av;
-	(void) ac;
+	splited_cmd = ft_split(data->command, ' ');
+	if (chdir(splited_cmd[1]) == -1)
+		printf("bash: cd: %s: No such file or directory .\n", splited_cmd[1]);
+	else
+		printf("Cambiando al dirrectorio %s - con  %s\n", getenv("PWD"), splited_cmd[1]);
+
+	free_arrchar(splited_cmd);
+
+	return (1);
 }

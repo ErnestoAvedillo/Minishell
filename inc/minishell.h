@@ -19,15 +19,16 @@
 # include	<readline/history.h>
 
 //list of all accepted commands.
-# define COMMANDS   "echo pwd export unset env exit"
-# define ECHO_CMD   0
-# define PWD_CMD    1
-# define EXPORT_CMD 2
-# define UNSET_CMD  3
-# define ENV_CMD    4
-# define EXIT_CMD   5
+# define COMMANDS	"echo cd pwd export unset env exit"
+# define ECHO_CMD	0
+# define CD_CMD		1
+# define PWD_CMD	2
+# define EXPORT_CMD	3
+# define UNSET_CMD	4
+# define ENV_CMD	5
+# define EXIT_CMD	6
 
-# define OPERANDS   "> < >> << | $"
+# define OPERANDS	"> < >> << | $"
 
 
 typedef struct s_data
@@ -37,15 +38,17 @@ typedef struct s_data
     char    **cmd_list;
     char    **oper_list;
     void    **functions_ptr;
-}   t_data;
+} t_data;
 
 //init_vars
 t_data  *init_vars(char **env);
 //freevars
 void	free_vars(t_data *data);
+void	free_arrchar(char **arrchr);
 
-int		cmd_echo(t_data * data);
-int		cmd_env(t_data * data);
+int		cmd_echo(t_data *data);
+int		cmd_cd(t_data *data);
+int		cmd_env(t_data *data);
 int		cmd_exit(t_data * data);
 int		cmd_export(t_data * data);
 int		cmd_pwd(t_data * data);
