@@ -34,7 +34,8 @@ typedef struct s_data
 {
     char    *command;
     char    **env;
-    char    **cmd_list; 
+    char    **cmd_list;
+    char    **oper_list;
     void    **functions_ptr;
 }   t_data;
 

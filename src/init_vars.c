@@ -29,6 +29,7 @@ t_data  *init_vars(char **env)
 
     data =  (t_data *) malloc (sizeof (t_data));
     data->cmd_list = ft_split(COMMANDS, ' ');
+    data->oper_list = ft_split(OPERANDS, ' ');
     data->env = env;
     set_func_list(data);
     return (data);

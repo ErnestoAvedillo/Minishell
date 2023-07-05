@@ -29,7 +29,7 @@ int main (int av, char **ac, char **env)
 		else if (val == -1)
 			break ;		
 	}
-	free(data);
+	free_vars(data);
 	printf("Goodbye!\n");
 	return (0);
 	(void) av;

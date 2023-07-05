@@ -16,8 +16,10 @@ int cmd_pwd(t_data * data)
 {
     char *pwd_value;
 
-    pwd_value = get_env_value("PWD=", data->env);
+    //pwd_value = get_env_value("PWD=", data->env);
+    pwd_value = getenv("PWD");
     printf("%s\n", pwd_value);
-    free(pwd_value);
+    //free(pwd_value);
     return (1);
+    (void)data;
 }
