@@ -49,3 +49,16 @@ char *get_env_name(char *str)
 	pos = get_pos(str, '=');
 	return (ft_substr(str,0,pos));
 }
+
+int is_char_in_str(char *str, char c)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == c)
+			return (1);
+	}
+	return (0);
+}

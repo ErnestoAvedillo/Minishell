@@ -62,12 +62,14 @@ int		cmd_exit(t_data * data);
 int		cmd_export(t_data * data);
 int		cmd_pwd(t_data * data);
 int		cmd_unset(t_data * data);
+int		cmd_setenv(t_data * data);
 
 int		work_command(t_data *data);
 
 //utils
 char    *get_env_value(char *name_env, char **env);
 char    *get_env_name(char *str);
+int     is_char_in_str(char *str, char c);
 
 
 # endif

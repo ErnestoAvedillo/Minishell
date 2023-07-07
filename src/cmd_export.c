@@ -14,17 +14,18 @@
 
 int cmd_export(t_data * data)
 {
-	char	**env;
-	char	*name;
+	char	**str;
+	int		i;
 
-	env = data->env;
-	while(*env != NULL)
+	str = ft_split(data->command, ' ');
+	i = 0;
+	while (str[++i])
 	{
-		name = get_env_name(*env);
-		printf("%s\n", name);
-		if (getenv(name))
-		printf("%s\n",*env);
-		env++;
-	}
+		if (putenv(str[i]) == 0)
+			printf("Variable exported succesfully%s\n", str[i]);
+		else
+			printf("error exporting the variale %s\n", str[i]);
+		}
+	free(str);
 	return (1);
 }

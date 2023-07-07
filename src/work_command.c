@@ -25,5 +25,10 @@ int    work_command(t_data *data)
 			out = ((int (*)(t_data *))((void **)data->functions_ptr)[i])(data);
 			return (out);
 		}
+	if (is_char_in_str(data->command, '='))
+	{
+		out = cmd_setenv(data);
+		return (out); 
+	}
 	return (0);
 }
