@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   split_inst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frmurcia <frmurcia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 16:29:19 by eavedill          #+#    #+#             */
-/*   Updated: 2023/07/07 18:01:25 by frmurcia         ###   ########.fr       */
+/*   Created: 2023/07/07 18:17:22 by frmurcia          #+#    #+#             */
+/*   Updated: 2023/07/07 18:21:50 by frmurcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int main (int av, char **ac, char **env)
+t_instruct  *split_inst(char *str)
 {
-	int		val;
-	t_data	*data;
+    t_instruct *pepito;
 
-	data = init_vars(env);
-	while (1)
-	{
-		data->command = readline("enter a command Minishell> ");
-		add_history(data->command);
-		val = work_command(data);
-		if (val == 0)
-			printf("Command not found.\n");
-		else if (val == -1)
-			break ;
-		free(data->command);
-	}
-	free_vars(data);
-	printf("Goodbye!\n");
-	return (0);
-	(void) av;
-	(void) ac;
+    pepito = malloc (sizeof (t_instruct));
+
+    printf("%s", str);
+
+    return (pepito);
 }

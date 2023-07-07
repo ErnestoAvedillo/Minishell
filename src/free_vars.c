@@ -9,22 +9,25 @@ void	free_arrchar(char **arrchr)
 	{
 		i = -1;
 		while (arrchr[++i])
+		{
 			free (arrchr[i]);
+			arrchr[i] = NULL;
+		}
 		free(arrchr);
+		arrchr = NULL;
 	}
 }
 
 void    free_vars(t_data *data)
 {
-	printf("paso\n");
-	free_arrchar (data->env);
-	printf("paso\n");
 	free_arrchar(data->cmd_list);
-	printf("paso\n");
+	free_arrchar(data->oper_list);
 	free (data->functions_ptr);
-	printf("paso\n");
 	if(data->command)
+	{
 		free(data->command);
-	printf("paso\n");
+		data->command = NULL;
+	}
 	free (data);
+	data = NULL;
 }
