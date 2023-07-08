@@ -12,16 +12,25 @@
 
 #include "../inc/minishell.h"
 
-int main (int av, char **ac, char **env)
+/*
+*	This variable MUST be created bacause remains updated during the execution
+*	of the program. If we use the variable env of the main:
+*		int main (int av, char **ac, char **env)
+*	in this case the variable env does not remains updated.
+*/
+extern char** environ;
+
+int main (int av, char **ac)
 {
 	int		val;
 	t_data	*data;
 
-	data = init_vars(env);
+	data = init_vars(environ);
 	while (1)
 	{
 		data->command = readline("enter a command Minishell> ");
 		add_history(data->command);
+		data->splited_cmd = ft_split(data->command, ' ');
 		val = work_command(data);
 		if (val == 0)
 			printf("Command not found.\n");

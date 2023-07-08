@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_cd.c                                           :+:      :+:    :+:   */
+/*   check_cmd_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frmurcia <frmurcia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,26 +11,17 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-int cmd_cd(char **str)
+/*
+*   Checks that the command line does not have following errors
+*   " = " or " =" or "= " --> is not OK
+*   operands should be allways in betewwn blanks
+*
+*/
+int check_cmd_line(t_data *data)
 {
-	char *dir;
+    (void)data;
+    if(!quotes_ok(data->command))
+        return (0);
 
-	dir = (char *) malloc(1024 * sizeof(char));
-	dir [0] = '\0';
-	if(str[1] == NULL || is_oper(str[1]))
-		ft_strlcpy(dir, getenv("HOME"), 1024);
-	else if (str[1][0] == '~')
-	{
-		ft_strlcat(dir,getenv("HOME"), 1024);
-		ft_strlcat(dir,ft_substr(str[1],0,ft_strlen(str[1])),1024);
-	}
-	else
-		ft_strlcat(dir,ft_substr(str[1],1,ft_strlen(str[1])),1024);
-	if ((str[2] != NULL && !is_oper(str[2])) || chdir(dir) == -1)
-		printf("bash: cd: %s: No such file or directory .\n", dir);
-	else
-		printf("Cambiando al dirrectorio %s - con  %s\n", getenv("PWD"), dir);
-	free(dir);
-	return (1);
+    return (1);
 }

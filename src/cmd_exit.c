@@ -12,8 +12,8 @@
 
 #include "../inc/minishell.h"
 
-int cmd_exit(t_data * data)
+int cmd_exit(char **str)
 {
-    printf ("has entrado en exit con el comando %s.\n", data->command);
+    printf ("has entrado en exit con el comando %s.\n", str[0]);
     return (-1);
 }

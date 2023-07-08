@@ -11,18 +11,26 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <unistd.h>
 
-int cmd_env(t_data *data)
-{
-    char    **env;
+extern char** environ;
 
-    env = data->env;
-    while(*env != NULL)
-    {
-        printf("%s\n",*env);
-        env++;
-    }
+int cmd_env(char **str)
+{   
+	char buffer[1024];
+	char *curdir;
 
-    return (1);
+	if(!ft_strncmp(str[1], "PWD", 3))
+	{
+		curdir = getcwd(buffer, sizeof(buffer));
+		printf("%s\n", curdir);
+		return (1);
+	}
+	else
+		while(*str != NULL)
+		{
+			printf("%s\n",*str);
+			str++;
+		}
+
+	return (1);
 }

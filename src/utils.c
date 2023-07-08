@@ -12,6 +12,12 @@
 
 #include "../inc/minishell.h"
 
+/*
+*	Returns the position of the given character in a given str.
+*	Argument: 	string to serach
+*				character
+*	Returns: integer
+*/
 int get_pos ( char *str, char c)
 {
     int pos;
@@ -24,6 +30,12 @@ int get_pos ( char *str, char c)
     return (pos);
 }
 
+/*
+*	Returns the value of the event variable.
+*	Argument: 	*char: Name to search
+*				**char: Array of strings to search in
+*	Returns: *char
+*/
 char *get_env_value(char *name_env, char **env)
 {
 	int		len;
@@ -42,7 +54,13 @@ char *get_env_value(char *name_env, char **env)
 	return (out);
 }
 
-char *get_env_name(char *str)
+/*
+*	Returns the ame of the variable of listed in an string.
+*	Returns in fact the string on the left side of the '=' character.
+*	Argument: 	*char: String where to seach. 
+*				**char: Array of strings to search in
+*	Returns: *char
+*/char *get_env_name(char *str)
 {
 	int pos;
 
@@ -50,7 +68,13 @@ char *get_env_name(char *str)
 	return (ft_substr(str,0,pos));
 }
 
-int is_char_in_str(char *str, char c)
+/*
+*	Returns if a character is in a string.
+*	Argument: 	*char: strings to search in
+*				char: character to search
+*	Returns: bool
+*/
+bool is_char_in_str(char *str, char c)
 {
 	int i;
 
@@ -61,4 +85,23 @@ int is_char_in_str(char *str, char c)
 			return (1);
 	}
 	return (0);
+}
+
+/*
+*	Returns if the string is containing any of the operands defined into OPERANDS.
+*	Argument: 	*char: strings to search in
+*				char: character to search
+*	Returns: bool
+*/
+bool is_oper(char *str)
+{
+	char	**oper;
+	int		i;
+
+	oper = ft_split(OPERANDS, ' ');
+	i = -1;
+	while (oper[++i])
+		if (str[0] == oper[i][0])
+			return (true);
+	return (false);
 }

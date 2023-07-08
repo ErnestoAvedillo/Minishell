@@ -18,6 +18,7 @@
 # include	<readline/readline.h>
 # include	<readline/history.h>
 # include   <stdbool.h>
+#include    <unistd.h>
 
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
@@ -29,7 +30,7 @@
 # define ENV_CMD	5
 # define EXIT_CMD	6
 
-# define OPERANDS	"> < >> << | $"
+# define OPERANDS	"> < >> << | ="
 
 typedef struct s_instruct
 {
@@ -42,6 +43,7 @@ typedef struct s_instruct
 typedef struct s_data
 {
     char        *command;
+    char        **splited_cmd;
     t_instruct  *list_command;
     char        **env;
     char        **cmd_list;
@@ -55,21 +57,27 @@ t_data  *init_vars(char **env);
 void	free_vars(t_data *data);
 void	free_arrchar(char **arrchr);
 
-int		cmd_echo(t_data *data);
-int		cmd_cd(t_data *data);
-int		cmd_env(t_data *data);
-int		cmd_exit(t_data * data);
-int		cmd_export(t_data * data);
-int		cmd_pwd(t_data * data);
-int		cmd_unset(t_data * data);
-int		cmd_setenv(t_data * data);
+int		cmd_echo(char **str);
+int		cmd_cd(char **str);
+int		cmd_env(char **str);
+int		cmd_exit(char **str);
+int		cmd_export(char **str);
+int		cmd_pwd(char **str);
+int		cmd_unset(char **str);
+int		cmd_setenv(char **str);
 
 int		work_command(t_data *data);
 
-//utils
-char    *get_env_value(char *name_env, char **env);
-char    *get_env_name(char *str);
-int     is_char_in_str(char *str, char c);
+//check_cmd_line
+int		check_cmd_line(t_data *data);
+//check_quotes
+bool	quotes_ok(char *str);
 
+
+//utils
+char	*get_env_value(char *name_env, char **env);
+char	*get_env_name(char *str);
+bool	is_char_in_str(char *str, char c);
+bool	is_oper(char *str);
 
 # endif

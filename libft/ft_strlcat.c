@@ -10,7 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include"libft.h"
-
+/*
+*	Funcction: Conatenate 2 strings. Fills in destination the source str.
+*				No malloc is executed.
+*	Parameters:	char *destination
+*				char *source
+*				length
+*	Returns: the total lentgh of the resultant string.
+*/
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
 	size_t	i;

@@ -12,19 +12,24 @@
 
 #include "../inc/minishell.h"
 
-int cmd_setenv(t_data * data)
+int cmd_setenv(char **str)
 {
-    char **str;
+	int		i;
 
-    str = ft_split(data->command, '=');
-    if (setenv(str[0], str[1], 1) == 0)
-    {
-        printf ("Variable %s set succesfully with %s\n", str[0], str[1]);
-    } 
-    else
-    {
-        printf ("Variable %s failed to set with %s\n", str[0], str[1]);
-    }
-    return (1);
-    (void)data;
+	i = 0;
+	while (str[i])
+	{
+		if(!is_char_in_str(str[i],'='))
+			return (1);
+		if (setenv(str[i], str[i + 1], 1) == 0)
+		{
+			printf ("Variable %s set succesfully with %s\n", str[i], str[i + 1]);
+		}
+		else
+		{
+			printf ("Variable %s failed to set with %s\n", str[i], str[i + 1]);
+		}
+		i += 2;
+	}
+	return (1);
 }

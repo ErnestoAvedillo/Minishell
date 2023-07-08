@@ -12,12 +12,10 @@
 
 #include "../inc/minishell.h"
 
-int cmd_export(t_data * data)
+int cmd_export(char **str)
 {
-	char	**str;
 	int		i;
 
-	str = ft_split(data->command, ' ');
 	i = 0;
 	while (str[++i])
 	{
@@ -26,6 +24,5 @@ int cmd_export(t_data * data)
 		else
 			printf("error exporting the variale %s\n", str[i]);
 		}
-	free(str);
 	return (1);
 }

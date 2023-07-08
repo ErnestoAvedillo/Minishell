@@ -12,8 +12,18 @@
 
 #include "../inc/minishell.h"
 
-int cmd_unset(t_data * data)
+int cmd_unset(char **str)
 {
-    printf ("has entrado en unset con el comando %s.\n", data->command);
-    return (1);
+	int		i;
+
+	i = 0;
+	while (str[++i])
+	{
+		if (unsetenv(str[i]) == 0)
+			printf("Variable unseted succesfully %s\n", str[i]);
+		else
+			printf("error unseting the variale %s\n", str[i]);
+		}
+	free(str);
+	return (1);    
 }
