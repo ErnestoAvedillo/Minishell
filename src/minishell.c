@@ -24,14 +24,24 @@ int main (int av, char **ac)
 {
 	int		val;
 	t_data	*data;
+	t_instruct	*instuctions;
 
 	data = init_vars(environ);
 	while (1)
 	{
 		data->command = readline("enter a command Minishell> ");
 		add_history(data->command);
-		data->splited_cmd = ft_split(data->command, ' ');
-		val = work_command(data);
+		instuctions = tokenize(data);
+		while(check_cmd_line(data)== 0)
+			readline(">");
+		//data->splited_cmd = ft_split(data->command, ' ');
+		if (!instuctions)
+		{
+			printf("Memory alloc. error\n");
+			val = 1;
+		}
+		else		
+			val = work_command(instuctions);
 		if (val == 0)
 			printf("Command not found.\n");
 		else if (val == -1)

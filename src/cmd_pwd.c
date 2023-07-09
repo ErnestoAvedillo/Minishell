@@ -12,11 +12,11 @@
 
 #include "../inc/minishell.h"
 
-int cmd_pwd(char **str)
+int cmd_pwd(t_instruct *intruction)
 {
     char buffer[1024];
     char *curdir;
-    if (str[1])
+    if (intruction->arg[0])
     {
         printf("pwd: Too many arguments\n");
         return(1);

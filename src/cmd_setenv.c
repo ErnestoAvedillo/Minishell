@@ -12,22 +12,22 @@
 
 #include "../inc/minishell.h"
 
-int cmd_setenv(char **str)
+int cmd_setenv(t_instruct *intruction)
 {
 	int		i;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (intruction->arg[++i])
 	{
-		if(!is_char_in_str(str[i],'='))
+		if(!is_char_in_str(intruction->arg[i],'='))
 			return (1);
-		if (setenv(str[i], str[i + 1], 1) == 0)
+		if (setenv(intruction->arg[i], intruction->arg[i + 1], 1) == 0)
 		{
-			printf ("Variable %s set succesfully with %s\n", str[i], str[i + 1]);
+			printf ("Variable %s set succesfully with %s\n", intruction->arg[i], intruction->arg[i + 1]);
 		}
 		else
 		{
-			printf ("Variable %s failed to set with %s\n", str[i], str[i + 1]);
+			printf ("Variable %s failed to set with %s\n", intruction->arg[i], intruction->arg[i + 1]);
 		}
 		i += 2;
 	}

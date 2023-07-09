@@ -12,17 +12,17 @@
 
 #include "../inc/minishell.h"
 
-int cmd_export(char **str)
+int cmd_export(t_instruct *intruction)
 {
 	int		i;
 
-	i = 0;
-	while (str[++i])
+	i = -1;
+	while (intruction->arg[++i])
 	{
-		if (putenv(str[i]) == 0)
-			printf("Variable exported succesfully%s\n", str[i]);
+		if (putenv(intruction->arg[i]) == 0)
+			printf("Variable exported succesfully%s\n", intruction->arg[i]);
 		else
-			printf("error exporting the variale %s\n", str[i]);
+			printf("error exporting the variale %s\n", intruction->arg[i]);
 		}
 	return (1);
 }

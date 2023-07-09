@@ -12,24 +12,24 @@
 
 #include "../inc/minishell.h"
 
-extern char** environ;
-
-int cmd_env(char **str)
+int cmd_env(t_instruct *intruction)
 {   
 	char buffer[1024];
 	char *curdir;
+	char **ptr;
 
-	if(!ft_strncmp(str[1], "PWD", 3))
+	if(!ft_strncmp(intruction->arg[0], "PWD", 0, 3))
 	{
 		curdir = getcwd(buffer, sizeof(buffer));
 		printf("%s\n", curdir);
 		return (1);
 	}
 	else
-		while(*str != NULL)
+		ptr = intruction->header->env;
+		while(*ptr != NULL)
 		{
-			printf("%s\n",*str);
-			str++;
+			printf("%s\n",*ptr);
+			ptr++;
 		}
 
 	return (1);

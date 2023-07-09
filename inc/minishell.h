@@ -18,7 +18,7 @@
 # include	<readline/readline.h>
 # include	<readline/history.h>
 # include   <stdbool.h>
-#include    <unistd.h>
+# include   <unistd.h>
 
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
@@ -32,52 +32,64 @@
 
 # define OPERANDS	"> < >> << | ="
 
-typedef struct s_instruct
-{
-    char    *pre_inst;
-    char    *instruc;
-    void    *next;
-    void    *prev;
-} t_instruct;
-
 typedef struct s_data
 {
     char        *command;
     char        **splited_cmd;
-    t_instruct  *list_command;
     char        **env;
     char        **cmd_list;
     char        **oper_list;
     void        **functions_ptr;
 } t_data;
 
+typedef struct s_instruct
+{
+    char    *pre_oper;
+    char    *post_oper;
+    char    *instruc;
+	char	**arg;
+	t_data	*header;
+    void    *next;
+    void    *prev;
+} t_instruct;
+
 //init_vars
-t_data  *init_vars(char **env);
+t_data		*init_vars(char **env);
+t_instruct	*init_instructions(t_data *data);
+
 //freevars
-void	free_vars(t_data *data);
-void	free_arrchar(char **arrchr);
+void		free_vars(t_data *data);
+void		free_arrchar(char **arrchr);
 
-int		cmd_echo(char **str);
-int		cmd_cd(char **str);
-int		cmd_env(char **str);
-int		cmd_exit(char **str);
-int		cmd_export(char **str);
-int		cmd_pwd(char **str);
-int		cmd_unset(char **str);
-int		cmd_setenv(char **str);
+int			cmd_echo(t_instruct *intruction);
+int			cmd_cd(t_instruct *intruction);
+int			cmd_env(t_instruct *intruction);
+int			cmd_exit(t_instruct *intruction);
+int			cmd_export(t_instruct *intruction);
+int			cmd_pwd(t_instruct *intruction);
+int			cmd_unset(t_instruct *intruction);
+int			cmd_setenv(t_instruct *intruction);
 
-int		work_command(t_data *data);
+int			work_command(t_instruct *first_inst);
 
 //check_cmd_line
-int		check_cmd_line(t_data *data);
+int			check_cmd_line(t_data *data);
 //check_quotes
-bool	quotes_ok(char *str);
+bool		quotes_ok(char *str);
+//token_utils
+void		fill_instruct(t_instruct *inst, char *str, int start, int end);
 
+//tokenize
+t_instruct	*tokenize(t_data *data);
 
 //utils
-char	*get_env_value(char *name_env, char **env);
-char	*get_env_name(char *str);
-bool	is_char_in_str(char *str, char c);
-bool	is_oper(char *str);
+char		*get_env_value(char *name_env, char **env);
+char		*get_env_name(char *str);
+bool		is_char_in_str(char *str, char c);
+bool		is_oper(char *str);
+
+//print_var
+void        print_inst(t_instruct *intruction);
+
 
 # endif

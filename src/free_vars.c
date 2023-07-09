@@ -31,3 +31,18 @@ void    free_vars(t_data *data)
 	free (data);
 	data = NULL;
 }
+
+void	free_inst(t_instruct *first_instruction)
+{
+	t_instruct *instructions;
+
+	instructions =  first_instruction;
+	while(instructions)
+	{
+		free(instructions->instruc);
+		free_arrchar(instructions->arg);
+		instructions = instructions->next;
+		if(instructions->prev)
+			free(instructions->prev);
+	}
+}

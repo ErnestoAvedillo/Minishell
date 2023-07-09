@@ -11,6 +11,13 @@
 /* ************************************************************************** */
 #include"libft.h"
 
+/*
+*   Descriptinon:	Extracts a substring of a string.
+*   Arguments:		char const *s : the string to obtain the substr.
+*					int start position where.
+*					int len :length of hte string to extract.
+*   Returns:		A pointer wher to find the string.
+*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char				*ptr;

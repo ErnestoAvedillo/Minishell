@@ -11,11 +11,18 @@
 /* ************************************************************************** */
 #include"libft.h"
 
-char	*ft_strchr(const char *s, int c)
+/*
+*   Descriptinon:	Finds the position of a char in a str.
+*   Arguments:		char const *s : the string to work with.
+*					int start position where.
+*					int c :charachter to search.
+*   Returns:		A pointer where to find the char.
+*/
+char	*ft_strchr(const char *s, int start, int c)
 {
 	int	i;
 
-	i = 0;
+	i = start;
 	while (s[i] && s[i] != (char)c)
 		i++;
 	if (!s[i] && (c % 256))

@@ -12,22 +12,25 @@
 
 #include "../inc/minishell.h"
 
-int cmd_cd(char **str)
+int cmd_cd(t_instruct *intruction)
 {
-	char *dir;
+	char	*dir;
+	int		len_dir;
 
 	dir = (char *) malloc(1024 * sizeof(char));
 	dir [0] = '\0';
-	if(str[1] == NULL || is_oper(str[1]))
+	if(intruction->arg[0])
+		len_dir =ft_strlen(intruction->arg[0]);
+	if(!intruction->arg || intruction->arg[0] == NULL )
 		ft_strlcpy(dir, getenv("HOME"), 1024);
-	else if (str[1][0] == '~')
+	else if (intruction->arg[0][0] == '~')
 	{
 		ft_strlcat(dir,getenv("HOME"), 1024);
-		ft_strlcat(dir,ft_substr(str[1],0,ft_strlen(str[1])),1024);
+		ft_strlcat(dir,ft_substr(intruction->arg[0],0,len_dir),1024);
 	}
 	else
-		ft_strlcat(dir,ft_substr(str[1],1,ft_strlen(str[1])),1024);
-	if ((str[2] != NULL && !is_oper(str[2])) || chdir(dir) == -1)
+		ft_strlcat(dir,ft_substr(intruction->arg[0],1,len_dir),1024);
+	if (intruction->arg[1] != NULL || chdir(dir) == -1)
 		printf("bash: cd: %s: No such file or directory .\n", dir);
 	else
 		printf("Cambiando al dirrectorio %s - con  %s\n", getenv("PWD"), dir);

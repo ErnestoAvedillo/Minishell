@@ -44,7 +44,7 @@ char *get_env_value(char *name_env, char **env)
 	len = ft_strlen(name_env);
 	while(*env)
 	{
-		if (!ft_strncmp(name_env, *env, len))
+		if (!ft_strncmp(name_env, *env, 0, len))
 		{
 			break;
 		}

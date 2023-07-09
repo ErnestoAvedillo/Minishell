@@ -12,18 +12,17 @@
 
 #include "../inc/minishell.h"
 
-int cmd_unset(char **str)
+int cmd_unset(t_instruct *intruction)
 {
 	int		i;
 
-	i = 0;
-	while (str[++i])
+	i = -1;
+	while (intruction->arg[++i])
 	{
-		if (unsetenv(str[i]) == 0)
-			printf("Variable unseted succesfully %s\n", str[i]);
+		if (unsetenv(intruction->arg[i]) == 0)
+			printf("Variable unseted succesfully %s\n", intruction->arg[i]);
 		else
-			printf("error unseting the variale %s\n", str[i]);
+			printf("error unseting the variale %s\n", intruction->arg[i]);
 		}
-	free(str);
 	return (1);    
 }

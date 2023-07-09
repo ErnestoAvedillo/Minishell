@@ -12,15 +12,15 @@
 
 #include "../inc/minishell.h"
 
-int cmd_echo(char **str)
+int cmd_echo(t_instruct *intruction)
 {
 	int i;
 
-	i = 0;
-	while (str[++i] && !is_oper(str[i]))
+	i = -1;
+	while (intruction->arg[++i])
 	{
-		printf ("%s",str[i]);
-		if (str[i + 1] && !is_oper(str[i + 1]))
+		printf ("%s",intruction->arg[i]);
+		if (intruction->arg[i + 1])
 			printf(" ");
 	}
 	printf ("\n");
