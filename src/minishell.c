@@ -47,6 +47,7 @@ int main (int av, char **ac)
 		else if (val == -1)
 			break ;
 		free(data->command);
+		free_inst(instuctions);
 	}
 	free_vars(data);
 	printf("Goodbye!\n");

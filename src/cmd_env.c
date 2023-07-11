@@ -18,19 +18,22 @@ int cmd_env(t_instruct *intruction)
 	char *curdir;
 	char **ptr;
 
-	if(!ft_strncmp(intruction->arg[0], "PWD", 0, 3))
+	if(intruction->arg != NULL) 
 	{
-		curdir = getcwd(buffer, sizeof(buffer));
-		printf("%s\n", curdir);
+		if(!ft_strncmp(intruction->arg[0], "PWD", 0, 3))
+		{
+			curdir = getcwd(buffer, sizeof(buffer));
+			printf("%s\n", curdir);
+		}
+		else
+			printf("Too many arguments env.\n");
 		return (1);
 	}
-	else
-		ptr = intruction->header->env;
-		while(*ptr != NULL)
-		{
-			printf("%s\n",*ptr);
-			ptr++;
-		}
-
+	ptr = intruction->header->env;
+	while (*ptr != NULL)
+	{
+		printf("%s\n",*ptr);
+		ptr++;
+	}
 	return (1);
 }

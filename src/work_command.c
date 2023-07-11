@@ -26,7 +26,7 @@ int    work_command(t_instruct *first_inst)
 			out = ((int (*)(t_instruct *))((void **)first_inst->header->functions_ptr)[i])(first_inst);
 			return (out);
 		}
-	if (is_char_in_str(first_inst->header->command, '='))
+	if (is_char_in_str(first_inst->instruc, '='))
 	{
 		out = cmd_setenv(first_inst);
 		return (out); 

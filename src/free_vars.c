@@ -40,9 +40,18 @@ void	free_inst(t_instruct *first_instruction)
 	while(instructions)
 	{
 		free(instructions->instruc);
+		instructions->instruc = NULL;
 		free_arrchar(instructions->arg);
 		instructions = instructions->next;
 		if(instructions->prev)
+		{
 			free(instructions->prev);
+			instructions->prev = NULL;
+		}
+		else
+		{
+			free(instructions);
+			instructions = NULL;
+		}
 	}
 }

@@ -60,8 +60,9 @@ t_instruct	*init_instructions(t_data *data);
 //freevars
 void		free_vars(t_data *data);
 void		free_arrchar(char **arrchr);
+void        free_inst(t_instruct *first_instruction);
 
-int			cmd_echo(t_instruct *intruction);
+int         cmd_echo(t_instruct *intruction);
 int			cmd_cd(t_instruct *intruction);
 int			cmd_env(t_instruct *intruction);
 int			cmd_exit(t_instruct *intruction);

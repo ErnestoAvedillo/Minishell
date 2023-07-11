@@ -24,11 +24,12 @@ void print_inst(t_instruct *intruction)
 		printf ("post_oper %s\n", inst->post_oper);
 		printf ("comando %s\n", inst->instruc);
 		i = 0;
-		while(inst->arg[i])
-		{
-			printf (" argumento %i, vale %s", i , inst->arg[i]);
-			i++;
-		}
+		if (inst->arg != NULL)
+			while(inst->arg[i])
+			{
+				printf (" argumento %i, vale %s", i , inst->arg[i]);
+				i++;
+			}
 		inst = inst->next;
 	}
 }

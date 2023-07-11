@@ -107,16 +107,16 @@ char **get_special_args(char *str)
 void	fill_instruct(t_instruct *inst, char *str, int start, int end)
 {
 	char *words;
-	void *ptr;
+	char *ptr;
 
 	inst->pre_oper = get_pre_oper(str,start);
 	inst->post_oper = get_post_oper(str,end);
 	ptr = ft_strchr(str, start, ' ');
-	if (ptr == NULL || end < (int)ptr - (int)str)
+	if (ptr == NULL || end < (int)(ptr - str))
 		inst->instruc = ft_substr(str, start, end);
 	else
-		inst->instruc = ft_substr(str, start, (int)ptr - (int)str);
-	start += (int)ptr - (int)str;
+		inst->instruc = ft_substr(str, start, (int)(ptr - str));
+	start += (int)(ptr - str);
 	words = ft_substr(str, start, end);
 	if (words[0])
 	{

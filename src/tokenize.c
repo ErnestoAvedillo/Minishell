@@ -84,8 +84,8 @@ t_instruct *tokenize(t_data *data)
 
 	first_inst = init_instructions(data);
 	instruct[0] = first_inst;
-    if (!first_inst)
-        return (NULL);
+	if (first_inst == NULL)
+		return (NULL);
 	start_pos = 0;
 	while (start_pos <= (int)ft_strlen(data->command))
 	{
