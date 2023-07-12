@@ -12,8 +12,17 @@
 
 #include "../inc/minishell.h"
 
-int cmd_echo(t_data * data)
+int cmd_echo(t_instruct *intruction)
 {
-    printf ("has entrado en echo con el comando %s.\n", data->command);
-    return (1);
+	int i;
+
+	i = -1;
+	while (intruction->arg[++i])
+	{
+		printf ("%s",intruction->arg[i]);
+		if (intruction->arg[i + 1])
+			printf(" ");
+	}
+	printf ("\n");
+	return (1);
 }

@@ -11,18 +11,29 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <unistd.h>
 
-int cmd_env(t_data *data)
-{
-    char    **env;
+int cmd_env(t_instruct *intruction)
+{   
+	char buffer[1024];
+	char *curdir;
+	char **ptr;
 
-    env = data->env;
-    while(*env != NULL)
-    {
-        printf("%s\n",*env);
-        env++;
-    }
-
-    return (1);
+	if(intruction->arg != NULL) 
+	{
+		if(!ft_strncmp(intruction->arg[0], "PWD", 0, 3))
+		{
+			curdir = getcwd(buffer, sizeof(buffer));
+			printf("%s\n", curdir);
+		}
+		else
+			printf("Too many arguments env.\n");
+		return (1);
+	}
+	ptr = intruction->header->env;
+	while (*ptr != NULL)
+	{
+		printf("%s\n",*ptr);
+		ptr++;
+	}
+	return (1);
 }

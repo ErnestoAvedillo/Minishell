@@ -1,7 +1,8 @@
 NAME = minishell
 
 SRC = $(NAME) cmd_echo cmd_cd cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init_vars \
-	free_vars utils work_command #añadir nombres de ficheros.c  aqui
+	free_vars utils work_command split_inst cmd_setenv check_cmd_line check_quotes \
+	tokenize token_utils print_var #añadir nombres de ficheros.c  aqui
 
 INC = $(NAME) #añadir nombres de ficheros.h  aqui
 
@@ -39,7 +40,7 @@ linux: $(LIBFT) $(NAME)
 
 
 $(NAME): $(OBJS) Makefile
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline 
+	$(CC) $(FLAGS) -v $(OBJS) -o $(NAME) $(LIBFT) -lreadline 
 
 #-static-libsan 
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d

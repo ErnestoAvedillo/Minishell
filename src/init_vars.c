@@ -35,3 +35,17 @@ t_data  *init_vars(char **env)
     set_func_list(data);
     return (data);
 }
+
+t_instruct *init_instructions(t_data *data)
+{
+    t_instruct *first_inst;
+
+    first_inst = (t_instruct *) malloc (sizeof(t_instruct));
+    first_inst->header = data;
+	first_inst->prev = NULL;
+	first_inst->next = NULL;
+	first_inst->pre_oper = NULL;
+	first_inst->post_oper = NULL;
+    first_inst->arg = NULL;
+    return (first_inst);
+}

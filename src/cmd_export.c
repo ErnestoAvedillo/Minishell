@@ -12,19 +12,17 @@
 
 #include "../inc/minishell.h"
 
-int cmd_export(t_data * data)
+int cmd_export(t_instruct *intruction)
 {
-	char	**env;
-	char	*name;
+	int		i;
 
-	env = data->env;
-	while(*env != NULL)
+	i = -1;
+	while (intruction->arg[++i])
 	{
-		name = get_env_name(*env);
-		printf("%s\n", name);
-		if (getenv(name))
-		printf("%s\n",*env);
-		env++;
-	}
+		if (putenv(intruction->arg[i]) == 0)
+			printf("Variable exported succesfully%s\n", intruction->arg[i]);
+		else
+			printf("error exporting the variale %s\n", intruction->arg[i]);
+		}
 	return (1);
 }

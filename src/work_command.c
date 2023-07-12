@@ -12,18 +12,24 @@
 
 #include "../inc/minishell.h"
 
-int    work_command(t_data *data)
+int    work_command(t_instruct *first_inst)
 {
 	int i;
 	int out;
 
 	out = 1;
 	i = -1;
+
 	while (++i <= EXIT_CMD)
-		if (!ft_strncmp(data->command, data->cmd_list[i], ft_strlen(data->cmd_list[i])))
+		if (first_inst->instruc && !ft_strncmp(first_inst->instruc, first_inst->header->cmd_list[i], 0, ft_strlen(first_inst->instruc)))
 		{
-			out = ((int (*)(t_data *))((void **)data->functions_ptr)[i])(data);
+			out = ((int (*)(t_instruct *))((void **)first_inst->header->functions_ptr)[i])(first_inst);
 			return (out);
 		}
+	if (is_char_in_str(first_inst->instruc, '='))
+	{
+		out = cmd_setenv(first_inst);
+		return (out); 
+	}
 	return (0);
 }

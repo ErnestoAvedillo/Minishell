@@ -12,12 +12,16 @@
 
 #include "../inc/minishell.h"
 
-int cmd_pwd(t_data * data)
+int cmd_pwd(t_instruct *intruction)
 {
-    char *pwd_value;
-
-    pwd_value = getenv("PWD");
-    printf("%s\n", pwd_value);
+    char buffer[1024];
+    char *curdir;
+    if (intruction->arg != NULL)
+    {
+        printf("pwd: Too many arguments\n");
+        return(1);
+    }
+    curdir = getcwd(buffer, sizeof(buffer));
+    printf("%s\n", curdir);
     return (1);
-    (void)data;
 }

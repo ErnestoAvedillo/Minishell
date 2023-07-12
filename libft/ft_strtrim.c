@@ -21,7 +21,7 @@ static char	*get_min_pos(char const *str, char const *set)
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_strchr(set, str[i]))
+		if (!ft_strchr(set, 0, str[i]))
 			return ((char *)str + i);
 		i++;
 	}
