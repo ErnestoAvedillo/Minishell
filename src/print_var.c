@@ -27,7 +27,7 @@ void print_inst(t_instruct *intruction)
 		if (inst->arg != NULL)
 			while(inst->arg[i])
 			{
-				printf (" argumento %i, vale %s", i , inst->arg[i]);
+				printf (" argumento %i, vale %s\n", i , inst->arg[i]);
 				i++;
 			}
 		inst = inst->next;

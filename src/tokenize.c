@@ -91,8 +91,8 @@ t_instruct *tokenize(t_data *data)
 	{
 		end_pos = ft_nextendpos(data->command, start_pos, "|><");
 		fill_instruct(instruct[0], data->command, start_pos, end_pos);
-		print_inst(instruct[0]);
-		getchar();
+//		print_inst(instruct[0]);
+//		getchar();
 		start_pos = end_pos + 1;
 		if(start_pos <= (int)ft_strlen(data->command))
 		{
@@ -102,7 +102,7 @@ t_instruct *tokenize(t_data *data)
 			instruct[0] = instruct[1];
 		}
 	}
-	print_inst(first_inst);
+//	print_inst(first_inst);
 /*	i = 0;
     while (++i <= EXIT_CMD)
 		if (!ft_strncmp(data->splited_cmd[0], data->cmd_list[i], ft_strlen(data->splited_cmd[0])))

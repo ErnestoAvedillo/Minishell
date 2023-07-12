@@ -82,17 +82,80 @@ char	*get_post_oper(char *str, int pos)
 }
 
 /*
-*   Descriptinon:	Returns an array of all arguments separeted by those that 
-*					have the charachters " or '.
-*   Arguments:		char *str The variable to be splited.
-*   Returns:		Double pointer where to find the array.
-*/
+ *   Descriptinon:	Replace all charachtes beteween quotes.
+ *   Arguments:		char *str The variable to be splited.
+ *   Returns:		Double pointer where to find the array.
+ */
+void	replace_char_btw_quotes(char *str, char c1, char c2)
+{
+	int i;
+	int j;
+
+	i = -1;
+	j = 0;
+	while (str[++i])
+	{
+		if (j == 0 && str[i] == '\'')
+		{
+			str[i] = ' ';
+			j = 1;
+		}
+		if (j == 0 && str[i] == '\"')
+		{
+			str[i] = ' ';
+			j = 2;
+		}
+		while (j != 0)
+		{
+			i++;
+			if (str[i] == c1)
+				str[i] = c2;
+			if (j == 1 && str[i] == '\'')
+			{
+				str[i] = ' ';
+				j = 0;
+			}
+			else if (j == 2 && str[i] == '\"')
+			{
+				str[i] = ' ';
+				j = 0;
+			}
+		}
+	}
+}
+
+/*
+ *   Descriptinon:	Replace all charachtes of the string equal of c1 
+ *					and replaces them from c2.
+ *   Arguments:		char *str The variable to be splited.
+ *   Returns:		Double pointer where to find the array.
+ */
+void	replace_char(char *str, char c1, char c2)
+{
+	int i;
+
+	i = -1;
+	while(str[++i])
+		if(str[i] == c1)
+			str[i] = c2;
+}
+
+/*
+	*   Descriptinon:	Returns an array of all arguments separeted by those that
+	*					have the charachters " or '.
+	*   Arguments:		char *str The variable to be splited.
+	*   Returns:		Double pointer where to find the array.
+	*/
 char **get_special_args(char *str)
 {
-	char	**args;
+	char **args;
+	int i;
 
-	args = (char **) malloc(1 *sizeof(char*));
-	(void) str;
+	replace_char_btw_quotes(str, ' ', 255);
+	args = ft_split(str, ' ');
+	i = -1;
+	while (args && args[++i])
+		replace_char(args[i], 255, ' ');
 	return (args);
 }
 
@@ -120,9 +183,11 @@ void	fill_instruct(t_instruct *inst, char *str, int start, int end)
 	words = ft_substr(str, start, end);
 	if (words[0])
 	{
-		if (ft_strchr(words, 0 , '\'') == NULL && ft_strchr(words, 0 , '\"') == NULL)
+		//replace_env_var(inst, words);
+		if (ft_strchr(words, 0, '\'') == NULL && ft_strchr(words, 0, '\"') == NULL)
 			inst->arg = ft_split(words, ' ');
 		else
 			inst->arg = get_special_args(words);
 	}
+	free(words);
 }
