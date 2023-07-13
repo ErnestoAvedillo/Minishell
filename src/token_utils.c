@@ -183,7 +183,7 @@ void	fill_instruct(t_instruct *inst, char *str, int start, int end)
 	words = ft_substr(str, start, end);
 	if (words[0])
 	{
-		//replace_env_var(inst, words);
+		words = replace_env_var(words);
 		if (ft_strchr(words, 0, '\'') == NULL && ft_strchr(words, 0, '\"') == NULL)
 			inst->arg = ft_split(words, ' ');
 		else

@@ -92,5 +92,7 @@ bool		is_oper(char *str);
 //print_var
 void        print_inst(t_instruct *intruction);
 
+//replace_env_var
+char *replace_env_var(char *str);
 
 # endif
