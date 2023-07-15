@@ -84,7 +84,7 @@ char	*get_post_oper(char *str, int pos)
 /*
  *   Descriptinon:	Replace all charachtes beteween quotes.
  *   Arguments:		char *str The variable to be splited.
- *   Returns:		Double pointer where to find the array.
+ *   Returns:		nothing.
  */
 void	replace_char_btw_quotes(char *str, char c1, char c2)
 {
@@ -108,7 +108,7 @@ void	replace_char_btw_quotes(char *str, char c1, char c2)
 		while (j != 0)
 		{
 			i++;
-			if (str[i] == c1)
+			if (str[i] && str[i] == c1)
 				str[i] = c2;
 			if (j == 1 && str[i] == '\'')
 			{
@@ -164,7 +164,7 @@ char **get_special_args(char *str)
 *   Arguments:		t_instruct *inst : the variable to fill in.
 *					char *str The variable where it is the instruction.
 *					int start position where is t\starting the instruction
-*					int end where yhe instruction ends.
+*					int end where the instruction ends.
 *   Returns:		Nothing
 */
 void	fill_instruct(t_instruct *inst, char *str, int start, int end)

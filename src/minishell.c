@@ -20,7 +20,7 @@
 */
 extern char** environ;
 
-int main (int av, char **ac)
+int main(int av, char **ac)
 {
 	int		val;
 	t_data	*data;
@@ -29,7 +29,7 @@ int main (int av, char **ac)
 	data = init_vars(environ);
 	while (1)
 	{
-		data->command = readline("enter a command Minishell> ");
+		data->command = readline("Enter a command Minishell>");
 		add_history(data->command);
 		instuctions = tokenize(data);
 		while(check_cmd_line(data)== 0)

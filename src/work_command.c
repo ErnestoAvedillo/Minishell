@@ -31,5 +31,6 @@ int    work_command(t_instruct *first_inst)
 		out = cmd_setenv(first_inst);
 		return (out); 
 	}
-	return (0);
+	out = execve(first_inst->instruc, first_inst->arg, first_inst->header->env);
+	return (out);
 }

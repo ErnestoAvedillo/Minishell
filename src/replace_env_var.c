@@ -24,30 +24,34 @@ char	*replace_env_var(char *str)
 	while (str[++i])
 	{
 		if (str[i] == '\'')
-			while (str[i] != '\'')
+			while (str[i] && str[i] != '\'')
 				i++;
 		if (str[i] == '$')
 		{
 			j = i;
-			while (str[j] != ' ')
+			while (str[j] && (str[j] != ' ' && str[j] != '\"'))
 				j++;
-			variable = ft_substr(str, i + 1, j);
+			variable = ft_substr(str, i + 1, j - i - 1);
 			value = getenv(variable);
-			j = (ft_strlen(str) - ft_strlen(variable) + ft_strlen(value) + 1);
+			j = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value)) + 1;
 			out = (char *)malloc(j *sizeof(char));
-			out[j] = '\0';
+			out[j - 1] = '\0';
 			j = 0;
 			while (out[j])
 			{
-				if (j < i || j > i + (int)ft_strlen(value))
+				if (j < i)
 					out[j] = str[j];
-				else
+				else if (j > i + (int)ft_strlen(value))
+					out[j] = str[j + (int)ft_strlen(variable) - (int)ft_strlen(value)];
+				else if (value)
 					out[j] = value[j - i];
+				j++;
 			}
+			free(variable);
 			free(str);
 			str = out;
 			out = NULL;
-			i += ft_strlen(value);
+			i += ft_strlen(value) - 1;
 		}
 	}
 	return (str);

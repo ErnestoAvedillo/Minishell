@@ -66,14 +66,10 @@ static size_t	ft_nextendpos(char const *str, size_t ini, char *c)
 }
 
 /*
-*   Descriptinon:	Search the position in str where any of the charachters in *c are 
-*					found.
-*   Arguments:		char *str : trinw where to look for in.
-					int ini Starting position to log for
-					char (array of chars to look for
-*   Returns:		The position where the character has been found or the "\0" pos.
-*					charachter.
-*/
+ *   Descriptinon:	Separate the commands by its operators.
+ *   Arguments:		t_data *data : The structure data where the command and the env pointer is.
+ *   Returns:		The tokenized instruction separated by the operators.
+ */
 t_instruct *tokenize(t_data *data)
 {
     t_instruct	*first_inst;
@@ -91,8 +87,6 @@ t_instruct *tokenize(t_data *data)
 	{
 		end_pos = ft_nextendpos(data->command, start_pos, "|><");
 		fill_instruct(instruct[0], data->command, start_pos, end_pos);
-//		print_inst(instruct[0]);
-//		getchar();
 		start_pos = end_pos + 1;
 		if(start_pos <= (int)ft_strlen(data->command))
 		{
@@ -102,7 +96,6 @@ t_instruct *tokenize(t_data *data)
 			instruct[0] = instruct[1];
 		}
 	}
-//	print_inst(first_inst);
 /*	i = 0;
     while (++i <= EXIT_CMD)
 		if (!ft_strncmp(data->splited_cmd[0], data->cmd_list[i], ft_strlen(data->splited_cmd[0])))
