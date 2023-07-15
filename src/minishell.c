@@ -31,16 +31,16 @@ int main(int av, char **ac)
 	{
 		data->command = readline("Enter a command Minishell>");
 		add_history(data->command);
-		instuctions = tokenize(data);
 		while(check_cmd_line(data)== 0)
 			readline(">");
+		instuctions = tokenize(data);
 		//data->splited_cmd = ft_split(data->command, ' ');
 		if (!instuctions)
 		{
 			printf("Memory alloc. error\n");
 			val = 1;
 		}
-		else		
+		else
 			val = work_command(instuctions);
 		if (val == 0)
 			printf("Command not found.\n");

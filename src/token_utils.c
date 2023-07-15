@@ -86,7 +86,7 @@ char	*get_post_oper(char *str, int pos)
  *   Arguments:		char *str The variable to be splited.
  *   Returns:		nothing.
  */
-void	replace_char_btw_quotes(char *str, char c1, char c2)
+void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 {
 	int i;
 	int j;
@@ -108,8 +108,8 @@ void	replace_char_btw_quotes(char *str, char c1, char c2)
 		while (j != 0)
 		{
 			i++;
-			if (str[i] && str[i] == c1)
-				str[i] = c2;
+			if (str[i] && str[i] == (char) c1)
+				str[i] = (char)c2;
 			if (j == 1 && str[i] == '\'')
 			{
 				str[i] = ' ';
@@ -130,13 +130,13 @@ void	replace_char_btw_quotes(char *str, char c1, char c2)
  *   Arguments:		char *str The variable to be splited.
  *   Returns:		Double pointer where to find the array.
  */
-void	replace_char(char *str, char c1, char c2)
+void	replace_char(char *str, unsigned int c1, unsigned int c2)
 {
 	int i;
 
 	i = -1;
 	while(str[++i])
-		if(str[i] == c1)
+		if(str[i] == (char)c1)
 			str[i] = c2;
 }
 
@@ -151,11 +151,11 @@ char **get_special_args(char *str)
 	char **args;
 	int i;
 
-	replace_char_btw_quotes(str, ' ', 255);
+	replace_char_btw_quotes(str, ' ', 254);
 	args = ft_split(str, ' ');
 	i = -1;
 	while (args && args[++i])
-		replace_char(args[i], 255, ' ');
+		replace_char(args[i], 254, ' ');
 	return (args);
 }
 
