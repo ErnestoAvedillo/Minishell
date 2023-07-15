@@ -16,6 +16,8 @@ size_t	ft_strlen(const char *str)
 	int	cont;
 
 	cont = 0;
+	if (!str)
+		return (0);
 	while (str [cont] != '\0' )
 		cont++;
 	return (cont);
