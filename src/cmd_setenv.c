@@ -61,9 +61,9 @@ int cmd_setenv(t_instruct *intruction)
 		}
 		i++;
 		free_arrchar(str);
-		if (!intruction->arg[i] || !is_char_in_str(intruction->arg[i], '='))
+		if (!intruction->arg || !intruction->arg[i])
 			return (1);
-		if (is_more_than_1(intruction->arg[i]))
+		if (!is_char_in_str(intruction->arg[i], '=') || is_more_than_1(intruction->arg[i]))
 		{
 			printf("Command not found.\n");
 			return (1);

@@ -70,6 +70,7 @@ int			cmd_export(t_instruct *intruction);
 int			cmd_pwd(t_instruct *intruction);
 int			cmd_unset(t_instruct *intruction);
 int			cmd_setenv(t_instruct *intruction);
+int         cmd_exec(t_instruct *intruction);
 
 int			work_command(t_instruct *first_inst);
 
