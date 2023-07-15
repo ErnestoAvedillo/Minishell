@@ -96,10 +96,6 @@ t_instruct *tokenize(t_data *data)
 			instruct[0] = instruct[1];
 		}
 	}
-/*	i = 0;
-    while (++i <= EXIT_CMD)
-		if (!ft_strncmp(data->splited_cmd[0], data->cmd_list[i], ft_strlen(data->splited_cmd[0])))
-*/
     return (first_inst);
 }
 
