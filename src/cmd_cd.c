@@ -16,6 +16,7 @@ int cmd_cd(t_instruct *intruction)
 {
 	char	*dir;
 	int		len_dir;
+	char	buffer[1024];
 
 	dir = (char *) malloc(1024 * sizeof(char));
 	dir [0] = '\0';
@@ -31,9 +32,16 @@ int cmd_cd(t_instruct *intruction)
 	else
 		ft_strlcat(dir,ft_substr(intruction->arg[0],0,len_dir),1024);
 	if (chdir(dir) == -1)
+	{
 		printf("bash: cd: %s: No such file or directory .\n", dir);
+		free(dir);	
+	}
 	else
+	{
 		printf("Cambiando al dirrectorio %s - con  %s\n", getenv("PWD"), dir);
-	free(dir);
+		free(dir);
+		dir = getcwd(buffer, sizeof(buffer));
+		setenv("PWD", dir, 1);
+	}
 	return (1);
 }

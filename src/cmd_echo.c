@@ -15,14 +15,22 @@
 int cmd_echo(t_instruct *intruction)
 {
 	int i;
+	bool eol;
 
 	i = -1;
+	eol = true;
+	if (ft_strncmp(intruction->arg[++i],"-n",0, 2) == 0)
+	{
+		eol = false;
+		i = 0;
+	}
 	while (intruction->arg[++i])
 	{
 		printf ("%s",intruction->arg[i]);
 		if (intruction->arg[i + 1])
 			printf(" ");
 	}
-	printf ("\n");
+	if (eol)
+		printf ("\n");
 	return (1);
 }

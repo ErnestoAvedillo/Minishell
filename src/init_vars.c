@@ -47,5 +47,6 @@ t_instruct *init_instructions(t_data *data)
 	first_inst->pre_oper = NULL;
 	first_inst->post_oper = NULL;
     first_inst->arg = NULL;
+    first_inst->out = NULL;
     return (first_inst);
 }

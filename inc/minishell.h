@@ -19,7 +19,7 @@
 # include	<readline/history.h>
 # include   <stdbool.h>
 # include   <unistd.h>
-
+# include <sys/stat.h>
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
 # define ECHO_CMD	0
@@ -48,6 +48,7 @@ typedef struct s_instruct
     char    *post_oper;
     char    *instruc;
 	char	**arg;
+    char    **out;
 	t_data	*header;
     void    *next;
     void    *prev;
