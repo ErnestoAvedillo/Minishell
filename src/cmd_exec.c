@@ -37,6 +37,7 @@ char	*check_file_exists(t_instruct *intruction)
 			return (out);
 		out[0] = '\0';
 	}
+	free(out);
 	return (NULL);
 }
 
@@ -75,12 +76,14 @@ int cmd_exec(t_instruct *intruction)
 	char *out;
 	out = check_file_exists(intruction);
 	if(!out)
-		return (1);
+		return (0);
 	intruction->arg = add_dir_to_arg (intruction->arg, out);
 	if(execve(out, intruction->arg, intruction->header->env) == -1)
 	{
 		printf ("salgo con error\n");
+		free(out);
 		return (1);
 	}
+	free(out);
 	return (0);
 }

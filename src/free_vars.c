@@ -22,6 +22,7 @@ void    free_vars(t_data *data)
 {
 	free_arrchar(data->cmd_list);
 	free_arrchar(data->oper_list);
+	free_arrchar(data->env);
 	free (data->functions_ptr);
 	if(data->command)
 	{

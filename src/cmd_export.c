@@ -51,7 +51,7 @@ void	print_env_sorted(char **env)
 	aux = ft_strsort_arr(aux, 1);
 	i = -1;
 	while (aux[++i] != NULL)
-		printf("%s\n", aux[i]);
+		printf("declare -x %s\n", aux[i]);
 	free(aux);
 	return ;
 }
@@ -66,7 +66,9 @@ void	print_env_sorted(char **env)
 int cmd_export(t_instruct *intruction)
 {
 	int		i;
+	size_t j;
 	char	**aux;
+	char	*value;
 
 	if (!check_args(intruction->header->command))
 	{
@@ -83,10 +85,16 @@ int cmd_export(t_instruct *intruction)
 	{
 		if (ft_strchr(intruction->arg[i], 0, '=') == NULL )
 		{
-			if (putenv(intruction->arg[i]) == 0)
-				printf("Variable exported succesfully%s\n", intruction->arg[i]);
+			j = ft_strlen(intruction->arg[i]) + ft_strlen(getenv(intruction->arg[i]));
+			value = (char *)malloc((j + 2) * sizeof(char));
+			value[0] = '\0';
+			ft_strlcat(value, intruction->arg[i], j + 2);
+			ft_strlcat(value, "=", j + 2);
+			ft_strlcat(value, getenv(intruction->arg[i]), j + 2);
+			if (putenv(value) == 0)
+				printf("Variable exported succesfully%s\n", value);
 			else
-				printf("error exporting the variale %s\n", intruction->arg[i]);
+				printf("error exporting the variale %s\n", value);
 		}
 		else
 		{
@@ -104,7 +112,11 @@ int cmd_export(t_instruct *intruction)
 			else
 				printf("error exporting the variale %s\n", intruction->arg[i]);
 			free_arrchar(aux);
+			value = ft_strdup(intruction->arg[i]);
 		}
+		intruction->header->env = actualize_env(intruction->header->env, value, 1);
+		if (!intruction->header->env)
+			return(-1);
 	}
 	return (1);
 }

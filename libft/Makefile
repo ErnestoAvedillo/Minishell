@@ -19,7 +19,7 @@ SRC := ft_isalpha ft_isalnum ft_isdigit ft_isascii ft_isprint \
 	  ft_strnstr ft_atoi ft_calloc ft_strdup ft_substr ft_strjoin ft_strtrim ft_split \
 	  ft_itoa ft_strmapi ft_striteri ft_putchar_fd ft_putstr_fd ft_putendl_fd ft_putnbr_fd \
 	  ft_max ft_min ft_abs ft_ispositive ft_issamesign ft_isodd ft_strsort_arr \
-	  ft_len_str_arr ft_cpy_str_arr
+	  ft_len_str_arr ft_cpy_str_arr ft_str_arr_add
 
 SRC_BONUS := ft_lstadd_back ft_lstadd_front ft_lstclear ft_lstdelone ft_lstiter \
 			ft_lstlast ft_lstmap ft_lstnew ft_lstsize
