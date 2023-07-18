@@ -35,7 +35,7 @@ char **ft_cpy_str_arr(char **str)
 	i = -1;
 	while (str[++i])
 	{
-		aux[i] = str[i];
+		aux[i] = ft_strdup(str[i]);
 	}
 	return (aux);
 }

@@ -21,6 +21,7 @@
 # include	<stdbool.h>
 # include	<unistd.h>
 # include	<sys/stat.h>
+# include	<sys/wait.h>
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
 # define ECHO_CMD	0
@@ -88,8 +89,10 @@ char		*get_env_value(char *name_env, char **env);
 char		*get_env_name(char *str);
 bool		is_char_in_str(char *str, char c);
 bool		is_oper(char *str);
-//print_var
-void		print_inst(t_instruct *intruction);
+char		*concat_env(char *name_var);
+
+// print_var
+void print_inst(t_instruct *intruction);
 //replace_env_var
 char		*replace_env_var(char *str);
 //actualize_env

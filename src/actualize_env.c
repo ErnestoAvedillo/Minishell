@@ -26,20 +26,23 @@ char	**actualize_env(char **env, char *str, int k)
 {
 	int		i;
 	char	**out;
+	char	*aux;
 
 	i = -1;
-	out = NULL;
+	out = ft_split(str, '=');
 	while (env[++i])
 	{
-		if(!ft_strncmp(env[i],str,0,ft_strlen(str)))
+		if (!ft_strncmp(env[i], out[0], 0, ft_strlen(out[0])))
 			break ;
 	}
-	if(k)
+	free_arrchar(out);
+	if (k)
 	{
 		if (i < ft_len_str_arr(env))
 		{
-			free (env[i]);
+			aux = env[i];
 			env[i] = str;
+			free(aux);
 			return (env);
 		}
 		else 

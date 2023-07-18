@@ -6,7 +6,7 @@
 /*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 20:02:21 by eavedill          #+#    #+#             */
-/*   Updated: 2023/06/22 20:02:23 by eavedill         ###   ########.fr       */
+/*   Updated: 2023/07/15 19:13:32 by frmurcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,29 @@ char	*get_pre_oper(char *str, int pos)
 	char *pre_oper;
 
 	pre_oper = NULL;
-	if (pos > 1)
-	{
-		if (!ft_strncmp(str,"<<",pos - 2, 2))
-			pre_oper = ft_strdup ("<<");
-		else if (!ft_strncmp(str,">>",pos - 2, 2))
-			pre_oper = ft_strdup (">>");
-		if(pre_oper != NULL)
-			return (pre_oper);
-	}
+//	printf("El pos es: %c\n", str[pos]);
 	if (pos > 0)
 	{
-		if (str[pos - 1] == '<')
-			pre_oper = ft_strdup ("<");
-		else if (str[pos - 1] == '<')
-			pre_oper = ft_strdup ("<");
-		else if (str[pos - 1] == '>')
-			pre_oper = ft_strdup (">");
-		else if (str[pos - 1] == '>')
-			pre_oper = ft_strdup (">");
+		if (str[pos] && (str[pos] == '<' || str[pos] == '<'))
+		{
+			if (ft_strncmp(str, "<<", pos -1, 2))
+				pre_oper = ft_strdup ("<<");
+			else if (ft_strncmp(str, ">>", pos -1, 2))
+				pre_oper = ft_strdup (">>");
+			if (pre_oper != NULL)
+				return (pre_oper);
+		}
+		else if (str[pos -1] == '<' || str[pos -1] == '<' || str[pos -1] == '|')
+		{
+			if (str[pos -1] == '<')
+				pre_oper = ft_strdup ("<");
+			else if (str[pos -1] == '>')
+				pre_oper = ft_strdup (">");
+			else if (str[pos -1] == '|')
+				pre_oper = ft_strdup ("|");
+//		else if (str[pos] == '>')
+//			pre_oper = ft_strdup (">");
+		}
 	}
 	return (pre_oper);
 }
@@ -61,9 +65,9 @@ char	*get_post_oper(char *str, int pos)
 	post_oper = NULL;
 	if (pos < (int)ft_strlen(str) - 2)
 	{
-		if (!ft_strncmp(str,"<<",pos + 2, 2))
+		if (ft_strncmp(str,"<<", pos, 2))
 			post_oper = ft_strdup ("<<");
-		else if (!ft_strncmp(str,">>",pos + 2, 2))
+		else if (ft_strncmp(str,">>", pos, 2))
 			post_oper = ft_strdup (">>");
 
 		if(post_oper != NULL)
@@ -71,11 +75,11 @@ char	*get_post_oper(char *str, int pos)
 	}
 	if (pos < (int)ft_strlen(str) - 1)
 	{
-		if (str[pos + 1] == '<')
+		if (str[pos] == '<')
 			post_oper = ft_strdup ("<");
-		else if (str[pos + 1] == '>')
+		else if (str[pos] == '>')
 			post_oper = ft_strdup (">");
-		else if (str[pos + 1] == '|')
+		else if (str[pos] == '|')
 			post_oper = ft_strdup ("|");
 	}
 	return (post_oper);
@@ -176,7 +180,7 @@ void	fill_instruct(t_instruct *inst, char *str, int start, int end)
 	inst->post_oper = get_post_oper(str,end);
 	ptr = ft_strchr(str, start, ' ');
 	if (ptr == NULL || end < (int)(ptr - str))
-		inst->instruc = ft_substr(str, start, end);
+		inst->instruc = ft_substr(str, start, end - start);
 	else
 		inst->instruc = ft_substr(str, start, (int)(ptr - str));
 	start += (int)(ptr - str);

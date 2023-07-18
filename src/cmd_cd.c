@@ -42,6 +42,8 @@ int cmd_cd(t_instruct *intruction)
 		free(dir);
 		dir = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir, 1);
+		dir = concat_env("PWD");
+		actualize_env(intruction->header->env, dir, 1);
 	}
 	return (1);
 }
