@@ -53,11 +53,11 @@ static size_t	ft_nextendpos(char const *str, size_t ini, char *c)
 
 	i = ini;
 	j = 0;
-	while (str[i] && str[i] != c[j])
+	while (str[i])
 	{
 		while (c[j])
 		{
-			if( str[i] == c[j] )
+			if(str[i] == c[j])
 				return (i);
 			j++;
 		}
@@ -88,11 +88,12 @@ t_instruct *tokenize(t_data *data)
 	while (start_pos <= (int)ft_strlen(data->command))
 	{
 		end_pos = ft_nextendpos(data->command, start_pos, "|><");
-		printf("variable Words %i - %i\n", start_pos, end_pos);
 		fill_instruct(instruct[0], data->command, start_pos, end_pos);
+		if ((data->command[end_pos] == '>' && data->command[end_pos + 1] == '>') || \
+			(data->command[end_pos] == '<' && data->command[end_pos + 1] == '<'))
+			end_pos++;
 		start_pos = end_pos + 1;
-		printf("variable Words %i - %i\n", start_pos, end_pos);
-		if (start_pos <= (int)ft_strlen(data->command))
+		if(start_pos <= (int)ft_strlen(data->command))
 		{
 			instruct[1] = init_instructions(data);
 			instruct[0]->next = instruct[1];
@@ -100,7 +101,6 @@ t_instruct *tokenize(t_data *data)
 			instruct[0] = instruct[1];
 		}
 	}
-	print_inst(first_inst);
-    return (first_inst);
+	return (first_inst);
 }
 

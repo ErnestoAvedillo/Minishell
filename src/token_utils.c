@@ -6,14 +6,15 @@
 /*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 20:02:21 by eavedill          #+#    #+#             */
-/*   Updated: 2023/07/15 19:13:32 by frmurcia         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:02:23 by eavedill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 /*
-*   Descriptinon:	returns the pre_operation of the instruction.
+*   Descriptinon:	returns the pre_operation of the instruction. 
+					NOTE: pos in the string should be at least 1 or 2 to have some operands. 
 *   Arguments:		char *str The variable where it is the instruction.
 *					int pos position where is starting the instruction
 *					int end where yhe instruction ends.
@@ -24,29 +25,25 @@ char	*get_pre_oper(char *str, int pos)
 	char *pre_oper;
 
 	pre_oper = NULL;
-//	printf("El pos es: %c\n", str[pos]);
+	if (pos > 1)
+	{
+		//if (!ft_strncmp(str,"<<",pos - 2, 2))
+		if (str[pos - 1] == '<' && str[pos - 2] == '<')
+			pre_oper = ft_strdup ("<<");
+		//else if (!ft_strncmp(str,">>",pos - 2, 2))
+		if (str[pos - 1] == '>' && str[pos - 2] == '>')
+			pre_oper = ft_strdup (">>");
+		if(pre_oper != NULL)
+			return (pre_oper);
+	}
 	if (pos > 0)
 	{
-		if (str[pos] && (str[pos] == '<' || str[pos] == '<'))
-		{
-			if (ft_strncmp(str, "<<", pos -1, 2))
-				pre_oper = ft_strdup ("<<");
-			else if (ft_strncmp(str, ">>", pos -1, 2))
-				pre_oper = ft_strdup (">>");
-			if (pre_oper != NULL)
-				return (pre_oper);
-		}
-		else if (str[pos -1] == '<' || str[pos -1] == '<' || str[pos -1] == '|')
-		{
-			if (str[pos -1] == '<')
-				pre_oper = ft_strdup ("<");
-			else if (str[pos -1] == '>')
-				pre_oper = ft_strdup (">");
-			else if (str[pos -1] == '|')
-				pre_oper = ft_strdup ("|");
-//		else if (str[pos] == '>')
-//			pre_oper = ft_strdup (">");
-		}
+		if (str[pos - 1] == '<')
+			pre_oper = ft_strdup ("<");
+		else if (str[pos - 1] == '>')
+			pre_oper = ft_strdup (">");
+		else if (str[pos - 1] == '|')
+			pre_oper = ft_strdup ("|");
 	}
 	return (pre_oper);
 }
@@ -65,9 +62,11 @@ char	*get_post_oper(char *str, int pos)
 	post_oper = NULL;
 	if (pos < (int)ft_strlen(str) - 2)
 	{
-		if (ft_strncmp(str,"<<", pos, 2))
+		//if (!ft_strncmp(str,"<<",pos + 2, 2))
+		if (str[pos] == '<' && str[pos + 1] == '<')
 			post_oper = ft_strdup ("<<");
-		else if (ft_strncmp(str,">>", pos, 2))
+		//else if (!ft_strncmp(str,">>",pos + 2, 2))
+		if (str[pos] == '>' && str[pos + 1] == '>')
 			post_oper = ft_strdup (">>");
 
 		if(post_oper != NULL)
@@ -176,15 +175,20 @@ void	fill_instruct(t_instruct *inst, char *str, int start, int end)
 	char *words;
 	char *ptr;
 
+	//printf("la variable str es %s -- %i -- %i\n",str, start, end);
 	inst->pre_oper = get_pre_oper(str,start);
 	inst->post_oper = get_post_oper(str,end);
+//	printf("la pre oper es %s -- %c%c el postoper es %s -- %c%c \n",inst->pre_oper,str[start - 1],str[start - 2],inst->post_oper,str[end],str[end + 1]);
+	while (str[start] && str[start] == ' ')
+		start ++;
 	ptr = ft_strchr(str, start, ' ');
 	if (ptr == NULL || end < (int)(ptr - str))
 		inst->instruc = ft_substr(str, start, end - start);
 	else
-		inst->instruc = ft_substr(str, start, (int)(ptr - str));
-	start += (int)(ptr - str);
-	words = ft_substr(str, start, end);
+		inst->instruc = ft_substr(str, start, (int)(ptr - str) - start);
+	start = (int)(ptr - str);
+	words = ft_substr(str, start, end - start);
+//	printf("la instruccion es %s los argumentos %s -- %i -- %i -- ptr %i\n",inst->instruc,words, start, end ,(int)(ptr - str));
 	if (words[0])
 	{
 		words = replace_env_var(words);

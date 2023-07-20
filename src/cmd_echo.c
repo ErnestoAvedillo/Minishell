@@ -19,7 +19,6 @@ int cmd_echo(t_instruct *intruction)
 
 	i = 0;
 	eol = true;
-	print_inst(intruction);
 	if (ft_strncmp(intruction->arg[i],"-n",0, 2) == 0)
 	{
 		eol = false;
