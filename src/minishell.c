@@ -20,11 +20,11 @@
 */
 //extern t_instruct	*instuctions;
 
-int main(int av, char **ac, char **environ, char ** environ)
+int main(int av, char **ac, char **environ)
 {
 	int		val;
 	t_data	*data;
-	t_instruct	*instuctions;
+	//t_instruct	*instuctions;
 
 	data = init_vars(environ);
 	add_signals(data);

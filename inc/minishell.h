@@ -60,7 +60,7 @@ typedef struct s_instruct
 } t_instruct;
 
 
-//extern t_instruct	*instuctions;
+extern t_instruct	*instructions;
 
 //init_vars
 t_data		*init_vars(char **env);
