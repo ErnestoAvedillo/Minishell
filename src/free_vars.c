@@ -22,6 +22,7 @@ void    free_vars(t_data *data)
 {
 	free_arrchar(data->cmd_list);
 	free_arrchar(data->oper_list);
+	free_arrchar(data->env);
 	free (data->functions_ptr);
 	if(data->command)
 	{
@@ -39,6 +40,8 @@ void	free_inst(t_instruct *first_instruction)
 	instructions =  first_instruction;
 	while(instructions)
 	{
+		free(instructions->pre_oper);
+		free(instructions->post_oper);
 		free(instructions->instruc);
 		instructions->instruc = NULL;
 		free_arrchar(instructions->arg);

@@ -20,7 +20,7 @@
 */
 //extern t_instruct	*instuctions;
 
-int main(int av, char **ac, char ** environ)
+int main(int av, char **ac, char **environ, char ** environ)
 {
 	int		val;
 	t_data	*data;

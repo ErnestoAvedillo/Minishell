@@ -17,18 +17,19 @@ int cmd_echo(t_instruct *intruction)
 	int i;
 	bool eol;
 
-	i = -1;
+	i = 0;
 	eol = true;
-	if (ft_strncmp(intruction->arg[++i],"-n",0, 2) == 0)
+	if (ft_strncmp(intruction->arg[i],"-n",0, 2) == 0)
 	{
 		eol = false;
-		i = 0;
+		i = 1;
 	}
-	while (intruction->arg[++i])
+	while (intruction->arg[i])
 	{
 		printf ("%s",intruction->arg[i]);
 		if (intruction->arg[i + 1])
 			printf(" ");
+		i++;
 	}
 	if (eol)
 		printf ("\n");

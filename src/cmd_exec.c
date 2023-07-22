@@ -37,6 +37,7 @@ char	*check_file_exists(t_instruct *intruction)
 			return (out);
 		out[0] = '\0';
 	}
+	free(out);
 	return (NULL);
 }
 
@@ -57,9 +58,12 @@ char	**add_dir_to_arg (char **arr, char *str)
 	out = (char **)	malloc( (i + 2) * sizeof(char*));
 	out[i + 1] = NULL;
 	out[0] = str;
-	i = 1;
+	i = 0;
 	while (arr && arr[i])
-		out [i] = arr[i - 1];
+	{
+		out [i + 1] = arr[i];
+		i++;
+	}
 	free (arr);
 	return (out);
 }
@@ -75,12 +79,14 @@ int cmd_exec(t_instruct *intruction)
 	char *out;
 	out = check_file_exists(intruction);
 	if(!out)
-		return (1);
+		return (0);
 	intruction->arg = add_dir_to_arg (intruction->arg, out);
-	if(execve(out, intruction->arg, intruction->header->env) == -1)
+	if (execve(intruction->arg[0], intruction->arg, NULL) == -1)
 	{
 		printf ("salgo con error\n");
+		free(out);
 		return (1);
 	}
+	free(out);
 	return (0);
 }

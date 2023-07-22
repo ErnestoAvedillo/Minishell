@@ -53,10 +53,12 @@ static size_t	ft_nextendpos(char const *str, size_t ini, char *c)
 
 	i = ini;
 	j = 0;
-	while (str[i] != c[j] && str[i])
+	while (str[i])
 	{
-		while (str[i] != c[j] && c[j])
+		while (c[j])
 		{
+			if(str[i] == c[j])
+				return (i);
 			j++;
 		}
 		i++;
@@ -87,6 +89,9 @@ t_instruct *tokenize(t_data *data)
 	{
 		end_pos = ft_nextendpos(data->command, start_pos, "|><");
 		fill_instruct(instruct[0], data->command, start_pos, end_pos);
+		if ((data->command[end_pos] == '>' && data->command[end_pos + 1] == '>') || \
+			(data->command[end_pos] == '<' && data->command[end_pos + 1] == '<'))
+			end_pos++;
 		start_pos = end_pos + 1;
 		if(start_pos <= (int)ft_strlen(data->command))
 		{
@@ -96,6 +101,6 @@ t_instruct *tokenize(t_data *data)
 			instruct[0] = instruct[1];
 		}
 	}
-    return (first_inst);
+	return (first_inst);
 }
 

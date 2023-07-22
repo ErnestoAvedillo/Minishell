@@ -12,7 +12,8 @@
 
 #ifndef MINISHELL_HEADER_H
 # define MINISHELL_HEADER_H
-# include   "../libft/libft.h"
+# include	"../libft/libft.h"
+# include	"colors.h"
 # include	<stdio.h>
 # include	<stdlib.h>
 # include	<readline/readline.h>
@@ -68,9 +69,9 @@ t_instruct	*init_instructions(t_data *data);
 //freevars
 void		free_vars(t_data *data);
 void		free_arrchar(char **arrchr);
-void        free_inst(t_instruct *first_instruction);
+void		free_inst(t_instruct *first_instruction);
 
-int         cmd_echo(t_instruct *intruction);
+int			cmd_echo(t_instruct *intruction);
 int			cmd_cd(t_instruct *intruction);
 int			cmd_env(t_instruct *intruction);
 int			cmd_exit(t_instruct *intruction);
@@ -78,31 +79,30 @@ int			cmd_export(t_instruct *intruction);
 int			cmd_pwd(t_instruct *intruction);
 int			cmd_unset(t_instruct *intruction);
 int			cmd_setenv(t_instruct *intruction);
-int         cmd_exec(t_instruct *intruction);
-
+int			cmd_exec(t_instruct *intruction);
+//Work_command
 int			work_command(t_instruct *first_inst);
-
 //check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_quotes
 bool		quotes_ok(char *str);
 //token_utils
 void		fill_instruct(t_instruct *inst, char *str, int start, int end);
-
 //tokenize
 t_instruct	*tokenize(t_data *data);
-
 //utils
 char		*get_env_value(char *name_env, char **env);
 char		*get_env_name(char *str);
 bool		is_char_in_str(char *str, char c);
 bool		is_oper(char *str);
+char		*concat_env(char *name_var);
 
-//print_var
-void        print_inst(t_instruct *intruction);
-
+// print_var
+void print_inst(t_instruct *intruction);
 //replace_env_var
-char *replace_env_var(char *str);
+char		*replace_env_var(char *str);
+//actualize_env
+char		**actualize_env(char **env, char *str, int k);
 
 //adm_signals
 int add_signals(t_data *header);

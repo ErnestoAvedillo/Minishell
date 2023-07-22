@@ -16,7 +16,7 @@
 *					int strt: Start position to compare.
 *					int length: of charachters to compare
 *   Returns:		0 if are identical
-*					1 if are different
+*					difference between first char not equal.
 */
 //int	ft_strncmp(char *s1, char *s2, unsigned int n)
 int	ft_strncmp(char *s1, char *s2, unsigned int strt, unsigned int n)

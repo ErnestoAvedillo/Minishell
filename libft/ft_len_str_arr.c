@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_max.c                                           :+:      :+:    :+:   */
+/*   ft_len_str_arr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/22 17:24:43 by eavedill          #+#    #+#             */
-/*   Updated: 2022/11/22 17:31:52 by eavedill         ###   ########.fr       */
+/*   Created: 2023/07/16 12:37:51 by eavedill          #+#    #+#             */
+/*   Updated: 2023/07/16 12:37:56 by eavedill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "libft.h"
 
-int ft_max(int a, int b)
+/**
+ *
+ * Description:		Returns he len of an array. Array miust finish with a NULL 
+ * element
+ *					
+ * Arguments:		char **str: array of strings.
+ *					
+ * Returns:			int: len of the array.
+ **/
+
+int	ft_len_str_arr(char **str)
 {
-	if (a > b)
-		return (a);
-	return (b);
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

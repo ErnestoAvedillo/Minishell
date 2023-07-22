@@ -105,3 +105,29 @@ bool is_oper(char *str)
 			return (true);
 	return (false);
 }
+
+/**
+ *
+ * Description:		Concatenates the variable with it's value and the character equal
+ *					
+ * Arguments:		char *str: Name of the variable
+ *					
+ * Returns:			char *str: The resultant string. NULL If the variable does not exists.
+ **/
+char	*concat_env(char *name_var)
+{
+	char	*value;
+	char 	*out;
+	size_t	i;
+
+	value = getenv(name_var);
+	if(!value)
+		return (NULL);
+	i = ft_strlen(name_var) + ft_strlen(value) + 2;
+	out = (char *)malloc(i * sizeof(char));
+	out[0] = '\0';
+	ft_strlcat(out, name_var, i);
+	ft_strlcat(out, "=", i);
+	ft_strlcat(out, value, i);
+	return (out);
+}
