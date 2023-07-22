@@ -19,7 +19,9 @@
 # include	<readline/history.h>
 # include   <stdbool.h>
 # include   <unistd.h>
-# include <sys/stat.h>
+# include	<sys/stat.h>
+# include	<termios.h>
+# include	<signal.h>
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
 # define ECHO_CMD	0
@@ -34,25 +36,30 @@
 
 typedef struct s_data
 {
-    char        *command;
-    char        **splited_cmd;
-    char        **env;
-    char        **cmd_list;
-    char        **oper_list;
-    void        **functions_ptr;
+	char			*command;
+	char			**splited_cmd;
+	char			**env;
+	char			**cmd_list;
+	char			**oper_list;
+	void			**functions_ptr;
+	struct termios	term;
 } t_data;
 
 typedef struct s_instruct
 {
-    char    *pre_oper;
-    char    *post_oper;
-    char    *instruc;
-	char	**arg;
-    char    **out;
-	t_data	*header;
-    void    *next;
-    void    *prev;
+	char			*pre_oper;
+	char			*post_oper;
+	char			*instruc;
+	char			**arg;
+	char			**out;
+	t_data			*header;
+	void			*next;
+	void			*prev;
+	int				signal;
 } t_instruct;
+
+
+//extern t_instruct	*instuctions;
 
 //init_vars
 t_data		*init_vars(char **env);
@@ -96,5 +103,9 @@ void        print_inst(t_instruct *intruction);
 
 //replace_env_var
 char *replace_env_var(char *str);
+
+//adm_signals
+int add_signals(t_data *header);
+
 
 # endif

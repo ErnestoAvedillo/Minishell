@@ -18,18 +18,20 @@
 *		int main (int av, char **ac, char **env)
 *	in this case the variable env does not remains updated.
 */
-extern char** environ;
+//extern t_instruct	*instuctions;
 
-int main(int av, char **ac)
+int main(int av, char **ac, char ** environ)
 {
 	int		val;
 	t_data	*data;
 	t_instruct	*instuctions;
 
 	data = init_vars(environ);
+	add_signals(data);
 	while (1)
 	{
 		data->command = readline("Enter a command Minishell>");
+		printf("el comando es: %s", data->command);
 		add_history(data->command);
 		while(check_cmd_line(data)== 0)
 			readline(">");

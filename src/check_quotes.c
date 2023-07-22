@@ -32,6 +32,8 @@ bool	quotes_ok(char *str)
 	c = 0;
 	quote = '\0';
 	quoted_off = true;
+	if (!str)
+		return (true);
 	while (str[c])
 	{
 		if (is_quote(str[c]) && quoted_off)
