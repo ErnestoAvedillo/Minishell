@@ -18,38 +18,45 @@
 *		int main (int av, char **ac, char **env)
 *	in this case the variable env does not remains updated.
 */
-//extern t_instruct	*instuctions;
+t_instruct *first_instruct;
 
 int main(int av, char **ac, char **environ)
 {
 	int		val;
-	t_data	*data;
-	//t_instruct	*instuctions;
+	char	*add_line;
+	t_data *data;
 
 	data = init_vars(environ);
 	add_signals(data);
 	while (1)
 	{
-		data->command = readline("Enter a command Minishell>");
-		printf("el comando es: %s", data->command);
-		add_history(data->command);
+		while (!data->command || data->command[0] == 0)
+		{
+			data->command = readline("Enter a command Minishell>");
+		}
 		while(check_cmd_line(data)== 0)
-			readline(">");
-		instuctions = tokenize(data);
+		{
+			add_line = readline(">");
+			val = ft_strlen(data->command) + ft_strlen(add_line) + 1;
+			data->command = concat_cmd(data->command, add_line);
+		}
+		add_history(data->command);
+		first_instruct = tokenize(data);
 		//data->splited_cmd = ft_split(data->command, ' ');
-		if (!instuctions)
+		if (!first_instruct)
 		{
 			printf("Memory alloc. error\n");
 			val = 1;
 		}
 		else
-			val = work_command(instuctions);
+			val = work_command(first_instruct);
 		if (val == 0)
 			printf("Command not found.\n");
 		else if (val == -1)
 			break ;
 		free(data->command);
-		free_inst(instuctions);
+		data->command = NULL;
+		free_inst(first_instruct);
 	}
 	free_vars(data);
 	printf("Goodbye!\n");

@@ -14,7 +14,7 @@
 
 void 	hndl_ctrl_c(int signal)
 {
-	printf (" he marcado el Ctr-C %i\n", signal);
+	printf ("^C %i\n", signal);
 	exit(0);
 }
 void 	hndl_ctrl_d(int signal)

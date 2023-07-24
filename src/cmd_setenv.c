@@ -34,20 +34,20 @@ bool is_more_than_1(char *str)
 
 /*
  *   Descriptinon:	Sets the variable to the designated value.
- *   Arguments:		t_instruct *intruction The structure where to find  instruction and arguments..
+ *   Arguments:		t_instruct *instruct The structure where to find  instruction and arguments..
  *   Returns:		1 .
  */
-int cmd_setenv(t_instruct *intruction)
+int cmd_setenv(t_instruct *instruct)
 {
 	int		i;
 	char **str;
 
-	if (is_more_than_1(intruction->instruc))
+	if (is_more_than_1(instruct->instruc))
 	{
 		printf("Command not found.\n");
 		return (1);
 	}
-	str = ft_split(intruction->instruc, '=');
+	str = ft_split(instruct->instruc, '=');
 	i = -1;
 	while (str)
 	{
@@ -61,15 +61,15 @@ int cmd_setenv(t_instruct *intruction)
 		}
 		i++;
 		free_arrchar(str);
-		if (!intruction->arg || !intruction->arg[i])
+		if (!instruct->arg || !instruct->arg[i])
 			return (1);
-		if (!is_char_in_str(intruction->arg[i], '=') || is_more_than_1(intruction->arg[i]))
+		if (!is_char_in_str(instruct->arg[i], '=') || is_more_than_1(instruct->arg[i]))
 		{
 			printf("Command not found.\n");
 			return (1);
 		}
-		if(intruction->arg[i])
-			str = ft_split(intruction->arg[i], '=');
+		if(instruct->arg[i])
+			str = ft_split(instruct->arg[i], '=');
 	}
 	return (1);
 }

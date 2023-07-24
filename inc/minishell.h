@@ -21,6 +21,7 @@
 # include   <stdbool.h>
 # include   <unistd.h>
 # include	<sys/stat.h>
+#include	<sys/wait.h>
 # include	<termios.h>
 # include	<signal.h>
 //list of all accepted commands.
@@ -59,9 +60,6 @@ typedef struct s_instruct
 	int				signal;
 } t_instruct;
 
-
-extern t_instruct	*instructions;
-
 //init_vars
 t_data		*init_vars(char **env);
 t_instruct	*init_instructions(t_data *data);
@@ -69,19 +67,19 @@ t_instruct	*init_instructions(t_data *data);
 //freevars
 void		free_vars(t_data *data);
 void		free_arrchar(char **arrchr);
-void		free_inst(t_instruct *first_instruction);
+void		free_inst();
 
-int			cmd_echo(t_instruct *intruction);
-int			cmd_cd(t_instruct *intruction);
-int			cmd_env(t_instruct *intruction);
-int			cmd_exit(t_instruct *intruction);
-int			cmd_export(t_instruct *intruction);
-int			cmd_pwd(t_instruct *intruction);
-int			cmd_unset(t_instruct *intruction);
-int			cmd_setenv(t_instruct *intruction);
-int			cmd_exec(t_instruct *intruction);
+int			cmd_echo(t_instruct *instruct);
+int			cmd_cd(t_instruct *instruct);
+int			cmd_env(t_instruct *instruct);
+int			cmd_exit(t_instruct *instruct);
+int			cmd_export(t_instruct *instruct);
+int			cmd_pwd(t_instruct *instruct);
+int			cmd_unset(t_instruct *instruct);
+int			cmd_setenv(t_instruct *instruct);
+int			cmd_exec(t_instruct *instruct);
 //Work_command
-int			work_command(t_instruct *first_inst);
+int			work_command();
 //check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_quotes
@@ -96,16 +94,15 @@ char		*get_env_name(char *str);
 bool		is_char_in_str(char *str, char c);
 bool		is_oper(char *str);
 char		*concat_env(char *name_var);
-
 // print_var
-void print_inst(t_instruct *intruction);
+void print_inst(t_instruct *instruct);
 //replace_env_var
 char		*replace_env_var(char *str);
 //actualize_env
 char		**actualize_env(char **env, char *str, int k);
-
 //adm_signals
 int add_signals(t_data *header);
-
+//concat_cmd
+char *concat_cmd(char *str1, char *str2);
 
 # endif

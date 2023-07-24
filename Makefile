@@ -2,7 +2,8 @@ NAME = minishell
 
 SRC = $(NAME) cmd_echo cmd_cd cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init_vars \
 	free_vars utils work_command split_inst cmd_setenv check_cmd_line check_quotes \
-	tokenize token_utils print_var replace_env_var cmd_exec adm_signal  #añadir nombres de ficheros.c  aqui
+	tokenize token_utils print_var replace_env_var cmd_exec adm_signal actualize_env \
+	concat_cmd #añadir nombres de ficheros.c  aqui
 
 INC = $(NAME) #añadir nombres de ficheros.h  aqui
 
@@ -31,10 +32,10 @@ RM := rm -rfd
 
 SANIT = -libsan
 
-all: $(LIBFT) $(NAME) 
+all: $(LIBFT) $(NAME)
 
 linux: SANIT = -libasan
-linux: $(LIBFT) $(NAME) 
+linux:  all
 
 -include $(DSTS)
 
@@ -65,6 +66,8 @@ fclean: clean
 
 re: fclean all
 
+linux_re:   fclean linux
+
 print:
 	@echo INCLUDE: $(INCLUDE)
 	@echo NAME: $(NAME)
@@ -77,4 +80,4 @@ print:
 	@echo DIRLIBFT: $(DIR_LIBFT)
 	@echo LIBFT: $(LIBFT)
 
-.PHONY: all re clean fclean print libft
+.PHONY: all re clean fclean print libft $(LIBFT) linux linux_re

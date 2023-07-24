@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-int cmd_cd()
+int cmd_cd(t_instruct *instruct)
 {
 	char	*dir;
 	int		len_dir;
@@ -20,17 +20,17 @@ int cmd_cd()
 
 	dir = (char *) malloc(1024 * sizeof(char));
 	dir [0] = '\0';
-	if (instructions->arg != NULL && instructions->arg[0] != NULL)
-		len_dir =ft_strlen(instructions->arg[0]);
-	if(!instructions->arg || instructions->arg[0] == NULL )
+	if (instruct->arg != NULL && instruct->arg[0] != NULL)
+		len_dir =ft_strlen(instruct->arg[0]);
+	if(!instruct->arg || instruct->arg[0] == NULL )
 		ft_strlcpy(dir, getenv("HOME"), 1024);
-	else if (instructions->arg[0][0] == '~')
+	else if (instruct->arg[0][0] == '~')
 	{
 		ft_strlcat(dir,getenv("HOME"), 1024);
-		ft_strlcat(dir,ft_substr(instructions->arg[0],1,len_dir),1024);
+		ft_strlcat(dir,ft_substr(instruct->arg[0],1,len_dir),1024);
 	}
 	else
-		ft_strlcat(dir,ft_substr(instructions->arg[0],0,len_dir),1024);
+		ft_strlcat(dir,ft_substr(instruct->arg[0],0,len_dir),1024);
 	if (chdir(dir) == -1)
 	{
 		printf("bash: cd: %s: No such file or directory .\n", dir);
@@ -43,7 +43,7 @@ int cmd_cd()
 		dir = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir, 1);
 		dir = concat_env("PWD");
-		actualize_env(instructions->header->env, dir, 1);
+		actualize_env(instruct->header->env, dir, 1);
 	}
 	return (1);
 }

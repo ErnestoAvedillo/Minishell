@@ -14,10 +14,10 @@
 
 /*
 *	execute a given command..
-*	Argument: 	t_instruct *intruction; structure with the command and arguments.
+*	Argument: 	t_instruct *instruct; structure with the command and arguments.
 *	Returns: none
 */
-char	*check_file_exists(t_instruct *intruction)
+char	*check_file_exists(t_instruct *instruct)
 {
 	int		i;
 	char	**path_arr;
@@ -32,11 +32,12 @@ char	*check_file_exists(t_instruct *intruction)
 	{
 		ft_strlcat(out,path_arr[i],1024);
 		ft_strlcat(out,"/",1024);
-		ft_strlcat(out,intruction->instruc,1024);
+		ft_strlcat(out,instruct->instruc,1024);
 		if(lstat(out,&fileStat) == 0)
 			return (out);
 		out[0] = '\0';
 	}
+	free_arrchar(path_arr);
 	free(out);
 	return (NULL);
 }
@@ -70,18 +71,18 @@ char	**add_dir_to_arg (char **arr, char *str)
 
 /*
 *	Description:	execute a given command..
-*	Argument: 		t_instruct *intruction; structure with the command and arguments.
+*	Argument: 		t_instruct *instruct; structure with the command and arguments.
 *	Returns: 		integger : 	0 success 
 *								1, error
 */
-int cmd_exec(t_instruct *intruction)
+int cmd_exec(t_instruct *instruct)
 {
 	char *out;
-	out = check_file_exists(intruction);
+	out = check_file_exists(instruct);
 	if(!out)
 		return (0);
-	intruction->arg = add_dir_to_arg (intruction->arg, out);
-	if (execve(intruction->arg[0], intruction->arg, NULL) == -1)
+	instruct->arg = add_dir_to_arg (instruct->arg, out);
+	if (execve(instruct->arg[0], instruct->arg, NULL) == -1)
 	{
 		printf ("salgo con error\n");
 		free(out);

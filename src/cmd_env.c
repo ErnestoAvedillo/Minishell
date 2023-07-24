@@ -12,15 +12,15 @@
 
 #include "../inc/minishell.h"
 
-int cmd_env(t_instruct *intruction)
+int cmd_env(t_instruct *instruct)
 {   
 	char buffer[1024];
 	char *curdir;
 	char **ptr;
 
-	if(intruction->arg != NULL) 
+	if(instruct->arg != NULL) 
 	{
-		if(!ft_strncmp(intruction->arg[0], "PWD", 0, 3))
+		if(!ft_strncmp(instruct->arg[0], "PWD", 0, 3))
 		{
 			curdir = getcwd(buffer, sizeof(buffer));
 			printf("%s\n", curdir);
@@ -29,7 +29,7 @@ int cmd_env(t_instruct *intruction)
 			printf("Too many arguments env.\n");
 		return (1);
 	}
-	ptr = intruction->header->env;
+	ptr = instruct->header->env;
 	while (*ptr != NULL)
 	{
 		printf("%s\n",*ptr);

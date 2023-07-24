@@ -12,22 +12,22 @@
 
 #include "../inc/minishell.h"
 
-int cmd_echo(t_instruct *intruction)
+int cmd_echo(t_instruct *instruct)
 {
 	int i;
 	bool eol;
 
 	i = 0;
 	eol = true;
-	if (ft_strncmp(intruction->arg[i],"-n",0, 2) == 0)
+	if (ft_strncmp(instruct->arg[i],"-n",0, 2) == 0)
 	{
 		eol = false;
 		i = 1;
 	}
-	while (intruction->arg[i])
+	while (instruct->arg[i])
 	{
-		printf ("%s",intruction->arg[i]);
-		if (intruction->arg[i + 1])
+		printf ("%s",instruct->arg[i]);
+		if (instruct->arg[i + 1])
 			printf(" ");
 		i++;
 	}

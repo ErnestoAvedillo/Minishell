@@ -32,6 +32,7 @@ t_data  *init_vars(char **env)
     data->cmd_list = ft_split(COMMANDS, ' ');
     data->oper_list = ft_split(OPERANDS, ' ');
     data->env = ft_cpy_str_arr(env);
+    data->command = NULL;
     set_func_list(data);
     return (data);
 }

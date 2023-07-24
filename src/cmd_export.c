@@ -59,38 +59,38 @@ void	print_env_sorted(char **env)
  *
  * Description:		Sets the variable to the designated value.
  *
- * Arguments:		t_instruct *intruction The structure where to find  instruction and arguments..
+ * Arguments:		t_instruct *instruct The structure where to find  instruction and arguments..
  *
  * Returns:			Integer with 1 in case there is not an error. 0 in case of error.
  **/
-int cmd_export(t_instruct *intruction)
+int cmd_export(t_instruct *instruct)
 {
 	int		i;
 	size_t j;
 	char	**aux;
 	char	*value;
 
-	if (!check_args(intruction->header->command))
+	if (!check_args(instruct->header->command))
 	{
 		printf("Minishell: export: `=': not a valid identifier");
 		return (0);
 	}
 	i = -1;
-	if (!intruction->arg || !intruction->arg[0])
+	if (!instruct->arg || !instruct->arg[0])
 	{
-		print_env_sorted(intruction->header->env);
+		print_env_sorted(instruct->header->env);
 		return (1);
 	}
-	while (intruction->arg[++i])
+	while (instruct->arg[++i])
 	{
-		if (ft_strchr(intruction->arg[i], 0, '=') == NULL )
+		if (ft_strchr(instruct->arg[i], 0, '=') == NULL )
 		{
-			j = ft_strlen(intruction->arg[i]) + ft_strlen(getenv(intruction->arg[i]));
+			j = ft_strlen(instruct->arg[i]) + ft_strlen(getenv(instruct->arg[i]));
 			value = (char *)malloc((j + 2) * sizeof(char));
 			value[0] = '\0';
-			ft_strlcat(value, intruction->arg[i], j + 2);
+			ft_strlcat(value, instruct->arg[i], j + 2);
 			ft_strlcat(value, "=", j + 2);
-			ft_strlcat(value, getenv(intruction->arg[i]), j + 2);
+			ft_strlcat(value, getenv(instruct->arg[i]), j + 2);
 			if (putenv(value) == 0)
 				printf("Variable exported succesfully%s\n", value);
 			else
@@ -98,7 +98,7 @@ int cmd_export(t_instruct *intruction)
 		}
 		else
 		{
-			aux = ft_split(intruction->arg[i], '=');
+			aux = ft_split(instruct->arg[i], '=');
 			if (setenv(aux[0], aux[1], 1) == 0)
 			{
 				printf("Variable %s set succesfully with %s\n", aux[0], aux[1]);
@@ -107,15 +107,15 @@ int cmd_export(t_instruct *intruction)
 			{
 				printf("Variable %s failed to set with %s\n", aux[0], aux[1]);
 			}
-			if (putenv(intruction->arg[i]) == 0)
-				printf("Variable exported succesfully%s\n", intruction->arg[i]);
+			if (putenv(instruct->arg[i]) == 0)
+				printf("Variable exported succesfully%s\n", instruct->arg[i]);
 			else
-				printf("error exporting the variale %s\n", intruction->arg[i]);
+				printf("error exporting the variale %s\n", instruct->arg[i]);
 			free_arrchar(aux);
-			value = ft_strdup(intruction->arg[i]);
+			value = ft_strdup(instruct->arg[i]);
 		}
-		intruction->header->env = actualize_env(intruction->header->env, value, 1);
-		if (!intruction->header->env)
+		instruct->header->env = actualize_env(instruct->header->env, value, 1);
+		if (!instruct->header->env)
 			return(-1);
 	}
 	return (1);

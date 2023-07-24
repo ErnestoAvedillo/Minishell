@@ -12,12 +12,12 @@
 
 #include "../inc/minishell.h"
 
-void print_inst(t_instruct *intruction)
+void print_inst(t_instruct *instructions)
 {
 	t_instruct	*inst;
 	int 		i;
 
-	inst = intruction;
+	inst = instructions;
 	while (inst)
 	{
 		printf ("pre_oper %s\n", inst->pre_oper);

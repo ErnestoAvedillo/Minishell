@@ -12,9 +12,9 @@
 
 #include "../inc/minishell.h"
 
-int cmd_exit(t_instruct *intruction)
+int cmd_exit(t_instruct *instruct)
 {
     printf ("Gracias por usar minishell\n");
     return (-1);
-    (void) intruction;
+    (void) instruct;
 }

@@ -12,7 +12,9 @@
 
 #include "../inc/minishell.h"
 
-int    work_command(t_instruct *first_inst)
+extern t_instruct *first_instruct;
+
+int    work_command()
 {
 	int		i;
 	int		out;
@@ -23,14 +25,14 @@ int    work_command(t_instruct *first_inst)
 	out = 1;
 	i = -1;
 	while (++i <= EXIT_CMD)
-		if (first_inst->instruc && !ft_strncmp(first_inst->instruc, first_inst->header->cmd_list[i], 0, ft_strlen(first_inst->instruc)))
+		if (first_instruct->instruc && !ft_strncmp(first_instruct->instruc, first_instruct->header->cmd_list[i], 0, ft_strlen(first_instruct->instruc)))
 		{
-			out = ((int (*)(t_instruct *))((void **)first_inst->header->functions_ptr)[i])(first_inst);
+			out = ((int (*)(t_instruct *))((void **)first_instruct->header->functions_ptr)[i])(first_instruct);
 			return (out);
 		}
-	if (is_char_in_str(first_inst->instruc, '='))
+	if (is_char_in_str(first_instruct->instruc, '='))
 	{
-		out = cmd_setenv(first_inst);
+		out = cmd_setenv(first_instruct);
 		return (out); 
 	}
 	pid = fork();
@@ -40,7 +42,7 @@ int    work_command(t_instruct *first_inst)
 		return (-1);
 	}
 	else if (pid == 0)
-		out = cmd_exec(first_inst);
+		out = cmd_exec(first_instruct);
 	// Parent process
 	wait(&status); // Wait for the child process to finish
 

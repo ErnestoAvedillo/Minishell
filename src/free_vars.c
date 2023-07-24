@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_vars.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/23 20:27:38 by eavedill          #+#    #+#             */
+/*   Updated: 2023/07/23 20:27:40 by eavedill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+extern t_instruct *first_instruct;
 
 void	free_arrchar(char **arrchr)
 {
@@ -33,20 +46,20 @@ void    free_vars(t_data *data)
 	data = NULL;
 }
 
-void	free_inst(t_instruct *first_instruction)
+void	free_inst()
 {
-	t_instruct *instructions;
+	t_instruct *instruct;
 
-	instructions =  first_instruction;
-	while(instructions)
+	instruct =  first_instruct;
+	while(instruct)
 	{
-		free(instructions->pre_oper);
-		free(instructions->post_oper);
-		free(instructions->instruc);
-		instructions->instruc = NULL;
-		free_arrchar(instructions->arg);
-		first_instruction = instructions->next;
-		free(instructions);
-		instructions = first_instruction;
+		free(instruct->pre_oper);
+		free(instruct->post_oper);
+		free(instruct->instruc);
+		instruct->instruc = NULL;
+		free_arrchar(instruct->arg);
+		first_instruct = instruct->next;
+		free(instruct);
+		instruct = first_instruct;
 	}
 }
