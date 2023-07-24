@@ -12,7 +12,15 @@
 
 #include"libft.h"
 
-int ft_min(int a, int b)
+/**
+ *
+ * Description:		Returns the minimum value of 2 lintegers.
+ *					
+ * Arguments:		int, int
+ *					
+ * Returns:			int. With the minimum value of both arguments.
+ **/
+int	ft_min(int a, int b)
 {
 	if (a < b)
 		return (a);

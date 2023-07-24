@@ -21,10 +21,9 @@
  *					
  * Returns:			int: len of the array.
  **/
-
 int	ft_len_str_arr(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])

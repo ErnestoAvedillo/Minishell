@@ -20,13 +20,13 @@
  *					
  * Returns:			char **. Creates a new array using malloc.
  **/
-char **ft_cpy_str_arr(char **str)
+char	**ft_cpy_str_arr(char **str)
 {
-	int i;
-	char **aux;
+	int		i;
+	char	**aux;
 
 	if (!str)
-		return(NULL);
+		return (NULL);
 	i = ft_len_str_arr(str);
 	aux = (char **)malloc((i + 1) * sizeof(char *));
 	if (!aux)

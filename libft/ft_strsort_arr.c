@@ -23,34 +23,31 @@
  * Returns:			char ** : sorted array
  *
  **/
-char **ft_strsort_arr(char **str, int sense)
+char	**ft_strsort_arr(char **str, int sense)
 {
-	int 	i;
-	int 	val;
+	int		i;
+	int		val;
 	char	*aux;
-	int		maxlen;
 
 	i = 0;
 	while (str[++i])
 	{
-		maxlen = ft_max(ft_strlen(str[i]), ft_strlen(str[i - 1]));
-		val = ft_strncmp(str[i], str[i - 1], 0, maxlen);
-		if (sense == 0)
-			if (val > 0)
-			{
-				aux = str[i];
-				str[i] = str[i - 1];
-				str[i - 1] = aux;
-				i = 0;
-			}
-		if (sense == 1)
-			if (val < 0)
-			{
-				aux = str[i];
-				str[i] = str[i - 1];
-				str[i - 1] = aux;
-				i = 0;
-			}
+		val = ft_max(ft_strlen(str[i]), ft_strlen(str[i - 1]));
+		val = ft_strncmp(str[i], str[i - 1], 0, val);
+		if (sense == 0 && val > 0)
+		{
+			aux = str[i];
+			str[i] = str[i - 1];
+			str[i - 1] = aux;
+			i = 0;
+		}
+		if (sense == 1 && val < 0)
+		{
+			aux = str[i];
+			str[i] = str[i - 1];
+			str[i - 1] = aux;
+			i = 0;
+		}
 	}
 	return (str);
 }

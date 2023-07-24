@@ -12,7 +12,15 @@
 
 #include"libft.h"
 
-int ft_max(int a, int b)
+/**
+ *
+ * Description:		Returns the max value of 2 integers.
+ *					
+ * Arguments:		int, int
+ *					
+ * Returns:			int: The max vaue of both arguments
+ **/
+int	t_max(int a, int b)
 {
 	if (a > b)
 		return (a);

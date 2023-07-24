@@ -25,9 +25,10 @@ char	**ft_str_arr_add(char **arr, char *str)
 {
 	int		i;
 	char	**out;
+
 	i = ft_len_str_arr(arr);
 	out = (char **)malloc((i + 2) * sizeof(char *));
-	if(!out)
+	if (!out)
 		return (NULL);
 	i = -1;
 	while (arr[++i])
