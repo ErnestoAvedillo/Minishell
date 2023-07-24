@@ -45,12 +45,9 @@ char	**actualize_env(char **env, char *str, int k)
 			free(aux);
 			return (env);
 		}
-		else 
+		else
 			out = ft_str_arr_add(env, str);
 	}
-	//	else
-	//		out = ft_str_arr_rem(env, i);
-
 	if (!out)
 		printf("Error allocating a new env variable.\n");
 	return (out);

@@ -12,10 +12,10 @@
 
 #include "../inc/minishell.h"
 
-void print_inst(t_instruct *instructions)
+void	print_inst(t_instruct *instructions)
 {
 	t_instruct	*inst;
-	int 		i;
+	int			i;
 
 	inst = instructions;
 	while (inst)
@@ -25,9 +25,9 @@ void print_inst(t_instruct *instructions)
 		printf ("comando %s\n", inst->instruc);
 		i = 0;
 		if (inst->arg != NULL)
-			while(inst->arg[i])
+			while (inst->arg[i])
 			{
-				printf (" argumento %i, vale %s\n", i , inst->arg[i]);
+				printf (" argumento %i, vale %s\n", i, inst->arg[i]);
 				i++;
 			}
 		inst = inst->next;

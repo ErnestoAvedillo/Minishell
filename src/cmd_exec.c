@@ -19,21 +19,21 @@
 */
 char	*check_file_exists(t_instruct *instruct)
 {
-	int		i;
-	char	**path_arr;
-	char	*out;
-	struct	stat fileStat;
+	int			i;
+	char		**path_arr;
+	char		*out;
+	struct stat	file_stat;
 
-	out = (char*) malloc(1024 * sizeof(char));
+	out = (char *) malloc(1024 * sizeof(char));
 	out[0] = '\0';
-	path_arr =  ft_split(getenv("PATH"), ':');
+	path_arr = ft_split(getenv("PATH"), ':');
 	i = -1;
-	while(path_arr && path_arr[++i])
+	while (path_arr && path_arr[++i])
 	{
-		ft_strlcat(out,path_arr[i],1024);
-		ft_strlcat(out,"/",1024);
-		ft_strlcat(out,instruct->instruc,1024);
-		if(lstat(out,&fileStat) == 0)
+		ft_strlcat(out, path_arr[i], 1024);
+		ft_strlcat(out, "/", 1024);
+		ft_strlcat(out, instruct->instruc, 1024);
+		if (lstat(out, &file_stat) == 0)
 			return (out);
 		out[0] = '\0';
 	}
@@ -48,7 +48,7 @@ char	*check_file_exists(t_instruct *instruct)
 *					char *str --> adding str
 *	Returns: 		resultant array
 */
-char	**add_dir_to_arg (char **arr, char *str)
+char	**add_dir_to_arg(char **arr, char *str)
 {
 	int		i;
 	char	**out;
@@ -56,7 +56,7 @@ char	**add_dir_to_arg (char **arr, char *str)
 	i = 0;
 	while (arr && arr[i])
 		i++;
-	out = (char **)	malloc( (i + 2) * sizeof(char*));
+	out = (char **) malloc((i + 2) * sizeof(char *));
 	out[i + 1] = NULL;
 	out[0] = str;
 	i = 0;
@@ -75,11 +75,12 @@ char	**add_dir_to_arg (char **arr, char *str)
 *	Returns: 		integger : 	0 success 
 *								1, error
 */
-int cmd_exec(t_instruct *instruct)
+int	cmd_exec(t_instruct *instruct)
 {
-	char *out;
+	char	*out;
+
 	out = check_file_exists(instruct);
-	if(!out)
+	if (!out)
 		return (0);
 	instruct->arg = add_dir_to_arg (instruct->arg, out);
 	if (execve(instruct->arg[0], instruct->arg, NULL) == -1)

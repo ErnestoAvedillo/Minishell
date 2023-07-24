@@ -12,22 +12,22 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct *first_instruct;
+extern t_instruct	*first_instruct;
 
-int    work_command()
+int	work_command(void)
 {
 	int		i;
 	int		out;
 	pid_t	pid;
 	int		status;
 
-
 	out = 1;
 	i = -1;
 	while (++i <= EXIT_CMD)
 		if (first_instruct->instruc && !ft_strncmp(first_instruct->instruc, first_instruct->header->cmd_list[i], 0, ft_strlen(first_instruct->instruc)))
 		{
-			out = ((int (*)(t_instruct *))((void **)first_instruct->header->functions_ptr)[i])(first_instruct);
+			out = ((int (*)(t_instruct *)) \
+				((void **)first_instruct->header->functions_ptr)[i])(first_instruct);
 			return (out);
 		}
 	if (is_char_in_str(first_instruct->instruc, '='))
@@ -43,7 +43,6 @@ int    work_command()
 	}
 	else if (pid == 0)
 		out = cmd_exec(first_instruct);
-	// Parent process
 	wait(&status); // Wait for the child process to finish
 
 	if (WIFEXITED(status)) {

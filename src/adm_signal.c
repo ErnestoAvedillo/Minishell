@@ -12,23 +12,25 @@
 
 #include "../inc/minishell.h"
 
-void 	hndl_ctrl_c(int signal)
+void	hndl_ctrl_c(int signal)
 {
 	printf ("^C %i\n", signal);
 	exit(0);
 }
-void 	hndl_ctrl_d(int signal)
+
+void	hndl_ctrl_d(int signal)
 {
 	printf (" he marcado el Ctr-d %i\n", signal);
 	exit(0);
 }
-void 	hndl_ctrl_barra(int signal)
+
+void	hndl_ctrl_barra(int signal)
 {
 	printf (" he marcado el Ctr-\\ %i\n", signal);
 	exit(0);
 }
 
-int add_signals(t_data *header)
+int	add_signals(t_data *header)
 {
 	if (tcgetattr(STDIN_FILENO, &header->term) == -1)
 		return (-1);

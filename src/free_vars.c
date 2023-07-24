@@ -12,13 +12,13 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct *first_instruct;
+extern t_instruct	*first_instruct;
 
 void	free_arrchar(char **arrchr)
 {
 	int	i;
 
-	if(arrchr)
+	if (arrchr)
 	{
 		i = -1;
 		while (arrchr[++i])
@@ -31,13 +31,13 @@ void	free_arrchar(char **arrchr)
 	}
 }
 
-void    free_vars(t_data *data)
+void	free_vars(t_data *data)
 {
 	free_arrchar(data->cmd_list);
 	free_arrchar(data->oper_list);
 	free_arrchar(data->env);
 	free (data->functions_ptr);
-	if(data->command)
+	if (data->command)
 	{
 		free(data->command);
 		data->command = NULL;
@@ -46,12 +46,12 @@ void    free_vars(t_data *data)
 	data = NULL;
 }
 
-void	free_inst()
+void	free_inst(void)
 {
-	t_instruct *instruct;
+	t_instruct	*instruct;
 
-	instruct =  first_instruct;
-	while(instruct)
+	instruct = first_instruct;
+	while (instruct)
 	{
 		free(instruct->pre_oper);
 		free(instruct->post_oper);

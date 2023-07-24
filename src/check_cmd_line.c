@@ -17,11 +17,10 @@
 *   operands should be allways in betewwn blanks
 *
 */
-int check_cmd_line(t_data *data)
+int	check_cmd_line(t_data *data)
 {
-    (void)data;
-    if(!quotes_ok(data->command))
-        return (0);
-
-    return (1);
+	(void)data;
+	if (!quotes_ok(data->command))
+		return (0);
+	return (1);
 }

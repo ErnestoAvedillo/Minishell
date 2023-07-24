@@ -20,7 +20,7 @@
  *					
  * Returns:			int: The max vaue of both arguments
  **/
-int	t_max(int a, int b)
+int	ft_max(int a, int b)
 {
 	if (a > b)
 		return (a);

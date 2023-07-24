@@ -21,10 +21,10 @@
  *					
  * Returns:			char* out: a string where the 2 strings are concatenated.
  **/
-char *concat_cmd(char *str1, char *str2)
+char	*concat_cmd(char *str1, char *str2)
 {
-	int lenout;
-	char *out;
+	int		lenout;
+	char	*out;
 
 	if (!str1)
 		return (str2);
