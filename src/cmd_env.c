@@ -23,16 +23,16 @@ int cmd_env(t_instruct *instruct)
 		if(!ft_strncmp(instruct->arg[0], "PWD", 0, 3))
 		{
 			curdir = getcwd(buffer, sizeof(buffer));
-			printf("%s\n", curdir);
+			ft_printf("%s\n", curdir);
 		}
 		else
-			printf("Too many arguments env.\n");
+			ft_printf("Too many arguments env.\n");
 		return (1);
 	}
 	ptr = instruct->header->env;
 	while (*ptr != NULL)
 	{
-		printf("%s\n",*ptr);
+		ft_printf("%s\n", *ptr);
 		ptr++;
 	}
 	return (1);

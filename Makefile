@@ -23,49 +23,60 @@ INCLUDE:= $(addprefix $(INCDIR),$(addsuffix .h, $(INC)))
 DIR_LIBFT = ./libft/
 LIBFT = $(addprefix $(DIR_LIBFT),libft.a)
 
+#FT_PRINTF LIBRARY
+DIR_PRINTF = ./ft_printf/
+FT_PRINTF = $(addprefix $(DIR_PRINTF),libftprintf.a)
+
 CC:= gcc
 
-FLAGS:= -Werror -Wextra -Wall -O2 -g 
+FLAGS:= -Werror -Wextra -Wall -O2 -g $(SANIT1)
 
 #-fsanitize=datarace -fsanitize=address
 RM := rm -rfd
 
-SANIT = -static-libsan
 
-all: $(LIBFT) $(NAME)
-
-#linux: SANIT = -static-libasan
-linux: SANIT = 
-linux:  all
+all: $(LIBFT) $(FT_PRINTF) $(NAME)
 
 
+all_lk: SANIT1 = -fsanitize=address
+all_lk: SANIT2 = -static-libsan
+all_lk: all
+
+
+linux_lk: SANIT1 = -fsanitize=address
+linux_lk: SANIT2 = -static-libasan
+linux_lk: all
 
 -include $(DSTS)
 
-
 $(NAME): $(OBJS) Makefile
-	$(CC) $(FLAGS) -v $(OBJS) -o $(NAME) $(LIBFT) -lreadline 
+	$(CC) $(FLAGS) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(LIBFT) -lreadline 
 
 #-static-libsan 
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d
 	@mkdir -p $(DIR_OBJ_DST)
 	@printf "\rCompiling: $(notdir $<).\r"
-	@$(CC) $(FLAGS) -I$(INCDIR) $(SANIT) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
+	@$(CC) $(FLAGS) -I$(INCDIR) $(SANIT2) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
 
 $(DIR_OBJ_DST)%.d: $(DIR_SRC)%.c $(INCLUDE)
 	@mkdir -p $(DIR_OBJ_DST)
 	@$(CC) $(FLAGS) -I$(INCDIR) -MM -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.d 
 
 $(LIBFT):
+	make -C$(DIR_PRINTF)
+
+$(FT_PRINTF):
 	make -C$(DIR_LIBFT)
 
 clean:
 	@$(RM) $(DIR_OBJ_DST)
 	make -C$(DIR_LIBFT) clean
+	make -C$(DIR_PRINTF) clean
 
 fclean: clean
 	@$(RM) $(NAME)
 	make -C$(DIR_LIBFT) fclean
+	make -C$(DIR_PRINTF) fclean
 
 re: fclean all
 

@@ -26,12 +26,12 @@ int	cmd_echo(t_instruct *instruct)
 	}
 	while (instruct->arg[i])
 	{
-		printf ("%s", instruct->arg[i]);
+		ft_printf ("%s", instruct->arg[i]);
 		if (instruct->arg[i + 1])
-			printf(" ");
+			ft_printf(" ");
 		i++;
 	}
 	if (eol)
-		printf ("\n");
+		ft_printf ("\n");
 	return (1);
 }

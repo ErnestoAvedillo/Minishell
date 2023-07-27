@@ -51,7 +51,7 @@ void	print_env_sorted(char **env)
 	aux = ft_strsort_arr(aux, 1);
 	i = -1;
 	while (aux[++i] != NULL)
-		printf("declare -x %s\n", aux[i]);
+		ft_printf("declare -x %s\n", aux[i]);
 	free(aux);
 	return ;
 }

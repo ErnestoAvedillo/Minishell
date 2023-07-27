@@ -18,10 +18,10 @@ int cmd_pwd(t_instruct *instruct)
     char *curdir;
     if (instruct->arg != NULL)
     {
-        printf("pwd: Too many arguments\n");
+        ft_printf("pwd: Too many arguments\n");
         return(1);
     }
     curdir = getcwd(buffer, sizeof(buffer));
-    printf("%s\n", curdir);
+    ft_printf("%s\n", curdir);
     return (1);
 }

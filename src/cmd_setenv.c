@@ -44,7 +44,7 @@ int cmd_setenv(t_instruct *instruct)
 
 	if (is_more_than_1(instruct->instruc))
 	{
-		printf("Command not found.\n");
+		ft_printf("Command not found.\n");
 		return (1);
 	}
 	str = ft_split(instruct->instruc, '=');
@@ -65,7 +65,7 @@ int cmd_setenv(t_instruct *instruct)
 			return (1);
 		if (!is_char_in_str(instruct->arg[i], '=') || is_more_than_1(instruct->arg[i]))
 		{
-			printf("Command not found.\n");
+			ft_printf("Command not found.\n");
 			return (1);
 		}
 		if(instruct->arg[i])
