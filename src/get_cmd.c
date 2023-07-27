@@ -24,7 +24,6 @@ t_instruct	*first_instruct;
  **/
 void	get_cmd(t_data *data)
 {
-	int		val;
 	char	*add_line;
 
 	while (1)
@@ -34,7 +33,6 @@ void	get_cmd(t_data *data)
 		while (check_cmd_line(data) == 0)
 		{
 			add_line = readline(">");
-			val = ft_strlen(data->command) + ft_strlen(add_line) + 1;
 			data->command = concat_cmd(data->command, add_line);
 		}
 		add_history(data->command);
@@ -42,13 +40,12 @@ void	get_cmd(t_data *data)
 		if (!first_instruct)
 		{
 			printf("Memory alloc. error\n");
-			val = 1;
 		}
 		else
-			val = work_command();
-		if (val == 0)
+			adm_redirections();
+		if (data->out_status == 0)
 			printf("Command not found.\n");
-		else if (val == -1)
+		else if (data->out_status == -1)
 			break ;
 		free(data->command);
 		data->command = NULL;

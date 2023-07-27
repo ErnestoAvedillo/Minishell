@@ -22,6 +22,7 @@
  *							1 indicating to add or modify
  * Returns:			NONE.
  **/
+
 char	**actualize_env(char **env, char *str, int k)
 {
 	int		i;

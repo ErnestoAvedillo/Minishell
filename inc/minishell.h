@@ -36,6 +36,9 @@
 
 # define OPERANDS	"> < >> << | ="
 
+# define NON_REDIR_CMD "cd export unset alias source"
+# define NON_REDIR_CMD_L "ls echo printf find"
+
 typedef struct s_data
 {
 	char			*command;
@@ -44,6 +47,7 @@ typedef struct s_data
 	char			**cmd_list;
 	char			**oper_list;
 	void			**functions_ptr;
+	int				out_status;
 	struct termios	term;
 }	t_data;
 
@@ -58,7 +62,9 @@ typedef struct s_instruct
 	void			*next;
 	void			*prev;
 	int				signal;
-}	t_instruct;
+	pid_t			pid;
+	int				pipefd[2];
+} t_instruct;
 
 //init_vars
 t_data		*init_vars(char **env);
@@ -79,8 +85,8 @@ int			cmd_unset(t_instruct *instruct);
 int			cmd_setenv(t_instruct *instruct);
 int			cmd_exec(t_instruct *instruct);
 //Work_command
-int			work_command(void);
-//check_cmd_line
+void		work_command(t_instruct *instr);
+// check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_quotes
 bool		quotes_ok(char *str);
@@ -108,4 +114,9 @@ int			add_signals(t_data *header);
 char		*concat_cmd(char *str1, char *str2);
 //get_cmd
 void		get_cmd(t_data *data);
+// ft_leninst
+int			leninstr(t_instruct *list_instr);
+// adm_redirections
+void		adm_redirections(void);
+
 #endif

@@ -12,45 +12,26 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct	*first_instruct;
-
-int	work_command(void)
+void work_command(t_instruct *instr)
 {
 	int		i;
-	int		out;
-	pid_t	pid;
-	int		status;
 
-	out = 1;
 	i = -1;
 	while (++i <= EXIT_CMD)
-		if (first_instruct->instruc && !ft_strncmp(first_instruct->instruc, first_instruct->header->cmd_list[i], 0, ft_strlen(first_instruct->instruc)))
+		if (instr->instruc && !ft_strncmp(instr->instruc, instr->header->cmd_list[i], 0, ft_strlen(instr->instruc)))
 		{
-			out = ((int (*)(t_instruct *)) \
-				((void **)first_instruct->header->functions_ptr)[i])(first_instruct);
-			return (out);
+			instr->header->out_status = ((int (*)(t_instruct *))((void **)instr->header->functions_ptr)[i])(instr);
+			if (!instr->next)
+				free_inst();
+			exit(0);
 		}
-	if (is_char_in_str(first_instruct->instruc, '='))
+	if (is_char_in_str(instr->instruc, '='))
 	{
-		out = cmd_setenv(first_instruct);
-		return (out); 
+		instr->header->out_status = cmd_setenv(instr);
 	}
-	pid = fork();
-	if (pid == -1)
-	{
-		printf("error creating the pid\n");
-		return (-1);
-	}
-	else if (pid == 0)
-		out = cmd_exec(first_instruct);
-	wait(&status); // Wait for the child process to finish
-
-	if (WIFEXITED(status)) {
-		printf("Child process completed with exit status: %d\n", WEXITSTATUS(status));
-	} 
-	else 
-	{
-		printf("Child process terminated abnormally.\n");
-	}
-	return (out);
+	else
+		instr->header->out_status = cmd_exec(instr);
+	if (!instr->next)
+		free_inst();
+	exit(0);
 }

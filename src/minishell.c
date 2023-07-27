@@ -24,7 +24,7 @@ int	main(int av, char **ac, char **environ)
 	t_data	*data;
 
 	data = init_vars(environ);
-	add_signals(data);
+//	add_signals(data);
 	get_cmd(data);
 	free_vars(data);
 	printf("Goodbye!\n");

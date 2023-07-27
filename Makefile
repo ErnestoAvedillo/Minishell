@@ -3,7 +3,7 @@ NAME = minishell
 SRC = $(NAME) cmd_echo cmd_cd cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init_vars \
 	free_vars utils work_command split_inst cmd_setenv check_cmd_line check_quotes \
 	tokenize token_utils token_utils2 print_var replace_env_var cmd_exec adm_signal \
-	actualize_env concat_cmd get_cmd #añadir nombres de ficheros.c  aqui
+	actualize_env concat_cmd get_cmd ft_leninstr adm_redirections #añadir nombres de ficheros.c  aqui
 
 INC = $(NAME) colors #añadir nombres de ficheros.h  aqui
 
@@ -25,17 +25,20 @@ LIBFT = $(addprefix $(DIR_LIBFT),libft.a)
 
 CC:= gcc
 
-FLAGS:= -Werror -Wextra -Wall -O2 -g -fsanitize=address
+FLAGS:= -Werror -Wextra -Wall -O2 -g 
 
 #-fsanitize=datarace -fsanitize=address
 RM := rm -rfd
 
-SANIT = -libsan
+SANIT = -static-libsan
 
 all: $(LIBFT) $(NAME)
 
-linux: SANIT = -libasan
+#linux: SANIT = -static-libasan
+linux: SANIT = 
 linux:  all
+
+
 
 -include $(DSTS)
 
@@ -47,7 +50,7 @@ $(NAME): $(OBJS) Makefile
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d
 	@mkdir -p $(DIR_OBJ_DST)
 	@printf "\rCompiling: $(notdir $<).\r"
-	@$(CC) $(FLAGS) -I$(INCDIR) -static$(SANIT) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
+	@$(CC) $(FLAGS) -I$(INCDIR) $(SANIT) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
 
 $(DIR_OBJ_DST)%.d: $(DIR_SRC)%.c $(INCLUDE)
 	@mkdir -p $(DIR_OBJ_DST)
