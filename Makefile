@@ -94,4 +94,4 @@ print:
 	@echo DIRLIBFT: $(DIR_LIBFT)
 	@echo LIBFT: $(LIBFT)
 
-.PHONY: all re clean fclean print libft $(LIBFT) linux linux_re
+.PHONY: all re clean fclean print libft $(LIBFT) $(FT_PRINTF) linux_lk all_lk

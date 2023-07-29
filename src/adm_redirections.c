@@ -111,14 +111,14 @@ void	adm_redirections(void)
 	}
 
 	printf("paso por el fina\n");
-	wait( &status);
-/*	instr = first_instruct;
+//	wait( &status);
+	instr = first_instruct;
 	while (instr)
 	{
 		waitpid(instr->pid, &status, 0);
 		instr = instr->next;
 	}
-*/
+
 	printf("paso por el fina\n");
 	close_all_pipes();
 	return;
