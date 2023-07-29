@@ -21,8 +21,6 @@ void work_command(t_instruct *instr)
 		if (instr->instruc && !ft_strncmp(instr->instruc, instr->header->cmd_list[i], 0, ft_strlen(instr->instruc)))
 		{
 			instr->header->out_status = ((int (*)(t_instruct *))((void **)instr->header->functions_ptr)[i])(instr);
-			if (!instr->next)
-				free_inst();
 			exit(0);
 		}
 	if (is_char_in_str(instr->instruc, '='))
@@ -31,7 +29,7 @@ void work_command(t_instruct *instr)
 	}
 	else
 		instr->header->out_status = cmd_exec(instr);
-	if (!instr->next)
-		free_inst();
+//	if (!instr->next)
+//		free_inst();
 	exit(0);
 }

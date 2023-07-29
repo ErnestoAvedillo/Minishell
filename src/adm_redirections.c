@@ -89,7 +89,7 @@ void	redirect(t_instruct *cur_inst)
 void	adm_redirections(void)
 {
 	t_instruct	*instr;
-	int			status;
+	//int			status;
 
 	if (leninstr(first_instruct) == 0 || !create_pipes())
 		return ;
@@ -106,20 +106,24 @@ void	adm_redirections(void)
 		{
 			redirect(instr);
 			work_command(instr);
+			printf("paso por el fina\n");
 		}
+		instr = instr->next;
+	}
+	int ll = 0;
+	//	wait( &status);
+	instr = first_instruct;
+	while (instr)
+	{
+		printf("espero el primer pid %i\n", ll++);
+		pid_t terminated_pid = waitpid(instr->pid, NULL, 0);
+		if(terminated_pid == -1)
+			printf("error wait\n");
 		instr = instr->next;
 	}
 
 	printf("paso por el fina\n");
-	wait( &status);
-/*	instr = first_instruct;
-	while (instr)
-	{
-		waitpid(instr->pid, &status, 0);
-		instr = instr->next;
-	}
-*/
-	printf("paso por el fina\n");
 	close_all_pipes();
+	free_inst();
 	return;
 }
