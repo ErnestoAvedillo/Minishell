@@ -17,15 +17,15 @@
  *   Arguments:		char *s : the string to work with.
  *   Returns:		True or false.
  */
-bool is_more_than_1(char *str)
+bool	more_th_1(char *str)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = -1;
 	j = 0;
-	while(str[++i])
-		if(str[i] == '=')
+	while (str[++i])
+		if (str[i] == '=')
 			j++;
 	if (j > 1)
 		return (true);
@@ -34,42 +34,36 @@ bool is_more_than_1(char *str)
 
 /*
  *   Descriptinon:	Sets the variable to the designated value.
- *   Arguments:		t_instruct *instruct The structure where to find  instruction and arguments..
+ *   Arguments:		t_instr *instr The structure where to find  
+ * 					instruction and arguments..
  *   Returns:		1 .
  */
-int cmd_setenv(t_instruct *instruct)
+int	cmd_setenv(t_instruct *instr)
 {
 	int		i;
-	char **str;
+	char	**str;
 
-	if (is_more_than_1(instruct->instruc))
+	if (more_th_1(instr->instruc))
 	{
 		ft_printf("Command not found.\n");
 		return (1);
 	}
-	str = ft_split(instruct->instruc, '=');
+	str = ft_split(instr->instruc, '=');
 	i = -1;
 	while (str)
 	{
-		if (setenv(str[0], str[1], 1) == 0)
-		{
-			printf("Variable %s set succesfully with %s\n", str[0], str[1]);
-		}
-		else
-		{
-			printf("Variable %s failed to set with %s\n", str[0], str[1]);
-		}
+		setenv(str[0], str[1], 1);
 		i++;
 		free_arrchar(str);
-		if (!instruct->arg || !instruct->arg[i])
+		if (!instr->arg || !instr->arg[i])
 			return (1);
-		if (!is_char_in_str(instruct->arg[i], '=') || is_more_than_1(instruct->arg[i]))
+		if (!is_char_in_str(instr->arg[i], '=') || more_th_1(instr->arg[i]))
 		{
 			ft_printf("Command not found.\n");
 			return (1);
 		}
-		if(instruct->arg[i])
-			str = ft_split(instruct->arg[i], '=');
+		if (instr->arg[i])
+			str = ft_split(instr->arg[i], '=');
 	}
 	return (1);
 }

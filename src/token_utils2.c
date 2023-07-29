@@ -50,8 +50,8 @@ void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 			str[i] = replace_char(str[i], c1, c2);
 			if ((j == 1 && str[i] == '\'') || (j == 2 && str[i] == '\"'))
 			{
-					str[i] = ' ';
-					j = 0;
+				str[i] = ' ';
+				j = 0;
 			}
 		}
 	}

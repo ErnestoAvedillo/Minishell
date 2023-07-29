@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-int cmd_unset(t_instruct *instruct)
+int	cmd_unset(t_instruct *instruct)
 {
 	int		i;
 
@@ -23,6 +23,6 @@ int cmd_unset(t_instruct *instruct)
 			printf("Variable unseted succesfully %s\n", instruct->arg[i]);
 		else
 			printf("error unseting the variale %s\n", instruct->arg[i]);
-		}
-	return (1);    
+	}
+	return (1);
 }

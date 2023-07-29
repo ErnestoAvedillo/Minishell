@@ -48,7 +48,5 @@ bool	quotes_ok(char *str)
 		}
 		c++;
 	}
-	if (quoted_off == true)
-		return (true);
-	return (false);
+	return (quoted_off);
 }

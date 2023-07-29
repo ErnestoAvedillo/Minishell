@@ -38,13 +38,13 @@
 }
 */
 /*
-*   Descriptinon:	Search the position in str where any of the charachters in *c are 
-*					found.
+*   Descriptinon:	Search the position in str where any of the charachters in   
+*					*c are found.
 *   Arguments:		char *str : trinw where to look for in.
 					int ini Starting position to log for
 					char (array of chars to look for
-*   Returns:		The position where the character has been found or the "\0" pos.
-*					charachter.
+*   Returns:		The position where the character has been found or the "\0" 
+*					pos. charachter.
 */
 static size_t	ft_nextendpos(char const *str, size_t ini, char *c)
 {
@@ -57,7 +57,7 @@ static size_t	ft_nextendpos(char const *str, size_t ini, char *c)
 	{
 		while (c[j])
 		{
-			if(str[i] == c[j])
+			if (str[i] == c[j])
 				return (i);
 			j++;
 		}
@@ -67,40 +67,45 @@ static size_t	ft_nextendpos(char const *str, size_t ini, char *c)
 	return (i);
 }
 
+static bool	double_oper(char *str, int pos)
+{
+	if ((str[pos] == '>' && str[pos + 1] == '>') \
+		|| (str[pos] == '<' && str[pos + 1] == '<'))
+		return (true);
+	return (false);
+}
+
 /*
  *   Descriptinon:	Separate the commands by its operators.
- *   Arguments:		t_data *data : The structure data where the command and the env pointer is.
+ *   Arguments:		t_data *data : The structure data where the command 
+ * 					and the env pointer is.
  *   Returns:		The tokenized instruction separated by the operators.
  */
-t_instruct *tokenize(t_data *data)
+t_instruct	*tokenize(t_data *data)
 {
-    t_instruct	*first_inst;
-    t_instruct	*instruct[2];
+	t_instruct	*instruct[3];
 	int			start_pos;
 	int			end_pos;
 
-
-	first_inst = init_instructions(data);
-	instruct[0] = first_inst;
-	if (first_inst == NULL)
+	instruct[0] = init_instructions(data);
+	if (instruct[0] == NULL)
 		return (NULL);
+	instruct[1] = instruct[0];
 	start_pos = 0;
 	while (start_pos <= (int)ft_strlen(data->command))
 	{
 		end_pos = ft_nextendpos(data->command, start_pos, "|><");
-		fill_instruct(instruct[0], data->command, start_pos, end_pos);
-		if ((data->command[end_pos] == '>' && data->command[end_pos + 1] == '>') || \
-			(data->command[end_pos] == '<' && data->command[end_pos + 1] == '<'))
+		fill_instruct(instruct[1], data->command, start_pos, end_pos);
+		if (double_oper(data->command, end_pos))
 			end_pos++;
 		start_pos = end_pos + 1;
-		if(start_pos <= (int)ft_strlen(data->command))
+		if (start_pos <= (int)ft_strlen(data->command))
 		{
-			instruct[1] = init_instructions(data);
-			instruct[0]->next = instruct[1];
-			instruct[1]->prev = instruct[0];
-			instruct[0] = instruct[1];
+			instruct[2] = init_instructions(data);
+			instruct[1]->next = instruct[2];
+			instruct[2]->prev = instruct[1];
+			instruct[1] = instruct[2];
 		}
 	}
-	return (first_inst);
+	return (instruct[0]);
 }
-

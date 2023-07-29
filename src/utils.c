@@ -18,16 +18,16 @@
 *				character
 *	Returns: integer
 */
-int get_pos ( char *str, char c)
+int	get_pos( char *str, char c)
 {
-    int pos;
+	int	pos;
 
-    pos = 0;
-    while (str[pos] && str[pos] != c)
-        pos++;
-    if (!str[pos])
-        return (0);
-    return (pos);
+	pos = 0;
+	while (str[pos] && str[pos] != c)
+		pos++;
+	if (!str[pos])
+		return (0);
+	return (pos);
 }
 
 /*
@@ -36,20 +36,18 @@ int get_pos ( char *str, char c)
 *				**char: Array of strings to search in
 *	Returns: *char
 */
-char *get_env_value(char *name_env, char **env)
+char	*get_env_value(char *name_env, char **env)
 {
 	int		len;
 	char	*out;
 
 	len = ft_strlen(name_env);
-	while(*env)
+	while (*env)
 	{
 		if (!ft_strncmp(name_env, *env, 0, len))
-		{
-			break;
-		}
+			break ;
 		env++;
-    }
+	}
 	out = ft_strtrim (*env, name_env);
 	return (out);
 }
@@ -60,12 +58,13 @@ char *get_env_value(char *name_env, char **env)
 *	Argument: 	*char: String where to seach. 
 *				**char: Array of strings to search in
 *	Returns: *char
-*/char *get_env_name(char *str)
+*/
+char	*get_env_name(char *str)
 {
-	int pos;
+	int	pos;
 
 	pos = get_pos(str, '=');
-	return (ft_substr(str,0,pos));
+	return (ft_substr(str, 0, pos));
 }
 
 /*
@@ -74,9 +73,9 @@ char *get_env_value(char *name_env, char **env)
 *				char: character to search
 *	Returns: bool
 */
-bool is_char_in_str(char *str, char c)
+bool	is_char_in_str(char *str, char c)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -93,7 +92,7 @@ bool is_char_in_str(char *str, char c)
 *				char: character to search
 *	Returns: bool
 */
-bool is_oper(char *str)
+bool	is_oper(char *str)
 {
 	char	**oper;
 	int		i;
@@ -104,30 +103,4 @@ bool is_oper(char *str)
 		if (str[0] == oper[i][0])
 			return (true);
 	return (false);
-}
-
-/**
- *
- * Description:		Concatenates the variable with it's value and the character equal
- *					
- * Arguments:		char *str: Name of the variable
- *					
- * Returns:			char *str: The resultant string. NULL If the variable does not exists.
- **/
-char	*concat_env(char *name_var)
-{
-	char	*value;
-	char 	*out;
-	size_t	i;
-
-	value = getenv(name_var);
-	if(!value)
-		return (NULL);
-	i = ft_strlen(name_var) + ft_strlen(value) + 2;
-	out = (char *)malloc(i * sizeof(char));
-	out[0] = '\0';
-	ft_strlcat(out, name_var, i);
-	ft_strlcat(out, "=", i);
-	ft_strlcat(out, value, i);
-	return (out);
 }

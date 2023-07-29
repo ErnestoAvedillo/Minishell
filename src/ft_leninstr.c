@@ -12,14 +12,14 @@
 
 #include "../inc/minishell.h"
 
-int leninstr(t_instruct *list_instr)
+int	leninstr(t_instruct *list_instr)
 {
-	int out;
+	int	out;
 
 	if (!list_instr)
 		return (0);
 	out = 0;
-	while(list_instr)
+	while (list_instr)
 	{
 		out++;
 		list_instr = list_instr->next;

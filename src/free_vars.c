@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct	*first_instruct;
+extern t_instruct	*g_first_instruct;
 
 void	free_arrchar(char **arrchr)
 {
@@ -50,7 +50,7 @@ void	free_inst(void)
 {
 	t_instruct	*instruct;
 
-	instruct = first_instruct;
+	instruct = g_first_instruct;
 	while (instruct)
 	{
 		free(instruct->pre_oper);
@@ -58,8 +58,8 @@ void	free_inst(void)
 		free(instruct->instruc);
 		instruct->instruc = NULL;
 		free_arrchar(instruct->arg);
-		first_instruct = instruct->next;
+		g_first_instruct = instruct->next;
 		free(instruct);
-		instruct = first_instruct;
+		instruct = g_first_instruct;
 	}
 }

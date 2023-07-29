@@ -12,13 +12,13 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct	*first_instruct;
+extern t_instruct	*g_first_instruct;
 
 int	create_pipes(void)
 {
 	t_instruct	*instr;
 
-	instr = first_instruct;
+	instr = g_first_instruct;
 	while (instr)
 	{
 		if (pipe(instr->pipefd) == -1)
@@ -28,7 +28,7 @@ int	create_pipes(void)
 		}
 		instr = instr->next;
 	}
-	first_instruct->header->out_status = 0;
+	g_first_instruct->header->out_status = 0;
 	return (1);
 }
 
@@ -36,7 +36,7 @@ void	close_all_pipes(void)
 {
 	t_instruct	*instr;
 
-	instr = first_instruct;
+	instr = g_first_instruct;
 	while (instr)
 	{
 		close(instr->pipefd[0]);
@@ -52,20 +52,17 @@ void	redirect(t_instruct *cur_inst)
 	instr[0] = cur_inst;
 	if ((instr[0]->prev == NULL) && (instr[0]->next == NULL))
 	{
-		printf("paso NULL NULL\n");
 		close(instr[0]->pipefd[0]);
 		close(instr[0]->pipefd[1]);
 	}
 	else if ((instr[0]->prev == NULL) && (instr[0]->next != NULL))
 	{
-		printf("paso NULL !NULL\n");
 		close(instr[0]->pipefd[0]);
 		dup2(instr[0]->pipefd[1], STDOUT_FILENO);
 		close(instr[0]->pipefd[1]);
 	}
 	else if ((instr[0]->prev != NULL) && (instr[0]->next != NULL))
 	{
-		printf("paso !NULL !NULL\n");
 		instr[1] = instr[0]->prev;
 		close(instr[1]->pipefd[1]);
 		close(instr[0]->pipefd[0]);
@@ -76,7 +73,6 @@ void	redirect(t_instruct *cur_inst)
 	}
 	else if ((instr[0]->prev != NULL) && (instr[0]->next == NULL))
 	{
-		printf("paso !NULL NULL\n");
 		instr[1] = instr[0]->prev;
 		close(instr[1]->pipefd[1]);
 		close(instr[0]->pipefd[0]);
@@ -86,14 +82,40 @@ void	redirect(t_instruct *cur_inst)
 	}
 }
 
+void	close_prev_pipes(t_instruct *cur_inst)
+{
+	t_instruct	*instr[2];
+
+	instr[0] = cur_inst;
+	if ((instr[0]->prev == NULL) && (instr[0]->next == NULL))
+	{
+		close(instr[0]->pipefd[0]);
+		close(instr[0]->pipefd[1]);
+	}
+	else if ((instr[0]->prev == NULL) && (instr[0]->next != NULL))
+	{
+		close(instr[0]->pipefd[1]);
+	}
+	else if ((instr[0]->prev != NULL) && (instr[0]->next != NULL))
+	{
+		instr[1] = instr[0]->prev;
+		close(instr[1]->pipefd[0]);
+		close(instr[0]->pipefd[1]);
+	}
+	else if ((instr[0]->prev != NULL) && (instr[0]->next == NULL))
+	{
+		instr[1] = instr[0]->prev;
+		close(instr[1]->pipefd[0]);
+	}
+}
+
 void	adm_redirections(void)
 {
 	t_instruct	*instr;
-	//int			status;
 
-	if (leninstr(first_instruct) == 0 || !create_pipes())
+	if (leninstr(g_first_instruct) == 0 || !create_pipes())
 		return ;
-	instr = first_instruct;
+	instr = g_first_instruct;
 	while (instr)
 	{
 		instr->pid = fork();
@@ -106,24 +128,12 @@ void	adm_redirections(void)
 		{
 			redirect(instr);
 			work_command(instr);
-			printf("paso por el fina\n");
 		}
+		close_prev_pipes(instr);
+		wait(NULL);
 		instr = instr->next;
 	}
-	int ll = 0;
-	//	wait( &status);
-	instr = first_instruct;
-	while (instr)
-	{
-		printf("espero el primer pid %i\n", ll++);
-		pid_t terminated_pid = waitpid(instr->pid, NULL, 0);
-		if(terminated_pid == -1)
-			printf("error wait\n");
-		instr = instr->next;
-	}
-
-	printf("paso por el fina\n");
 	close_all_pipes();
 	free_inst();
-	return;
+	return ;
 }

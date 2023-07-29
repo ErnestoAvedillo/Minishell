@@ -32,10 +32,8 @@ char	**actualize_env(char **env, char *str, int k)
 	i = -1;
 	out = ft_split(str, '=');
 	while (env[++i])
-	{
 		if (!ft_strncmp(env[i], out[0], 0, ft_strlen(out[0])))
 			break ;
-	}
 	free_arrchar(out);
 	if (k)
 	{

@@ -25,11 +25,13 @@ void	print_inst(t_instruct *instructions)
 		printf ("comando %s\n", inst->instruc);
 		i = 0;
 		if (inst->arg != NULL)
+		{
 			while (inst->arg[i])
 			{
 				printf (" argumento %i, vale %s\n", i, inst->arg[i]);
 				i++;
 			}
+		}
 		inst = inst->next;
 	}
 }

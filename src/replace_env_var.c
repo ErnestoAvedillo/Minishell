@@ -12,50 +12,70 @@
 
 #include "../inc/minishell.h"
 
+static int	move_2_next_sing_quote(char *str, int pos)
+{
+	int	i;
+
+	i = pos;
+	i++;
+	while (str[i] && str[i] != '\'')
+		i++;
+	i++;
+	return (i);
+}
+
+static char	*get_var_name(char *str, int pos)
+{
+	int	i;
+
+	i = pos;
+	while (str[i] && (str[i] != ' ' && str[i] != '\"'))
+		i++;
+	return (ft_substr(str, pos + 1, i - pos - 1));
+}
+
+static char	*replace_command(char *str, char *variable, char *value, int pos)
+{
+	int		j;
+	char	*out;
+
+	j = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
+	out = (char *) malloc(j * sizeof(char));
+	out[j - 1] = '\0';
+	j = -1;
+	while (out[++j])
+	{
+		if (j < pos)
+			out[j] = str[j];
+		else if (j > pos + (int)ft_strlen(value) - 1)
+			out[j] = str[j + (int)(ft_strlen(variable) - ft_strlen(value) + 1)];
+		else if (value)
+			out[j] = value[j - pos];
+	}
+	printf(" el comando es %s-- %s\n", str, out);
+	free (str);
+	return (out);
+}
+
 char	*replace_env_var(char *str)
 {
 	int		i;
-	int		j;
 	char	*variable;
 	char	*value;
-	char	*out;
 
 	i = -1;
 	while (str[++i])
 	{
 		if (str[i] == '\'')
-		{
-			i++;
-			while (str[i] && str[i] != '\'')
-				i++;
-			i++;
-			if (!str[i])
-				return (str);
-		}
+			i = move_2_next_sing_quote(str, i);
+		if (!str[i])
+			return (str);
 		if (str[i] == '$')
 		{
-			j = i;
-			while (str[j] && (str[j] != ' ' && str[j] != '\"'))
-				j++;
-			variable = ft_substr(str, i + 1, j - i - 1);
+			variable = get_var_name(str, i);
 			value = getenv(variable);
-			j = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
-			out = (char *) malloc(j * sizeof(char));
-			out[j - 1] = '\0';
-			j = -1;
-			while (out[++j])
-			{
-				if (j < i)
-					out[j] = str[j];
-				else if (j > i + (int)ft_strlen(value) - 1)
-					out[j] = str[j + (int)(ft_strlen(variable) - ft_strlen(value) + 1)];
-				else if (value)
-					out[j] = value[j - i];
-			}
+			str = replace_command(str, variable, value, i);
 			free(variable);
-			free(str);
-			str = out;
-			out = NULL;
 			i += ft_strlen(value) - 1;
 		}
 	}

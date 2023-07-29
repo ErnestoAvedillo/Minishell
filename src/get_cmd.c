@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-t_instruct	*first_instruct;
+t_instruct	*g_first_instruct;
 
 /**
  *
@@ -36,8 +36,8 @@ void	get_cmd(t_data *data)
 			data->command = concat_cmd(data->command, add_line);
 		}
 		add_history(data->command);
-		first_instruct = tokenize(data);
-		if (!first_instruct)
+		g_first_instruct = tokenize(data);
+		if (!g_first_instruct)
 		{
 			printf("Memory alloc. error\n");
 		}

@@ -12,15 +12,15 @@
 
 #include "../inc/minishell.h"
 
-int cmd_env(t_instruct *instruct)
-{   
-	char buffer[1024];
-	char *curdir;
-	char **ptr;
+int	cmd_env(t_instruct *instruct)
+{
+	char	buffer[1024];
+	char	*curdir;
+	char	**ptr;
 
-	if(instruct->arg != NULL) 
+	if (instruct->arg != NULL) 
 	{
-		if(!ft_strncmp(instruct->arg[0], "PWD", 0, 3))
+		if (!ft_strncmp(instruct->arg[0], "PWD", 0, 3))
 		{
 			curdir = getcwd(buffer, sizeof(buffer));
 			ft_printf("%s\n", curdir);

@@ -9,7 +9,7 @@
 /*   Updated: 2022/09/24 10:16:59 by eavedill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include"libft.h"
+#include "libft.h"
 
 /*
 *   Descriptinon:	Extracts a substring of a string.

@@ -9,7 +9,7 @@
 /*   Updated: 2022/09/24 10:02:08 by eavedill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include"libft.h"
+#include "libft.h"
 /*
 *	Funcction: Conatenate 2 strings. Fills in destination the source str.
 *				No malloc is executed.

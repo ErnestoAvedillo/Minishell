@@ -78,18 +78,18 @@ char	**add_dir_to_arg(char **arr, char *str)
 int	cmd_exec(t_instruct *instruct)
 {
 	char	*out;
+	int		exec;
 
 	out = check_file_exists(instruct);
 	if (!out)
 		return (0);
 	instruct->arg = add_dir_to_arg (instruct->arg, out);
-	if (execve(instruct->arg[0], instruct->arg, NULL) == -1)
+	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
+	if (exec == -1)
 	{
 		printf ("salgo con error\n");
 		free(out);
 		return (1);
 	}
-	printf("He terminado execve\n");
-	//	free(out);
 	return (0);
 }

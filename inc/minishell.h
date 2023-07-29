@@ -12,19 +12,19 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include	"../libft/libft.h"
-# include	"../ft_printf/ft_printf.h"
-# include	"colors.h"
-# include	<stdio.h>
-# include	<stdlib.h>
-# include	<readline/readline.h>
-# include	<readline/history.h>
-# include   <stdbool.h>
-# include   <unistd.h>
-# include	<sys/stat.h>
-# include	<sys/wait.h>
-# include	<termios.h>
-# include	<signal.h>
+# include "../libft/libft.h"
+# include "../ft_printf/ft_printf.h"
+# include "colors.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdbool.h>
+# include <unistd.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <termios.h>
+# include <signal.h>
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
 # define ECHO_CMD	0
@@ -65,7 +65,7 @@ typedef struct s_instruct
 	int				signal;
 	pid_t			pid;
 	int				pipefd[2];
-} t_instruct;
+}	t_instruct;
 
 //init_vars
 t_data		*init_vars(char **env);
@@ -94,9 +94,10 @@ bool		quotes_ok(char *str);
 //token_utils
 void		fill_instruct(t_instruct *inst, char *str, int start, int end);
 //token_utils
-void		replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2);
+void		replace_char_btw_quotes(char *str, unsigned int c1, \
+									unsigned int c2);
 // tokenize
-t_instruct *tokenize(t_data *data);
+t_instruct	*tokenize(t_data *data);
 //utils
 char		*get_env_value(char *name_env, char **env);
 char		*get_env_name(char *str);
