@@ -89,6 +89,7 @@ int	cmd_exec(t_instruct *instruct)
 		free(out);
 		return (1);
 	}
-	free(out);
+	printf("He terminado execve\n");
+	//	free(out);
 	return (0);
 }
