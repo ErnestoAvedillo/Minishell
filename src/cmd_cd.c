@@ -65,7 +65,6 @@ int	cmd_cd(t_instruct *instruct)
 	}
 	else
 	{
-		printf("Cambiando del dirrectorio %s - al  %s\n", getenv("PWD"), dir);
 		free(dir);
 		dir = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir, 1);

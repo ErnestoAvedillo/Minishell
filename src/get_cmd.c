@@ -45,7 +45,7 @@ void	get_cmd(t_data *data)
 			adm_redirections();
 		if (data->out_status == 0)
 			printf("Command not found.\n");
-		else if (data->out_status == -1)
+		else if (data->out_status == -1) 
 			break ;
 		free(data->command);
 		data->command = NULL;

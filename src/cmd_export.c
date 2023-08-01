@@ -67,10 +67,11 @@ void	print_env_sorted(char **env)
  *
  * Returns:			NONE
  **/
-static void	cmd_export_vars_without_value(char *var, t_data *header)
+static char	**cmd_exp_vars_no_val(char *var, char **env)
 {
 	size_t	j;
 	char	*value;
+	char	**aux;
 
 	j = ft_strlen(var) + ft_strlen(getenv(var));
 	value = (char *)malloc((j + 2) * sizeof(char));
@@ -82,43 +83,34 @@ static void	cmd_export_vars_without_value(char *var, t_data *header)
 		printf("Variable exported succesfully%s\n", value);
 	else
 		printf("error exporting the variale %s\n", value);
-	header->env = actualize_env(header->env, var, 1);
+	aux = actualize_env(env, value, 1);
 	free(value);
+	return (aux);
 }
 
 /**
- *
  * Description:		exports the variable when is given with the value.
  * 					In this case when the value is given in the variable.
  *
- * Arguments:		t_instruct *instr The structure where to find  
+ * Arguments:		t_instruct *instr The structure where to find
  * 					instruction and arguments..
  * 					char *var, the string where to find the variable to be exported
  *
  * Returns:			NONE
  **/
-static void	cmd_export_vars_with_value(char *var, t_data *header)
+static char **cmd_exp_vars_val(char *var, char **env)
 {
 	char	**aux;
 	char	*value;
 
 	aux = ft_split(var, '=');
-	if (setenv(aux[0], aux[1], 1) == 0)
-	{
-		printf("Variable %s set succesfully with %s\n", aux[0], aux[1]);
-	}
-	else
-	{
-		printf("Variable %s failed to set with %s\n", aux[0], aux[1]);
-	}
-	if (putenv(var) == 0)
-		printf("Variable exported succesfully %s\n", var);
-	else
-		printf("error exporting the variale %s\n", var);
+	setenv(aux[0], aux[1], 1);
+	putenv(var);
 	free_arrchar(aux);
 	value = ft_strdup(var);
-	header->env = actualize_env(header->env, var, 1);
+	aux = actualize_env(env, value, 1);
 	free(value);
+	return (aux);
 }
 
 /**
@@ -148,9 +140,9 @@ int	cmd_export(t_instruct *instr)
 	while (instr->arg[++i])
 	{
 		if (ft_strchr(instr->arg[i], 0, '=') == NULL )
-			cmd_export_vars_without_value(instr->arg[i], instr->header);
+			instr->header->env = cmd_exp_vars_no_val(instr->arg[i], instr->header->env);
 		else
-			cmd_export_vars_with_value(instr->arg[i], instr->header);
+			instr->header->env = cmd_exp_vars_val(instr->arg[i], instr->header->env);
 		if (!instr->header->env)
 			return (-1);
 	}

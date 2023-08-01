@@ -50,12 +50,7 @@ void	redirect(t_instruct *cur_inst)
 	t_instruct	*instr[2];
 
 	instr[0] = cur_inst;
-	if ((instr[0]->prev == NULL) && (instr[0]->next == NULL))
-	{
-		close(instr[0]->pipefd[0]);
-		close(instr[0]->pipefd[1]);
-	}
-	else if ((instr[0]->prev == NULL) && (instr[0]->next != NULL))
+	if ((instr[0]->prev == NULL) && (instr[0]->next != NULL))
 	{
 		close(instr[0]->pipefd[0]);
 		dup2(instr[0]->pipefd[1], STDOUT_FILENO);
@@ -112,9 +107,16 @@ void	close_prev_pipes(t_instruct *cur_inst)
 void	adm_redirections(void)
 {
 	t_instruct	*instr;
+	int 		leninst;
 
-	if (leninstr(g_first_instruct) == 0 || !create_pipes())
+	leninst = leninstr(g_first_instruct);
+	if (leninst == 0 || !create_pipes())
+		return;
+	if (leninst == 1)
+	{
+		work_1_command(g_first_instruct);
 		return ;
+	}
 	instr = g_first_instruct;
 	while (instr)
 	{

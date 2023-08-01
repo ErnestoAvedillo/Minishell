@@ -20,8 +20,6 @@ void	print_inst(t_instruct *instructions)
 	inst = instructions;
 	while (inst)
 	{
-		printf ("pre_oper %s\n", inst->pre_oper);
-		printf ("post_oper %s\n", inst->post_oper);
 		printf ("comando %s\n", inst->instruc);
 		i = 0;
 		if (inst->arg != NULL)
@@ -33,5 +31,22 @@ void	print_inst(t_instruct *instructions)
 			}
 		}
 		inst = inst->next;
+	}
+}
+
+void print_arr(char **arr)
+{
+	int i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i] != NULL)
+		++i;
+	i = ft_len_str_arr(arr) - ft_min(i , 5);
+	while (arr[i] != NULL)
+	{
+		ft_printf("%p -- %s\n", arr[i], arr[i]);
+		++i;
 	}
 }

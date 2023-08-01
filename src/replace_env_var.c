@@ -36,14 +36,15 @@ static char	*get_var_name(char *str, int pos)
 
 static char	*replace_command(char *str, char *variable, char *value, int pos)
 {
-	int		j;
+	int 	j;
+	int 	lenstrout;
 	char	*out;
 
-	j = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
-	out = (char *) malloc(j * sizeof(char));
-	out[j - 1] = '\0';
+	lenstrout = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
+	out = (char *) malloc(lenstrout * sizeof(char));
+	out[lenstrout - 1] = '\0';
 	j = -1;
-	while (out[++j])
+	while (++j <= lenstrout)
 	{
 		if (j < pos)
 			out[j] = str[j];

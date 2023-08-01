@@ -42,17 +42,20 @@ int	cmd_setenv(t_instruct *instr)
 {
 	int		i;
 	char	**str;
+	char	*aux;
 
 	if (more_th_1(instr->instruc))
 	{
 		ft_printf("Command not found.\n");
 		return (1);
 	}
-	str = ft_split(instr->instruc, '=');
+	aux = ft_strdup(instr->instruc);
 	i = -1;
-	while (str)
+	while (aux)
 	{
-		setenv(str[0], str[1], 1);
+		str = ft_split(aux, '=');
+		if (setenv(str[0], str[1], 1) == 0)
+			instr->header->env = actualize_env(instr->header->env, aux, 2);
 		i++;
 		free_arrchar(str);
 		if (!instr->arg || !instr->arg[i])
@@ -62,8 +65,9 @@ int	cmd_setenv(t_instruct *instr)
 			ft_printf("Command not found.\n");
 			return (1);
 		}
-		if (instr->arg[i])
-			str = ft_split(instr->arg[i], '=');
+		free(aux);
+		aux = ft_strdup(instr->arg[i]);
 	}
+	free(aux);
 	return (1);
 }

@@ -86,7 +86,8 @@ int			cmd_unset(t_instruct *instruct);
 int			cmd_setenv(t_instruct *instruct);
 int			cmd_exec(t_instruct *instruct);
 //Work_command
-void		work_command(t_instruct *instr);
+void 		work_command(t_instruct *instr);
+void 		work_1_command(t_instruct *instr);
 // check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_quotes
@@ -106,7 +107,8 @@ bool		is_oper(char *str);
 char		*concat_env(char *name_var);
 // print_var
 void		print_inst(t_instruct *instruct);
-//replace_env_var
+void		print_arr(char **arr);
+// replace_env_var
 char		*replace_env_var(char *str);
 //actualize_env
 char		**actualize_env(char **env, char *str, int k);
@@ -120,5 +122,9 @@ void		get_cmd(t_data *data);
 int			leninstr(t_instruct *list_instr);
 // adm_redirections
 void		adm_redirections(void);
+//ft_str_arr_add
+char		**ft_str_arr_add(char **arr, char *str);
+//ft_str_arr_rem
+char		**ft_str_arr_rem(char **arr, int pos);
 
 #endif

@@ -77,6 +77,5 @@ int		ft_isodd(int c);
 int		ft_len_str_arr(char **str);
 char	**ft_strsort_arr(char **str, int o);
 char	**ft_cpy_str_arr(char **str);
-char	**ft_str_arr_add(char **arr, char *str);
 
 #endif

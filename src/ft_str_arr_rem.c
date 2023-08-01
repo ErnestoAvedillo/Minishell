@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_arr_add.c                                   :+:      :+:    :+:   */
+/*   ft_str_arr_rem.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../inc/minishell.h"
 
 /**
  *
@@ -21,20 +21,26 @@
  *					
  * Returns:			char** the new pointer to the string.
  **/
-char	**ft_str_arr_add(char **arr, char *str)
+char	**ft_str_arr_rem(char **arr, int pos)
 {
 	int		i;
 	char	**out;
 
 	i = ft_len_str_arr(arr);
-	out = (char **)malloc((i + 2) * sizeof(char *));
+	out = (char **)malloc(i * sizeof(char *));
 	if (!out)
 		return (NULL);
 	i = -1;
 	while (arr[++i])
-		out[i] = arr[i];
-	out[i] = str;
-	out[++i] = NULL;
+	{
+		if(i < pos)
+			out[i] = arr[i];
+		else if (i == pos)
+			free(arr[pos]);
+		else
+			out[i - 1] = arr[i];
+	}
+	out[i - 1] = NULL;
 	free(arr);
 	return (out);
 }

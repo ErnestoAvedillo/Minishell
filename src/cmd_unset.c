@@ -18,11 +18,7 @@ int	cmd_unset(t_instruct *instruct)
 
 	i = -1;
 	while (instruct->arg[++i])
-	{
 		if (unsetenv(instruct->arg[i]) == 0)
-			printf("Variable unseted succesfully %s\n", instruct->arg[i]);
-		else
-			printf("error unseting the variale %s\n", instruct->arg[i]);
-	}
+			instruct->header->env = actualize_env(instruct->header->env, instruct->arg[i], 0);
 	return (1);
 }
