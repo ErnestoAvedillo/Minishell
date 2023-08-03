@@ -98,19 +98,13 @@ static char	**exp_no_val(char *var, char **env)
  **/
 static char	**exp_val(char *var, char **env)
 {
-//	char	**aux;
 	char	**out;
 	char	*value;
 
 	out = env;
 	value = ft_strdup(var);
-//	if (setenv(aux[0], aux[1], 1) == 0)
-//	aux = ft_split(value, '=');
 	if (putenv(value) == 0)
-	{
 		out = actualize_env(env, var, 1);
-	}
-//	free_arrchar(aux);
 	return (out);
 }
 

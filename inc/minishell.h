@@ -45,7 +45,8 @@
 typedef struct s_data
 {
 	char			*command;
-	char			**splited_cmd;
+	int				input_fd;
+	int				output_fd;
 	char			**env;
 	char			**cmd_list;
 	char			**oper_list;

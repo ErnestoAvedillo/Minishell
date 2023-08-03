@@ -41,7 +41,7 @@ void	work_1_command(t_instruct *instr)
 		{
 			instr->header->out_status = ((int (*)(t_instruct *)) \
 					((void **)instr->header->functions_ptr)[i])(instr);
-			return;
+			return ;
 		}
 	}
 	if (is_char_in_str(instr->instruc, '='))

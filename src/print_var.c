@@ -30,6 +30,7 @@ void	print_inst(t_instruct *instructions)
 				i++;
 			}
 		}
+		printf("fd 0 = %i -- fd1 = %i\n", inst->pipefd[0], inst->pipefd[1]);
 		inst = inst->next;
 	}
 }
