@@ -36,8 +36,8 @@ static char	*get_var_name(char *str, int pos)
 
 static char	*replace_command(char *str, char *variable, char *value, int pos)
 {
-	int 	j;
-	int 	lenstrout;
+	int		j;
+	int		lenstrout;
 	char	*out;
 
 	lenstrout = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
@@ -53,7 +53,6 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 		else if (value)
 			out[j] = value[j - pos];
 	}
-	printf(" el comando es %s-- %s\n", str, out);
 	free (str);
 	return (out);
 }

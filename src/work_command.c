@@ -12,11 +12,25 @@
 
 #include "../inc/minishell.h"
 
-void work_1_command(t_instruct *instr)
+static void	exec_ext_cmd(t_instruct *instr)
 {
-	int i;
-	int j;
-	int leninst;
+	instr->pid = fork();
+	if (instr->pid == -1)
+	{
+		printf("fork error\n");
+		return ;
+	}
+	else if (instr->pid == 0)
+		cmd_exec(instr);
+	instr->header->out_status = 1;
+	wait(NULL);
+}
+
+void	work_1_command(t_instruct *instr)
+{
+	int	i;
+	int	j;
+	int	leninst;
 
 	i = -1;
 	leninst = ft_strlen(instr->instruc);
@@ -25,32 +39,23 @@ void work_1_command(t_instruct *instr)
 		j = ft_strncmp(instr->instruc, instr->header->cmd_list[i], 0, leninst);
 		if (instr->instruc && !j)
 		{
-			instr->header->out_status = ((int (*)(t_instruct *))((void **)instr->header->functions_ptr)[i])(instr);
+			instr->header->out_status = ((int (*)(t_instruct *)) \
+					((void **)instr->header->functions_ptr)[i])(instr);
 			return;
 		}
 	}
 	if (is_char_in_str(instr->instruc, '='))
 		instr->header->out_status = cmd_setenv(instr);
 	else
-	{
-		instr->pid = fork();
-		if (instr->pid == -1)
-		{
-			printf("fork error\n");
-			return;
-		}
-		else if (instr->pid == 0)
-			instr->header->out_status = cmd_exec(instr);
-		wait(NULL);
-		return;
-	}
+		exec_ext_cmd(instr);
+	return ;
 }
 
-void work_command(t_instruct *instr)
+void	work_command(t_instruct *instr)
 {
-	int i;
-	int j;
-	int leninst;
+	int	i;
+	int	j;
+	int	leninst;
 
 	i = -1;
 	leninst = ft_strlen(instr->instruc);
@@ -59,13 +64,14 @@ void work_command(t_instruct *instr)
 		j = ft_strncmp(instr->instruc, instr->header->cmd_list[i], 0, leninst);
 		if (instr->instruc && !j)
 		{
-			instr->header->out_status = ((int (*)(t_instruct *))((void **)instr->header->functions_ptr)[i])(instr);
+			((int (*)(t_instruct *)) \
+					((void **)instr->header->functions_ptr)[i])(instr);
 			exit(0);
 		}
 	}
 	if (is_char_in_str(instr->instruc, '='))
-		instr->header->out_status = cmd_setenv(instr);
+		cmd_setenv(instr);
 	else
-		instr->header->out_status = cmd_exec(instr);
+		cmd_exec(instr);
 	exit(0);
 }

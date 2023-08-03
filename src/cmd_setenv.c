@@ -33,6 +33,25 @@ bool	more_th_1(char *str)
 }
 
 /*
+ *   Descriptinon:	Checks the syntaxis of the instruction.
+ *   Arguments:		char *str The instruction
+ *
+ *   Returns:		int 1 if true
+ * 					int 0 if false.
+ */
+static int	syntax_error(char *str)
+{
+	if (!str)
+		return (1);
+	if (!is_char_in_str(str, '=') || more_th_1(str))
+	{
+		ft_printf("Command not found.\n");
+		return (1);
+	}
+	return (0);
+}
+
+/*
  *   Descriptinon:	Sets the variable to the designated value.
  *   Arguments:		t_instr *instr The structure where to find  
  * 					instruction and arguments..
@@ -58,13 +77,8 @@ int	cmd_setenv(t_instruct *instr)
 			instr->header->env = actualize_env(instr->header->env, aux, 2);
 		i++;
 		free_arrchar(str);
-		if (!instr->arg || !instr->arg[i])
+		if (!instr->arg || syntax_error(instr->arg[i]))
 			return (1);
-		if (!is_char_in_str(instr->arg[i], '=') || more_th_1(instr->arg[i]))
-		{
-			ft_printf("Command not found.\n");
-			return (1);
-		}
 		free(aux);
 		aux = ft_strdup(instr->arg[i]);
 	}

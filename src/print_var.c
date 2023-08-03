@@ -34,16 +34,16 @@ void	print_inst(t_instruct *instructions)
 	}
 }
 
-void print_arr(char **arr)
+void	print_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!arr)
 		return ;
 	while (arr[i] != NULL)
 		++i;
-	i = ft_len_str_arr(arr) - ft_min(i , 5);
+	i = ft_len_str_arr(arr) - ft_min(i, 5);
 	while (arr[i] != NULL)
 	{
 		ft_printf("%p -- %s\n", arr[i], arr[i]);

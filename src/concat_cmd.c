@@ -34,7 +34,7 @@ char	*concat_cmd(char *str1, char *str2)
 		return (NULL);
 	lenout = ft_strlen(str1) + ft_strlen(str2) + 2;
 	out = (char *)malloc(lenout * sizeof(char));
-	ft_strlcpy(out, str1, ft_strlen(str1));
+	ft_strlcpy(out, str1, ft_strlen(str1) + 1);
 	ft_strlcat(out, str2, lenout);
 	free(str1);
 	free(str2);

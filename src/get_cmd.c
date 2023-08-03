@@ -38,14 +38,12 @@ void	get_cmd(t_data *data)
 		add_history(data->command);
 		g_first_instruct = tokenize(data);
 		if (!g_first_instruct)
-		{
 			printf("Memory alloc. error\n");
-		}
 		else
 			adm_redirections();
 		if (data->out_status == 0)
 			printf("Command not found.\n");
-		else if (data->out_status == -1) 
+		else if (data->out_status == -1)
 			break ;
 		free(data->command);
 		data->command = NULL;

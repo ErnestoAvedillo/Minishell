@@ -15,7 +15,7 @@ int	ft_print_char(char c)
 {
 	int	val;
 
-	val = write (1, &c, 1);
+	val = write(STDOUT_FILENO, &c, 1);
 	return (val);
 }
 
@@ -29,13 +29,13 @@ int	ft_print_str(char *str)
 	out = 0;
 	i = 0;
 	if (str == (char *) NULL)
-		return (write(1, "(null)", 6));
+		return (write(STDOUT_FILENO, "(null)", 6));
 	else
 	{
 		len = ft_strlen(str);
 		while (i < len)
 		{
-			aux = write(1, &str[i++], 1);
+			aux = write(STDOUT_FILENO, &str[i++], 1);
 			if (aux == -1)
 				return (aux);
 			else

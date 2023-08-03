@@ -15,10 +15,12 @@
 int	cmd_unset(t_instruct *instruct)
 {
 	int		i;
+	char	**aux;
 
+	aux = instruct->header->env;
 	i = -1;
 	while (instruct->arg[++i])
 		if (unsetenv(instruct->arg[i]) == 0)
-			instruct->header->env = actualize_env(instruct->header->env, instruct->arg[i], 0);
+			instruct->header->env = actualize_env(aux, instruct->arg[i], 0);
 	return (1);
 }

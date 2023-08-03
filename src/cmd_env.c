@@ -18,7 +18,7 @@ int	cmd_env(t_instruct *instruct)
 	char	*curdir;
 	char	**ptr;
 
-	if (instruct->arg != NULL) 
+	if (instruct->arg != NULL)
 	{
 		if (!ft_strncmp(instruct->arg[0], "PWD", 0, 3))
 		{

@@ -33,7 +33,7 @@ char	**ft_str_arr_rem(char **arr, int pos)
 	i = -1;
 	while (arr[++i])
 	{
-		if(i < pos)
+		if (i < pos)
 			out[i] = arr[i];
 		else if (i == pos)
 			free(arr[pos]);

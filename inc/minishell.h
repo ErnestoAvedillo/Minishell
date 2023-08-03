@@ -25,6 +25,8 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <signal.h>
+# include <fcntl.h>
+# include <sys/types.h>
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
 # define ECHO_CMD	0
@@ -86,8 +88,8 @@ int			cmd_unset(t_instruct *instruct);
 int			cmd_setenv(t_instruct *instruct);
 int			cmd_exec(t_instruct *instruct);
 //Work_command
-void 		work_command(t_instruct *instr);
-void 		work_1_command(t_instruct *instr);
+void		work_command(t_instruct *instr);
+void		work_1_command(t_instruct *instr);
 // check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_quotes

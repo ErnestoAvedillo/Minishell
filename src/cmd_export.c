@@ -67,12 +67,13 @@ void	print_env_sorted(char **env)
  *
  * Returns:			NONE
  **/
-static char	**cmd_exp_vars_no_val(char *var, char **env)
+static char	**exp_no_val(char *var, char **env)
 {
 	size_t	j;
 	char	*value;
 	char	**aux;
 
+	aux = env;
 	j = ft_strlen(var) + ft_strlen(getenv(var));
 	value = (char *)malloc((j + 2) * sizeof(char));
 	value[0] = '\0';
@@ -80,10 +81,7 @@ static char	**cmd_exp_vars_no_val(char *var, char **env)
 	ft_strlcat(value, "=", j + 2);
 	ft_strlcat(value, getenv(var), j + 2);
 	if (putenv(value) == 0)
-		printf("Variable exported succesfully%s\n", value);
-	else
-		printf("error exporting the variale %s\n", value);
-	aux = actualize_env(env, value, 1);
+		aux = actualize_env(env, value, 1);
 	free(value);
 	return (aux);
 }
@@ -98,19 +96,22 @@ static char	**cmd_exp_vars_no_val(char *var, char **env)
  *
  * Returns:			NONE
  **/
-static char **cmd_exp_vars_val(char *var, char **env)
+static char	**exp_val(char *var, char **env)
 {
-	char	**aux;
+//	char	**aux;
+	char	**out;
 	char	*value;
 
-	aux = ft_split(var, '=');
-	setenv(aux[0], aux[1], 1);
-	putenv(var);
-	free_arrchar(aux);
+	out = env;
 	value = ft_strdup(var);
-	aux = actualize_env(env, value, 1);
-	free(value);
-	return (aux);
+//	if (setenv(aux[0], aux[1], 1) == 0)
+//	aux = ft_split(value, '=');
+	if (putenv(value) == 0)
+	{
+		out = actualize_env(env, var, 1);
+	}
+//	free_arrchar(aux);
+	return (out);
 }
 
 /**
@@ -140,9 +141,9 @@ int	cmd_export(t_instruct *instr)
 	while (instr->arg[++i])
 	{
 		if (ft_strchr(instr->arg[i], 0, '=') == NULL )
-			instr->header->env = cmd_exp_vars_no_val(instr->arg[i], instr->header->env);
+			instr->header->env = exp_no_val(instr->arg[i], instr->header->env);
 		else
-			instr->header->env = cmd_exp_vars_val(instr->arg[i], instr->header->env);
+			instr->header->env = exp_val(instr->arg[i], instr->header->env);
 		if (!instr->header->env)
 			return (-1);
 	}
