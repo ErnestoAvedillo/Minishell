@@ -127,8 +127,8 @@ void	fill_instruct(t_instruct *inst, char *str, int start, int end)
 	char	*words;
 	char	*ptr;
 
-//	inst->pre_oper = get_pre_oper(str, start);
-//	inst->post_oper = get_post_oper(str, end);
+	inst->pre_oper = get_pre_oper(str, start);
+	inst->post_oper = get_post_oper(str, end);
 	while (str[start] && str[start] == ' ')
 		start ++;
 	ptr = ft_strchr(str, start, ' ');

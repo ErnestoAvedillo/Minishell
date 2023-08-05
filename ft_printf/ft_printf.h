@@ -45,24 +45,24 @@ typedef struct true_table_spaces
 	int		ispoint;
 }		t_true_table_spcs;
 
-# define PLUS_FLAG '+'
-# define MINUS_FLAG '-'
-# define POINT_FLAG '.'
-# define SPACE_FLAG ' '
-# define POUND_FLAG '#'
-# define ZERO_FLAG '0'
-# define NONE_FLAG '\0'
+# define PLUS_FLAG 43 			//char +
+# define MINUS_FLAG 45			//char -
+# define POINT_FLAG 46			//char .
+# define SPACE_FLAG 32			//char ' ' space
+# define POUND_FLAG 35			//char #
+# define ZERO_FLAG 48			//char 0
+# define NONE_FLAG 0			//char \0
 
-# define PERC_FORMAT '%'
-# define INT_FORMAT_I 'i'
-# define INT_FORMAT_D 'd'
-# define CHAR_FORMAT_C 'c'
-# define STR_FORMAT_S 's'
-# define ADDR_FORMAT_P 'p'
-# define LONG_FORMAT_U 'u'
-# define HEX_FORMAT_X 'x'
-# define HEX_FORMAT_X_CAP 'X'
-# define NONE_FORMAT '\0'
+# define PERC_FORMAT 37			//char %
+# define INT_FORMAT_I 105		//char i 
+# define INT_FORMAT_D 100		//char d
+# define CHAR_FORMAT_C 99		//char c
+# define STR_FORMAT_S 115		//char s
+# define ADDR_FORMAT_P 112		//char p
+# define LONG_FORMAT_U 117		//char u
+# define HEX_FORMAT_X 120		//char x
+# define HEX_FORMAT_X_CAP 88	//char X
+# define NONE_FORMAT 0			//char \0
 
 // ft printf
 int			ft_printf(char const *str, ...);

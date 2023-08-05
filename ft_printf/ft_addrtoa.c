@@ -60,7 +60,7 @@ char	*ft_addrtoa(size_t n, int formato, int flag)
 		lenstr += 2;
 	str = (char *)malloc ((lenstr + 1) * sizeof (char));
 	if (!str)
-		return (NULL);
+		return (0);
 	str[lenstr] = '\0';
 	if (is_conf_ex (formato, flag))
 	{

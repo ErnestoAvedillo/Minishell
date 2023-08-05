@@ -38,7 +38,7 @@ FLAGS:= -Werror -Wextra -Wall -O2 -g $(SANIT1)
 RM := rm -rfd
 
 
-all: $(LIBFT) $(FT_PRINTF) $(NAME)
+all: $(FT_PRINTF) $(NAME)
 
 
 all_lk: SANIT1 = -fsanitize=address
@@ -66,10 +66,10 @@ $(DIR_OBJ_DST)%.d: $(DIR_SRC)%.c $(INCLUDE)
 	@$(CC) $(FLAGS) -I$(INCDIR) -MM -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.d 
 
 $(LIBFT):
-	make -C$(DIR_PRINTF)
+	make -C$(DIR_LIBFT)
 
 $(FT_PRINTF):
-	make -C$(DIR_LIBFT)
+	make -C$(DIR_PRINTF)
 
 clean:
 	@$(RM) $(DIR_OBJ_DST)

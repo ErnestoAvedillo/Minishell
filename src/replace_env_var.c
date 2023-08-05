@@ -29,7 +29,7 @@ static char	*get_var_name(char *str, int pos)
 	int	i;
 
 	i = pos;
-	while (str[i] && (str[i] != ' ' && str[i] != '\"'))
+	while (str[i] && (str[i] != ' ' && str[i] != '\"' && str[i] != '\''))
 		i++;
 	return (ft_substr(str, pos + 1, i - pos - 1));
 }
@@ -60,23 +60,27 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 char	*replace_env_var(char *str)
 {
 	int		i;
-	char	*variable;
-	char	*value;
+	char	*var_val[2];
+	bool	quoted;
 
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '\'')
+		if (str[i] == '\"' && !quoted)
+			quoted = true;
+		else if (str[i] == '\"' && quoted)
+			quoted = false;
+		if (str[i] == '\'' && !quoted)
 			i = move_2_next_sing_quote(str, i);
 		if (!str[i])
 			return (str);
 		if (str[i] == '$')
 		{
-			variable = get_var_name(str, i);
-			value = getenv(variable);
-			str = replace_command(str, variable, value, i);
-			free(variable);
-			i += ft_strlen(value) - 1;
+			var_val[0] = get_var_name(str, i);
+			var_val[1] = getenv(var_val[0]);
+			str = replace_command(str, var_val[0], var_val[1], i);
+			free(var_val[0]);
+			i += ft_strlen(var_val[1]) - 1;
 		}
 	}
 	return (str);

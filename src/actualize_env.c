@@ -84,7 +84,7 @@ char	**actualize_env(char **env, char *str, int k)
 		out = rem_elem_from_env(env, str);
 	else if (k != 0)
 	{
-		aux = strdup(str);
+		aux = ft_strdup(str);
 		if (pos < ft_len_str_arr(out))
 		{
 			free(out[pos]);

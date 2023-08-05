@@ -60,55 +60,59 @@ void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 void	ext_out_file(t_instruct *instr, int start)
 {
 	char	*out;
+	char	*aux;
 	int		end;
-	int		i;
+	int		pos;
 
-	i = 0;
-	out = ft_strdup(instr->header->command);
-	if (out[start] == '>' && out[start + 1] == '>')
-	{
+	pos = 0;
+	aux = ft_strdup(instr->header->command);
+	if (aux[start] == '>' && aux[start + 1] == '>')
 		instr->header->out_fd_type = 2;
-		i++;
-	}
 	else
 		instr->header->out_fd_type = 1;
-	i++;
-	while (out[start + i] == ' ')
-		i++;
-	end = (int)(ft_strchr(out, start + i, ' ') - out);
-	instr->header->out_fd_name = ft_substr(out, start + i, end);
-	out = ft_substr(out, 0, start);
+	pos += instr->header->out_fd_type;
+	while (aux[start + pos] == ' ')
+		pos++;
+	end = pos;
+	while (aux[start + end] && aux[start + end] != ' ' \
+			&& aux[start + end] != '|')
+		end++;
+	instr->header->out_fd_name = ft_substr(aux, start + pos, end);
+	out = ft_strdup(instr->header->command);
+	out[start] = '\0';
+	aux = out + end;
 	ft_strlcat(out, ft_substr(out, end, ft_strlen(out)), ft_strlen(out));
 	free(instr->header->command);
 	instr->header->command = out;
-	return ;
 }
 
 void	ext_in_file(t_instruct *instr, int start)
 {
 	char	*out;
+	char	*aux;
 	int		end;
-	int		i;
+	int		pos;
 
-	i = 0;
-	out = ft_strdup(instr->header->command);
-	if (out[start] == '<' && out[start + 1] == '<')
-	{
+	pos = 0;
+	aux = ft_strdup(instr->header->command);
+	if (aux[start] == '<' && aux[start + 1] == '<')
 		instr->header->in_fd_type = 2;
-		i++;
-	}
 	else
 		instr->header->in_fd_type = 1;
-	i++;
-	while (out[start + i] == ' ')
-		i++;
-	end = (int)(ft_strchr(out, start + i, ' ') - out);
-	instr->header->in_fd_name = ft_substr(out, start + i, end);
-	out = ft_substr(out, 0, start);
-	ft_strlcat(out, ft_substr(out, end, ft_strlen(out)), ft_strlen(out));
+	pos += instr->header->in_fd_type;
+	while (aux[start + pos] == ' ')
+		pos++;
+	end = pos;
+	while (aux[start + end] && aux[start + end] != ' ' \
+			&& aux[start + end] != '|')
+		end++;
+	instr->header->in_fd_name = ft_substr(aux, start + pos, end - pos);
+	out = ft_strdup(instr->header->command);
+	out[start] = '\0';
+	aux = out + start + end;
+	ft_strlcat(out, aux, ft_strlen(instr->header->command));
 	free(instr->header->command);
 	instr->header->command = out;
-	return ;
 }
 
 void	check_ext_files(t_instruct *instr)

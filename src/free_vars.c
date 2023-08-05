@@ -43,7 +43,7 @@ void	free_vars(t_data *data)
 
 void	free_cmd_data(t_data *data)
 {
-	if(data->command)
+	if (data->command)
 		free(data->command);
 	data->command = NULL;
 	if (data->in_fd_type)

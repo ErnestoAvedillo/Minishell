@@ -67,6 +67,7 @@ static size_t	ft_nextendpos(char const *str, size_t ini, char *c)
 	return (i);
 }
 
+/*
 static bool	double_oper(char *str, int pos)
 {
 	if ((str[pos] == '>' && str[pos + 1] == '>') \
@@ -74,6 +75,7 @@ static bool	double_oper(char *str, int pos)
 		return (true);
 	return (false);
 }
+*/
 
 /*
  *   Descriptinon:	Separate the commands by its operators.
@@ -97,8 +99,6 @@ t_instruct	*tokenize(t_data *data)
 	{
 		end_pos = ft_nextendpos(data->command, start_pos, "|");
 		fill_instruct(instruct[1], data->command, start_pos, end_pos);
-		if (double_oper(data->command, end_pos))
-			end_pos++;
 		start_pos = end_pos + 1;
 		if (start_pos <= (int)ft_strlen(data->command))
 		{

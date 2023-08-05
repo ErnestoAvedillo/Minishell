@@ -48,30 +48,30 @@ void	close_all_pipes(void)
 */
 void	redirect(t_instruct *cur_inst)
 {
-	t_instruct	*instr[2];
+	t_instruct	*instr_pre;
 
-	instr[0] = cur_inst;
-	instr[1] = instr[0]->prev;
-	if ((instr[0]->prev == NULL) && (instr[0]->next != NULL))
+	instr_pre = cur_inst->prev;
+	if ((cur_inst->prev == NULL) && (cur_inst->next != NULL))
 	{
-		close(instr[0]->pipefd[0]);
-		dup2(instr[0]->pipefd[1], STDOUT_FILENO);
-		close(instr[0]->pipefd[1]);
+		input_file_redir(cur_inst->header);
+		close(cur_inst->pipefd[0]);
+		dup2(cur_inst->pipefd[1], STDOUT_FILENO);
+		close(cur_inst->pipefd[1]);
 	}
-	else if ((instr[0]->prev != NULL) && (instr[0]->next != NULL))
+	else if ((cur_inst->prev != NULL) && (cur_inst->next != NULL))
 	{
-		close(instr[0]->pipefd[0]);
-		dup2(instr[1]->pipefd[0], STDIN_FILENO);
-		close(instr[1]->pipefd[0]);
-		dup2(instr[0]->pipefd[1], STDOUT_FILENO);
-		close(instr[0]->pipefd[1]);
+		close(cur_inst->pipefd[0]);
+		dup2(instr_pre->pipefd[0], STDIN_FILENO);
+		close(instr_pre->pipefd[0]);
+		dup2(cur_inst->pipefd[1], STDOUT_FILENO);
+		close(cur_inst->pipefd[1]);
 	}
-	else if ((instr[0]->prev != NULL) && (instr[0]->next == NULL))
+	else if ((cur_inst->prev != NULL) && (cur_inst->next == NULL))
 	{
 		output_file_redir(cur_inst->header);
-		close(instr[1]->pipefd[1]);
-		dup2(instr[1]->pipefd[0], STDIN_FILENO);
-		close(instr[1]->pipefd[0]);
+		close(instr_pre->pipefd[1]);
+		dup2(instr_pre->pipefd[0], STDIN_FILENO);
+		close(instr_pre->pipefd[0]);
 	}
 }
 
@@ -108,7 +108,6 @@ int	check_is_1_command(void)
 	if (leninst == 1)
 	{
 		work_1_command(g_first_instruct);
-		close_file_redir(g_first_instruct->header);
 		return (1);
 	}
 	return (0);
@@ -139,6 +138,5 @@ void	adm_redirections(void)
 		instr = instr->next;
 	}
 	g_first_instruct->header->out_status = 1;
-	free_inst();
 	return ;
 }
