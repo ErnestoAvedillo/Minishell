@@ -31,8 +31,9 @@ void	work_1_command(t_instruct *instr)
 	int	i;
 	int	j;
 	int	leninst;
-
+	
 	i = -1;
+	adm_file_redir(instr->header);
 	leninst = ft_strlen(instr->instruc);
 	while (++i <= EXIT_CMD)
 	{

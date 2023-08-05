@@ -68,6 +68,7 @@ void	redirect(t_instruct *cur_inst)
 	}
 	else if ((instr[0]->prev != NULL) && (instr[0]->next == NULL))
 	{
+		output_file_redir(cur_inst->header);
 		close(instr[1]->pipefd[1]);
 		dup2(instr[1]->pipefd[0], STDIN_FILENO);
 		close(instr[1]->pipefd[0]);
@@ -107,6 +108,7 @@ int	check_is_1_command(void)
 	if (leninst == 1)
 	{
 		work_1_command(g_first_instruct);
+		close_file_redir(g_first_instruct->header);
 		return (1);
 	}
 	return (0);

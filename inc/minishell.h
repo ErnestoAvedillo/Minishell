@@ -45,8 +45,12 @@
 typedef struct s_data
 {
 	char			*command;
-	int				input_fd;
-	int				output_fd;
+	int				in_fd;
+	int				in_fd_type;
+	char			*in_fd_name;
+	int				out_fd;
+	int				out_fd_type;
+	char			*out_fd_name;
 	char			**env;
 	char			**cmd_list;
 	char			**oper_list;
@@ -97,9 +101,11 @@ int			check_cmd_line(t_data *data);
 bool		quotes_ok(char *str);
 //token_utils
 void		fill_instruct(t_instruct *inst, char *str, int start, int end);
-//token_utils
+//token_utils2
 void		replace_char_btw_quotes(char *str, unsigned int c1, \
 									unsigned int c2);
+void		check_ext_files(t_instruct *instr);
+
 // tokenize
 t_instruct	*tokenize(t_data *data);
 //utils
@@ -129,5 +135,10 @@ void		adm_redirections(void);
 char		**ft_str_arr_add(char **arr, char *str);
 //ft_str_arr_rem
 char		**ft_str_arr_rem(char **arr, int pos);
+//adm_file_redir
+void		adm_file_redir(t_data *header);
+void		output_file_redir(t_data *header);
+void		input_file_redir(t_data *header);
+void		close_file_redir(t_data *header);
 
 #endif

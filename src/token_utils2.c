@@ -56,3 +56,74 @@ void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 		}
 	}
 }
+
+void	ext_out_file(t_instruct *instr, int start)
+{
+	char	*out;
+	int		end;
+	int		i;
+
+	i = 0;
+	out = ft_strdup(instr->header->command);
+	if (out[start] == '>' && out[start + 1] == '>')
+	{
+		instr->header->out_fd_type = 2;
+		i++;
+	}
+	else
+		instr->header->out_fd_type = 1;
+	i++;
+	while (out[start + i] == ' ')
+		i++;
+	end = (int)(ft_strchr(out, start + i, ' ') - out);
+	instr->header->out_fd_name = ft_substr(out, start + i, end);
+	out = ft_substr(out, 0, start);
+	ft_strlcat(out, ft_substr(out, end, ft_strlen(out)), ft_strlen(out));
+	free(instr->header->command);
+	instr->header->command = out;
+	return ;
+}
+
+void	ext_in_file(t_instruct *instr, int start)
+{
+	char	*out;
+	int		end;
+	int		i;
+
+	i = 0;
+	out = ft_strdup(instr->header->command);
+	if (out[start] == '<' && out[start + 1] == '<')
+	{
+		instr->header->in_fd_type = 2;
+		i++;
+	}
+	else
+		instr->header->in_fd_type = 1;
+	i++;
+	while (out[start + i] == ' ')
+		i++;
+	end = (int)(ft_strchr(out, start + i, ' ') - out);
+	instr->header->in_fd_name = ft_substr(out, start + i, end);
+	out = ft_substr(out, 0, start);
+	ft_strlcat(out, ft_substr(out, end, ft_strlen(out)), ft_strlen(out));
+	free(instr->header->command);
+	instr->header->command = out;
+	return ;
+}
+
+void	check_ext_files(t_instruct *instr)
+{
+	char	*ptr;
+	char	*out;
+
+	out = ft_strdup(instr->header->command);
+	ptr = ft_strchr(out, 0, '>'); //ojo tiene que ser fuera de comillas
+	if (ptr != NULL && ptr < out + ft_strlen(out))
+		ext_out_file(instr, (int)(ptr - out));
+	free(out);
+	out = ft_strdup(instr->header->command);
+	ptr = ft_strchr(out, 0, '<'); // ojo tiene que ser fuera de comillas
+	if (ptr != NULL && ptr < out + ft_strlen(out))
+		ext_in_file(instr, (int)(ptr - out));
+	free(out);
+}

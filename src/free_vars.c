@@ -37,13 +37,27 @@ void	free_vars(t_data *data)
 	free_arrchar(data->oper_list);
 	free_arrchar(data->env);
 	free (data->functions_ptr);
-	if (data->command)
-	{
-		free(data->command);
-		data->command = NULL;
-	}
 	free (data);
 	data = NULL;
+}
+
+void	free_cmd_data(t_data *data)
+{
+	if(data->command)
+		free(data->command);
+	data->command = NULL;
+	if (data->in_fd_type)
+	{
+		free(data->in_fd_name);
+		data->in_fd_name = NULL;
+		data->in_fd_type = 0;
+	}
+	if (data->out_fd_type)
+	{
+		free(data->out_fd_name);
+		data->out_fd_name = NULL;
+		data->out_fd_type = 0;
+	}
 }
 
 void	free_inst(void)
@@ -51,6 +65,7 @@ void	free_inst(void)
 	t_instruct	*instruct;
 
 	instruct = g_first_instruct;
+	free_cmd_data(instruct->header);
 	while (instruct)
 	{
 		free(instruct->pre_oper);

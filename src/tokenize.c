@@ -88,13 +88,14 @@ t_instruct	*tokenize(t_data *data)
 	int			end_pos;
 
 	instruct[0] = init_instructions(data);
+	check_ext_files(instruct[0]);
 	if (instruct[0] == NULL)
 		return (NULL);
 	instruct[1] = instruct[0];
 	start_pos = 0;
 	while (start_pos <= (int)ft_strlen(data->command))
 	{
-		end_pos = ft_nextendpos(data->command, start_pos, "|><");
+		end_pos = ft_nextendpos(data->command, start_pos, "|");
 		fill_instruct(instruct[1], data->command, start_pos, end_pos);
 		if (double_oper(data->command, end_pos))
 			end_pos++;

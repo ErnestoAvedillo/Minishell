@@ -45,8 +45,6 @@ void	get_cmd(t_data *data)
 			printf("Command not found.\n");
 		else if (data->out_status == -1)
 			break ;
-		free(data->command);
-		data->command = NULL;
 		free_inst();
 	}
 }
