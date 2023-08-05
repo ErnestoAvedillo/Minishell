@@ -115,19 +115,47 @@ void	ext_in_file(t_instruct *instr, int start)
 	instr->header->command = out;
 }
 
+size_t	check_is_redir(char *str, char c)
+{
+	int	pos;
+	bool open_qt;
+	bool open_sg_qt;
+
+	pos = -1;
+	open_qt = false;
+	open_sg_qt = false;
+	while (str[++pos])
+	{
+		if(str[pos] == '\'')
+			open_sg_qt = !open_sg_qt;
+		if(str[pos] == '\"')
+			open_qt = !open_qt;
+		if(str[pos] == c && !open_sg_qt && ! open_qt)
+			return (pos);
+	}
+	return (0);
+}
+
 void	check_ext_files(t_instruct *instr)
 {
-	char	*ptr;
+	//char	*ptr;
 	char	*out;
+	size_t		pos;
 
 	out = ft_strdup(instr->header->command);
-	ptr = ft_strchr(out, 0, '>'); //ojo tiene que ser fuera de comillas
-	if (ptr != NULL && ptr < out + ft_strlen(out))
-		ext_out_file(instr, (int)(ptr - out));
+	//ptr = ft_strchr(out, 0, '>'); //ojo tiene que ser fuera de comillas
+	pos = check_is_redir(out, '>');
+	//if (ptr != NULL && ptr < out + ft_strlen(out))
+	//	ext_out_file(instr, (int)(ptr - out));
+	if (pos != 0 && pos < ft_strlen(out))
+		ext_out_file(instr, (int)pos);
 	free(out);
 	out = ft_strdup(instr->header->command);
-	ptr = ft_strchr(out, 0, '<'); // ojo tiene que ser fuera de comillas
-	if (ptr != NULL && ptr < out + ft_strlen(out))
-		ext_in_file(instr, (int)(ptr - out));
+	//ptr = ft_strchr(out, 0, '<'); // ojo tiene que ser fuera de comillas
+	//if (ptr != NULL && ptr < out + ft_strlen(out))
+	//	ext_in_file(instr, (int)(ptr - out));
+	pos = check_is_redir(out, '>');
+	if (pos != 0 && pos < ft_strlen(out))
+		ext_in_file(instr, (int)pos);
 	free(out);
 }
