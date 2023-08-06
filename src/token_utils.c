@@ -95,24 +95,6 @@ void	replace_char_in_str(char *str, unsigned int c1, unsigned int c2)
 			str[i] = c2;
 }
 
-/*
-	*   Descriptinon:	Returns an array of all arguments separeted by those that
-	*					have the charachters " or '.
-	*   Arguments:		char *str The variable to be splited.
-	*   Returns:		Double pointer where to find the array.
-	*/
-char	**get_special_args(char *str)
-{
-	char	**args;
-	int		i;
-
-	replace_char_btw_quotes(str, ' ', 254);
-	args = ft_split(str, ' ');
-	i = -1;
-	while (args && args[++i])
-		replace_char_in_str(args[i], 254, ' ');
-	return (args);
-}
 
 /*
 *   Descriptinon:	Fill all data for the current instrucion.
@@ -122,30 +104,51 @@ char	**get_special_args(char *str)
 *					int end where the instruction ends.
 *   Returns:		Nothing
 */
-void	fill_instruct(t_instruct *inst, char *str, int start, int end)
+char	*fill_instruct(t_instruct *inst, char *str)
 {
-	char	*words;
-	char	*ptr;
+	int i;
+	int j;
+	bool sing_quot = false;
+	bool doub_quote = false;
+	char *ptr;
 
-	inst->pre_oper = get_pre_oper(str, start);
-	inst->post_oper = get_post_oper(str, end);
-	while (str[start] && str[start] == ' ')
-		start ++;
-	ptr = ft_strchr(str, start, ' ');
-	if (ptr == NULL || end < (int)(ptr - str))
-		inst->instruc = ft_substr(str, start, end - start);
-	else
-		inst->instruc = ft_substr(str, start, (int)(ptr - str) - start);
-	start = (int)(ptr - str);
-	words = ft_substr(str, start, end - start);
-	if (words[0])
+	ptr = ft_strnstr(str, "echo",ft_strlen(str));
+	i = -1;
+	if (ptr != NULL && ptr < str+ ft_strlen(str))
 	{
-		words = replace_env_var(words);
-		if (ft_strchr(words, 0, '\'') == NULL && \
-			ft_strchr(words, 0, '\"') == NULL)
-			inst->arg = ft_split(words, ' ');
-		else
-			inst->arg = get_special_args(words);
+		while(i <= (int)ft_strlen(str))
+		{
+			if (!doub_quote && str[i] == '\'')
+			{
+				sing_quot = !sing_quot;
+				str[i] = ' ';
+			}
+			else if (!sing_quot && str[i] == '\"')
+			{
+				doub_quote = !doub_quote;
+				str[i] = ' ';
+			}
+			else if (str[i] == '$' &&((!sing_quot && !doub_quote) || doub_quote))
+				str= replace_env_var(str, i, inst->header->out_status);
+			else if ((sing_quot && str[i] == ' ') || (doub_quote && str[i] == ' '))
+				str[i] = (char)0xff;
+			i++;
+		}
+		inst->arg = ft_split(str, ' ');
+		j = -1;
+		while (inst->arg[++j])
+		{
+			i = -1;
+			while (inst->arg[j][++i])
+				if (inst->arg[j][i] == (char)0xff)
+					inst->arg[j][i] = ' ';
+		}
+		inst->instruc = ft_strdup(inst->arg[0]);
 	}
-	free(words);
+	else
+	{
+		inst->arg = ft_split(str, ' ');
+		inst->instruc = ft_strdup(inst->arg[0]);
+	}
+	return (str);
 }

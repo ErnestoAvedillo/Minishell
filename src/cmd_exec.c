@@ -32,7 +32,7 @@ char	*check_file_exists(t_instruct *instruct)
 	{
 		ft_strlcat(out, path_arr[i], 1024);
 		ft_strlcat(out, "/", 1024);
-		ft_strlcat(out, instruct->instruc, 1024);
+		ft_strlcat(out, instruct->arg[0], 1024);
 		if (lstat(out, &file_stat) == 0)
 			return (out);
 		out[0] = '\0';
@@ -83,7 +83,8 @@ int	cmd_exec(t_instruct *instruct)
 	out = check_file_exists(instruct);
 	if (!out)
 		return (0);
-	instruct->arg = add_dir_to_arg (instruct->arg, out);
+	free(instruct->arg[0]);
+	instruct->arg[0] = out;
 	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
 	if (exec == -1)
 	{

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
+/*
 static int	move_2_next_sing_quote(char *str, int pos)
 {
 	int	i;
@@ -23,7 +23,7 @@ static int	move_2_next_sing_quote(char *str, int pos)
 	i++;
 	return (i);
 }
-
+*/
 static char	*get_var_name(char *str, int pos)
 {
 	int	i;
@@ -57,31 +57,18 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 	return (out);
 }
 
-char	*replace_env_var(char *str)
+char	*replace_env_var(char *str, int pos, int status)
 {
-	int		i;
 	char	*var_val[2];
-	bool	quoted;
 
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == '\"' && !quoted)
-			quoted = true;
-		else if (str[i] == '\"' && quoted)
-			quoted = false;
-		if (str[i] == '\'' && !quoted)
-			i = move_2_next_sing_quote(str, i);
-		if (!str[i])
-			return (str);
-		if (str[i] == '$')
-		{
-			var_val[0] = get_var_name(str, i);
-			var_val[1] = getenv(var_val[0]);
-			str = replace_command(str, var_val[0], var_val[1], i);
+			var_val[0] = get_var_name(str, pos);
+			if (str[pos + 1] == '?')
+				var_val[1] = ft_itoa(status);
+			else		
+				var_val[1] = ft_strdup(getenv(var_val[0]));
+			str = replace_command(str, var_val[0], var_val[1], pos);
 			free(var_val[0]);
-			i += ft_strlen(var_val[1]) - 1;
-		}
-	}
+			if (var_val[1])
+				free(var_val[1]);
 	return (str);
 }

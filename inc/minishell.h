@@ -14,6 +14,7 @@
 # define MINISHELL_H
 # include "../libft/libft.h"
 # include "../ft_printf/ft_printf.h"
+# include "../Nextline/get_next_line.h"
 # include "colors.h"
 # include <stdio.h>
 # include <stdlib.h>
@@ -100,7 +101,7 @@ int			check_cmd_line(t_data *data);
 //check_quotes
 bool		quotes_ok(char *str);
 //token_utils
-void		fill_instruct(t_instruct *inst, char *str, int start, int end);
+char		*fill_instruct(t_instruct *inst, char *str);
 //token_utils2
 void		replace_char_btw_quotes(char *str, unsigned int c1, \
 									unsigned int c2);
@@ -118,7 +119,7 @@ char		*concat_env(char *name_var);
 void		print_inst(t_instruct *instruct);
 void		print_arr(char **arr);
 // replace_env_var
-char		*replace_env_var(char *str);
+char		*replace_env_var(char *str, int pos, int status);
 //actualize_env
 char		**actualize_env(char **env, char *str, int k);
 //adm_signals

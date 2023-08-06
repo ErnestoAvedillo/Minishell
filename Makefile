@@ -22,9 +22,9 @@ OBJS = $(addprefix $(DIR_OBJ_DST),$(addsuffix .o,$(SRC)))
 DSTS = $(addprefix $(DIR_OBJ_DST),$(addsuffix .d,$(SRC)))
 INCLUDE:= $(addprefix $(INCDIR),$(addsuffix .h, $(INC)))
 
-#LIBFT LIBRARY
-DIR_LIBFT = ./libft/
-LIBFT = $(addprefix $(DIR_LIBFT),libft.a)
+#NEXTLINE LIBRARY
+DIR_NEXTLINE = ./Nextline/
+NEXTLINE = $(addprefix $(DIR_NEXTLINE),get_next_line.a)
 
 #FT_PRINTF LIBRARY
 DIR_PRINTF = ./ft_printf/
@@ -37,12 +37,11 @@ FLAGS:= -Werror -Wextra -Wall -O2 -g $(SANIT1)
 #-fsanitize=datarace -fsanitize=address
 RM := rm -rfd
 
+all: $(FT_PRINTF) $(NEXTLINE) $(NAME)
 
-all: $(FT_PRINTF) $(NAME)
 
-
-all_lk: SANIT1 = -fsanitize=address
-all_lk: SANIT2 = -static-libsan
+all_lk:SANIT1 = -fsanitize=address
+all_lk:SANIT2 = -static-libsan
 all_lk: all
 
 
@@ -53,7 +52,7 @@ linux_lk: all
 -include $(DSTS)
 
 $(NAME): $(OBJS) Makefile
-	$(CC) $(FLAGS) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(LIBFT) -lreadline 
+	$(CC) $(FLAGS) $(SANIT1) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(NEXTLINE) $(LIBFT) -lreadline 
 
 #-static-libsan 
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d
@@ -65,20 +64,20 @@ $(DIR_OBJ_DST)%.d: $(DIR_SRC)%.c $(INCLUDE)
 	@mkdir -p $(DIR_OBJ_DST)
 	@$(CC) $(FLAGS) -I$(INCDIR) -MM -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.d 
 
-$(LIBFT):
-	make -C$(DIR_LIBFT)
-
 $(FT_PRINTF):
 	make -C$(DIR_PRINTF)
 
+$(NEXTLINE):
+	make -C$(DIR_NEXTLINE)
+
 clean:
 	@$(RM) $(DIR_OBJ_DST)
-	make -C$(DIR_LIBFT) clean
+	make -C$(DIR_NEXTLINE) clean
 	make -C$(DIR_PRINTF) clean
 
 fclean: clean
 	@$(RM) $(NAME)
-	make -C$(DIR_LIBFT) fclean
+	make -C$(DIR_NEXTLINE) fclean
 	make -C$(DIR_PRINTF) fclean
 
 re: fclean all
@@ -97,4 +96,4 @@ print:
 	@echo DIRLIBFT: $(DIR_LIBFT)
 	@echo LIBFT: $(LIBFT)
 
-.PHONY: all re clean fclean print libft $(LIBFT) $(FT_PRINTF) linux_lk all_lk
+.PHONY: all re clean fclean print libft $(FT_PRINTF) $(NEXTLINE) linux_lk all_lk

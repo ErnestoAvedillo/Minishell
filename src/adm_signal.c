@@ -14,19 +14,22 @@
 
 void	hndl_ctrl_c(int signal)
 {
-	printf ("^C %i\n", signal);
+	(void)signal;
+	//printf ("^C %i\n", signal);
 	exit(0);
 }
 
 void	hndl_ctrl_d(int signal)
 {
-	printf (" he marcado el Ctr-d %i\n", signal);
+	(void)signal;
+	//printf (" he marcado el Ctr-d %i\n", signal);
 	exit(0);
 }
 
 void	hndl_ctrl_barra(int signal)
 {
-	printf (" he marcado el Ctr-\\ %i\n", signal);
+	(void)signal;
+	//printf (" he marcado el Ctr-\\ %i\n", signal);
 	exit(0);
 }
 

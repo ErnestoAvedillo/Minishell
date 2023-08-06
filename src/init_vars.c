@@ -33,6 +33,14 @@ t_data	*init_vars(char **env)
 	data->oper_list = ft_split(OPERANDS, ' ');
 	data->env = ft_cpy_str_arr(env);
 	data->command = NULL;
+	data->in_fd = 0;
+	data->in_fd = 0;
+	data->in_fd_name = NULL;
+	data->in_fd_type = 0;
+	data->out_fd = 0;
+	data->out_fd_name = NULL;
+	data->out_fd_type = 0;
+	data->out_status = 0;
 	set_func_list(data);
 	return (data);
 }
@@ -43,6 +51,7 @@ t_instruct	*init_instructions(t_data *data)
 
 	first_inst = (t_instruct *) malloc (sizeof(t_instruct));
 	first_inst->header = data;
+	first_inst->instruc = NULL;
 	first_inst->prev = NULL;
 	first_inst->next = NULL;
 	first_inst->pre_oper = NULL;

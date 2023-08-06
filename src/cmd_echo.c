@@ -17,7 +17,7 @@ int	cmd_echo(t_instruct *instruct)
 	int		i;
 	bool	eol;
 
-	i = 0;
+	i = 1;
 	eol = true;
 	if (instruct->arg[i] && ft_strncmp(instruct->arg[i], "-n", 0, 2) == 0)
 	{

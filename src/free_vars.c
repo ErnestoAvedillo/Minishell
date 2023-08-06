@@ -70,7 +70,8 @@ void	free_inst(void)
 	{
 		free(instruct->pre_oper);
 		free(instruct->post_oper);
-		free(instruct->instruc);
+		if(instruct->instruc)
+			free(instruct->instruc);
 		instruct->instruc = NULL;
 		free_arrchar(instruct->arg);
 		g_first_instruct = instruct->next;

@@ -20,17 +20,17 @@ void	print_inst(t_instruct *instructions)
 	inst = instructions;
 	while (inst)
 	{
-		printf ("comando %s\n", inst->instruc);
+		//printf ("comando %s\n", inst->instruc);
 		i = 0;
 		if (inst->arg != NULL)
 		{
 			while (inst->arg[i])
 			{
-				printf (" argumento %i, vale %s\n", i, inst->arg[i]);
+				//printf (" argumento %i, vale %s\n", i, inst->arg[i]);
 				i++;
 			}
 		}
-		printf("fd 0 = %i -- fd1 = %i\n", inst->pipefd[0], inst->pipefd[1]);
+		//printf("fd 0 = %i -- fd1 = %i\n", inst->pipefd[0], inst->pipefd[1]);
 		inst = inst->next;
 	}
 }

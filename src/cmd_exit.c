@@ -15,6 +15,6 @@
 int	cmd_exit(t_instruct *instruct)
 {
 	printf ("Gracias por usar minishell\n");
-	return (-1);
+	return (-2);
 	(void) instruct;
 }

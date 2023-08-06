@@ -27,7 +27,7 @@ int	main(int av, char **ac, char **environ)
 //	add_signals(data);
 	get_cmd(data);
 	free_vars(data);
-	printf("Goodbye!\n");
+	//printf("Goodbye!\n");
 	return (0);
 	(void) av;
 	(void) ac;

@@ -17,7 +17,7 @@ int	cmd_pwd(t_instruct *instruct)
 	char	buffer[1024];
 	char	*curdir;
 
-	if (instruct->arg != NULL)
+	if (instruct->arg[1] != NULL)
 	{
 		ft_printf("pwd: Too many arguments\n");
 		return (1);

@@ -31,7 +31,7 @@ static void	exec_ext_cmd(t_instruct *instr)
 	instr->pid = fork();
 	if (instr->pid == -1)
 	{
-		printf("fork error\n");
+		//printf("fork error\n");
 		return ;
 	}
 	else if (instr->pid == 0)

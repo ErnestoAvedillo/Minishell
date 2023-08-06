@@ -78,10 +78,10 @@ int	cmd_setenv(t_instruct *instr)
 		i++;
 		free_arrchar(str);
 		if (!instr->arg || syntax_error(instr->arg[i]))
-			return (1);
+			return (-1);
 		free(aux);
 		aux = ft_strdup(instr->arg[i]);
 	}
 	free(aux);
-	return (1);
+	return (0);
 }

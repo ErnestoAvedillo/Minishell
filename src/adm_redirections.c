@@ -23,7 +23,7 @@ int	create_pipes(void)
 	{
 		if (pipe(instr->pipefd) == -1)
 		{
-			printf("pipe error\n");
+			//printf("pipe error\n");
 			return (0);
 		}
 		instr = instr->next;
@@ -103,7 +103,7 @@ int	check_is_1_command(void)
 	int			leninst;
 
 	leninst = leninstr(g_first_instruct);
-	if (leninst == 0)
+	if (leninst == 0 || !g_first_instruct->header->command[0])
 		return (1);
 	if (leninst == 1)
 	{
@@ -116,6 +116,7 @@ int	check_is_1_command(void)
 void	adm_redirections(void)
 {
 	t_instruct	*instr;
+	int			status;
 
 	if (check_is_1_command() || !create_pipes())
 		return ;
@@ -125,7 +126,7 @@ void	adm_redirections(void)
 		instr->pid = fork();
 		if (instr->pid == -1)
 		{
-			printf("fork error\n");
+			//printf("fork error\n");
 			return ;
 		}
 		else if (instr->pid == 0)
@@ -134,9 +135,9 @@ void	adm_redirections(void)
 			work_command(instr);
 		}
 		close_prev_pipes(instr);
-		wait(NULL);
+		wait(&status);
 		instr = instr->next;
 	}
-	g_first_instruct->header->out_status = 1;
+	g_first_instruct->header->out_status = WEXITSTATUS(status);
 	return ;
 }
