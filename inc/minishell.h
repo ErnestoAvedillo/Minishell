@@ -140,6 +140,6 @@ char		**ft_str_arr_rem(char **arr, int pos);
 void		adm_file_redir(t_data *header);
 void		output_file_redir(t_data *header);
 void		input_file_redir(t_data *header);
-void		close_file_redir(t_data *header);
+//void		close_file_redir(t_data *header);
 
 #endif

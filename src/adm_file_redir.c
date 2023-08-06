@@ -45,6 +45,7 @@ void	adm_file_redir(t_data *header)
 	output_file_redir(header);
 }
 
+/*
 void	close_file_redir(t_data *header)
 {
 	if (header->in_fd_type)
@@ -55,3 +56,4 @@ void	close_file_redir(t_data *header)
 		close(STDOUT_FILENO);
 	}
 }
+*/

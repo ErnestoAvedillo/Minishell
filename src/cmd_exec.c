@@ -24,7 +24,9 @@ char	*check_file_exists(t_instruct *instruct)
 	char		*out;
 	struct stat	file_stat;
 
-	out = (char *) malloc(1024 * sizeof(char));
+	if (lstat(instruct->arg[0], &file_stat) == 0)
+		return (ft_strdup(instruct->arg[0]));
+	out = (char *)malloc(1024 * sizeof(char));
 	out[0] = '\0';
 	path_arr = ft_split(getenv("PATH"), ':');
 	i = -1;
