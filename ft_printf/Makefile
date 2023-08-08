@@ -68,4 +68,4 @@ fclean:     clean
 
 re:         fclean libft_make $(NAME) 
 
-.PHONY: all re clean fclean re $(LIBFT) 
+.PHONY: all re clean fclean re $(LIBFT) $(LIBNAME)

@@ -11,6 +11,16 @@
 /* ************************************************************************** */
 #include "libft.h"
 
+/**
+ *
+ * Description:		Finds the osition of the string little into the string big
+ *					
+ * Arguments:		char* big: the string where to search
+ * 					char* little: the searching string
+ * 					size_t: the size where to search into the big str.
+ *					
+ * Returns:			the pointer where to find the start pos of the little str.
+ **/
 char	*ft_strnstr(const char	*big, const char *little, size_t len)
 {
 	size_t	i;

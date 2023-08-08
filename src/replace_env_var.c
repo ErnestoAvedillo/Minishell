@@ -60,15 +60,36 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 char	*replace_env_var(char *str, int pos, int status)
 {
 	char	*var_val[2];
+	char	*aux;
 
-			var_val[0] = get_var_name(str, pos);
-			if (str[pos + 1] == '?')
-				var_val[1] = ft_itoa(status);
-			else		
-				var_val[1] = ft_strdup(getenv(var_val[0]));
-			str = replace_command(str, var_val[0], var_val[1], pos);
-			free(var_val[0]);
-			if (var_val[1])
-				free(var_val[1]);
+	var_val[0] = get_var_name(str, pos);
+	if (str[pos + 1] == '?')
+		var_val[1] = ft_itoa(status);
+	else
+	{
+		aux = getenv(var_val[0]);
+		if (!aux)
+			var_val[1] = ft_strdup("$");
+		else 
+			var_val[1] = ft_strdup(getenv(var_val[0]));
+	}
+	str = replace_command(str, var_val[0], var_val[1], pos);
+	free(var_val[0]);
+	if (var_val[1])
+		free(var_val[1]);
+	return (str);
+}
+
+char *repl_home_dir(char *str, int pos)
+{
+	char *var_val[2];
+
+	if ((str[pos + 1] == ' ' || str[pos +1] == '\0') && str[pos - 1] == ' ')
+	{
+		var_val[0] = ft_strdup("~");
+		var_val[1] = getenv("HOME");
+		str = replace_command(str, var_val[0], var_val[1], pos);
+		free(var_val[0]);
+	}
 	return (str);
 }

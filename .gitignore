@@ -54,3 +54,5 @@ dkms.conf
 .vscode
 .dSYM
 .json
+tester
+error.txt

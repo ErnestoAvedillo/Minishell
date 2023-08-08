@@ -24,8 +24,6 @@ t_instruct	*g_first_instruct;
  **/
 void	get_cmd(t_data *data)
 {
-	//char	*add_line;
-
 	while (1)
 	{
 		if (isatty(fileno(stdin)))
@@ -37,14 +35,12 @@ void	get_cmd(t_data *data)
 			data->command = ft_strtrim(line, "\n");
 			free(line);
 		}
-/*		while (!data->command || data->command[0] == 0)
-			data->command = readline("Enter a command Minishell>");
-		while (check_cmd_line(data) == 0)
-		{
-			add_line = readline(">");
-			data->command = concat_cmd(data->command, add_line);
-		}
-*/		add_history(data->command);
+		/*		while (!data->command || data->command[0] == 0)
+					data->command = readline("Enter a command Minishell>");
+				check_cmd_line(data);
+				check_delimiter(data);
+		*/
+		add_history(data->command);
 		g_first_instruct = tokenize(data);
 		if (g_first_instruct)
 			//printf("Memory alloc. error\n");

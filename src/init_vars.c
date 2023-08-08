@@ -41,6 +41,8 @@ t_data	*init_vars(char **env)
 	data->out_fd_name = NULL;
 	data->out_fd_type = 0;
 	data->out_status = 0;
+	data->my_stdin = dup(STDIN_FILENO);
+	data->my_stdout = dup(STDOUT_FILENO);
 	set_func_list(data);
 	return (data);
 }

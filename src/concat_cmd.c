@@ -23,19 +23,9 @@
  **/
 char	*concat_cmd(char *str1, char *str2)
 {
-	int		lenout;
 	char	*out;
 
-	if (!str1)
-		return (str2);
-	if (!str2)
-		return (str1);
-	if (!str2 && str2)
-		return (NULL);
-	lenout = ft_strlen(str1) + ft_strlen(str2) + 2;
-	out = (char *)malloc(lenout * sizeof(char));
-	ft_strlcpy(out, str1, ft_strlen(str1) + 1);
-	ft_strlcat(out, str2, lenout);
+	out = ft_strjoin(str1, str2);
 	free(str1);
 	free(str2);
 	return (out);

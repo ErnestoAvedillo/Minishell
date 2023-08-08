@@ -28,6 +28,7 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <sys/types.h>
+# include <limits.h>
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
 # define ECHO_CMD	0
@@ -56,6 +57,8 @@ typedef struct s_data
 	char			**cmd_list;
 	char			**oper_list;
 	void			**functions_ptr;
+	int				my_stdin;
+	int				my_stdout;
 	int				out_status;
 	struct termios	term;
 }	t_data;
@@ -97,7 +100,9 @@ int			cmd_exec(t_instruct *instruct);
 void		work_command(t_instruct *instr);
 void		work_1_command(t_instruct *instr);
 // check_cmd_line
-int			check_cmd_line(t_data *data);
+void		check_cmd_line(t_data *data);
+//check_delimiter
+void		check_delimiter(t_data *data);
 //check_quotes
 bool		quotes_ok(char *str);
 //token_utils
@@ -106,7 +111,7 @@ char		*fill_instruct(t_instruct *inst, char *str);
 void		replace_char_btw_quotes(char *str, unsigned int c1, \
 									unsigned int c2);
 void		check_ext_files(t_instruct *instr);
-
+void		ft_strrmchr(char *str, int n);
 // tokenize
 t_instruct	*tokenize(t_data *data);
 //utils
@@ -120,6 +125,7 @@ void		print_inst(t_instruct *instruct);
 void		print_arr(char **arr);
 // replace_env_var
 char		*replace_env_var(char *str, int pos, int status);
+char		*repl_home_dir(char *str, int pos);
 //actualize_env
 char		**actualize_env(char **env, char *str, int k);
 //adm_signals
@@ -141,5 +147,7 @@ void		adm_file_redir(t_data *header);
 void		output_file_redir(t_data *header);
 void		input_file_redir(t_data *header);
 //void		close_file_redir(t_data *header);
+//ft_split_instr
+char **ft_split_instr(char const *s, char c);
 
 #endif

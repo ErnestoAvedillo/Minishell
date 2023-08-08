@@ -63,13 +63,13 @@ int	cmd_setenv(t_instruct *instr)
 	char	**str;
 	char	*aux;
 
-	if (more_th_1(instr->instruc))
+	if (more_th_1(instr->arg[0]))
 	{
 		ft_printf("Command not found.\n");
 		return (1);
 	}
-	aux = ft_strdup(instr->instruc);
-	i = -1;
+	aux = ft_strdup(instr->arg[0]);
+	i = 0;
 	while (aux)
 	{
 		str = ft_split(aux, '=');

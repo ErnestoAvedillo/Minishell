@@ -29,7 +29,7 @@ t_instruct	*tokenize(t_data *data)
 	if (instruct[0] == NULL)
 		return (NULL);
 	instruct[1] = instruct[0];
-	subcommands = ft_split(data->command,  '|');
+	subcommands = ft_split_instr(data->command, '|');
 	i = -1;
 	while(subcommands[++i])
 	{
@@ -42,6 +42,6 @@ t_instruct	*tokenize(t_data *data)
 			instruct[1] = instruct[2];
 		}
 	}
-	free(subcommands);
+	free_arrchar(subcommands);
 	return (instruct[0]);
 }

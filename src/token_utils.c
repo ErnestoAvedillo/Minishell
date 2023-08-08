@@ -106,34 +106,47 @@ void	replace_char_in_str(char *str, unsigned int c1, unsigned int c2)
 */
 char	*fill_instruct(t_instruct *inst, char *str)
 {
-	int i;
-	int j;
-	bool sing_quot = false;
-	bool doub_quote = false;
-	char *ptr;
+	int		i;
+	int		j;
+	bool	quot[2];
+	char	*ptr;
 
+	quot[0] = false;
+	quot[1] = false;
 	ptr = ft_strnstr(str, "echo",ft_strlen(str));
 	i = -1;
 	if (ptr != NULL && ptr < str+ ft_strlen(str))
 	{
 		while(i <= (int)ft_strlen(str))
 		{
-			if (!doub_quote && str[i] == '\'')
+			if (str[i] == '\\' && !quot[1] && !quot[0])
+				ft_strrmchr(str, i);
+			else if (!quot[1] && str[i] == '\'')
 			{
-				sing_quot = !sing_quot;
-				str[i] = ' ';
+				quot[0] = !quot[0];
+				ft_strrmchr(str, i);
+				i--;
 			}
-			else if (!sing_quot && str[i] == '\"')
+			else if (!quot[0] && str[i] == '\"')
 			{
-				doub_quote = !doub_quote;
-				str[i] = ' ';
+				quot[1] = !quot[1];
+				ft_strrmchr(str, i);
+				i--;
 			}
-			else if (str[i] == '$' &&((!sing_quot && !doub_quote) || doub_quote))
-				str= replace_env_var(str, i, inst->header->out_status);
-			else if ((sing_quot && str[i] == ' ') || (doub_quote && str[i] == ' '))
+			else if (str[i] == '$' && !quot[1] && !quot[0] && (str[i + 1] == ' ' || str[i + 1] == '\"'))
+			{
+				ft_strrmchr(str, i);
+				i--;
+			}
+			else if (str[i] == '$' && ((!quot[0] && !quot[1]) || quot[1]))
+				str = replace_env_var(str, i, inst->header->out_status);
+			else if (str[i] == '~' && !quot[0] && !quot[1])
+				str = repl_home_dir(str, i);
+			else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
 				str[i] = (char)0xff;
 			i++;
 		}
+
 		inst->arg = ft_split(str, ' ');
 		j = -1;
 		while (inst->arg[++j])

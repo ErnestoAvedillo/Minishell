@@ -119,20 +119,19 @@ void	ext_in_file(t_instruct *instr, int start)
 
 size_t	check_is_redir(char *str, char c)
 {
-	int	pos;
-	bool open_qt;
-	bool open_sg_qt;
+	int		pos;
+	bool	quot[2];
 
 	pos = -1;
-	open_qt = false;
-	open_sg_qt = false;
+	quot[1] = false;
+	quot[0] = false;
 	while (str[++pos])
 	{
 		if(str[pos] == '\'')
-			open_sg_qt = !open_sg_qt;
+			quot[0] = !quot[0];
 		if(str[pos] == '\"')
-			open_qt = !open_qt;
-		if(str[pos] == c && !open_sg_qt && ! open_qt)
+			quot[1] = !quot[1];
+		if(str[pos] == c && !quot[0] && !quot[1])
 			return (pos);
 	}
 	return (0);
@@ -153,4 +152,18 @@ void	check_ext_files(t_instruct *instr)
 	if (pos != 0 && pos < ft_strlen(out))
 		ext_in_file(instr, (int)pos);
 	free(out);
+}
+
+void ft_strrmchr(char *str, int n)
+{
+	int i;
+	int str_len;
+
+	str_len = ft_strlen(str);
+	i = -1;
+	while (++i < str_len)
+	{
+		if(i >= n)
+			str[i] = str[i + 1];
+	}
 }

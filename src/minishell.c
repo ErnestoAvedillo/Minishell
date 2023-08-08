@@ -22,13 +22,15 @@
 int	main(int av, char **ac, char **environ)
 {
 	t_data	*data;
+	int		out;
 
 	data = init_vars(environ);
 //	add_signals(data);
 	get_cmd(data);
+	out = data->out_status;
 	free_vars(data);
 	//printf("Goodbye!\n");
-	return (0);
+	return (out);
 	(void) av;
 	(void) ac;
 }

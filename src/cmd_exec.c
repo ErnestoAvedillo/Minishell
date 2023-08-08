@@ -90,7 +90,7 @@ int	cmd_exec(t_instruct *instruct)
 	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
 	if (exec == -1)
 	{
-		printf ("salgo con error\n");
+		//printf ("salgo con error\n");
 		free(out);
 		return (1);
 	}

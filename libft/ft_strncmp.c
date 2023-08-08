@@ -9,6 +9,7 @@
 /*   Updated: 2022/09/24 10:05:55 by eavedill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 /*
 *   Descriptinon:	Compares 2 strings for a given length.
 *   Arguments:		char *s1: First string to compare.

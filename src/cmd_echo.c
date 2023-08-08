@@ -27,8 +27,8 @@ int	cmd_echo(t_instruct *instruct)
 	while (instruct->arg[i])
 	{
 		ft_printf ("%s", instruct->arg[i]);
-		if (instruct->arg[i + 1])
-			ft_printf(" ");
+//		if (instruct->arg[i + 1])
+//			ft_printf(" ");
 		i++;
 	}
 	if (eol)

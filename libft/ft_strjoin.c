@@ -10,7 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
-
+/**
+ *
+ * Description:		Joins 2 strings in a new strng using malloc
+ *
+ * Arguments:		char* str1: first string to be joined
+ * 					char* str2: 2irst string to be joined
+ *
+ * Returns:			char*: the position of the new string.
+ **/
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len1;
