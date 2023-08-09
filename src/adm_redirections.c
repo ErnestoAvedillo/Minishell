@@ -105,8 +105,8 @@ int	check_is_1_command(void)
 	leninst = leninstr(g_first_instruct);
 	if (leninst == 0 )
 		return (1);
-	printf("comando%s\n",g_first_instruct->header->command);
-		//return(1);
+	if(!g_first_instruct->header->command[0])
+		return(1);
 	if (leninst == 1)
 	{
 		work_1_command(g_first_instruct);

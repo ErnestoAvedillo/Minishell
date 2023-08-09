@@ -108,10 +108,11 @@ char	*fill_instruct(t_instruct *inst, char *str)
 {
 	int		i;
 	int		j;
-	bool	quot[2];
+	bool	quot[3];
 
 	quot[0] = false;
 	quot[1] = false;
+	quot[2] = false;
 	i = 0;
 	while (str[i])
 	{
@@ -119,8 +120,15 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			quot[0] = !quot[0];
 		else if (!quot[0] && str[i] == '\"')
 			quot[1] = !quot[1];
-		if (str[i] == '$' && !quot[0])
+		if (str[i] == '\\' && (str[i + 1] == '\\' || str[i + 1] == '$'))
+			quot[2] = !quot[2];
+		else if(str[i] != '$' && str[i - 1] != '\\')
+			quot[2] = false;
+		if (str[i] == '$' && !quot[0] && !quot[2])
+		{
 			str = replace_env_var(str, i, inst->header->out_status);
+			i--;
+		}
 		else if (str[i] == '~' && !quot[0] && !quot[1])
 			str = repl_home_dir(str, i);
 		i++;

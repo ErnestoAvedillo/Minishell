@@ -22,7 +22,7 @@ int	cmd_echo(t_instruct *instruct)
 	if (instruct->arg[i] && ft_strncmp(instruct->arg[i], "-n", 0, 2) == 0)
 	{
 		eol = false;
-		i = 1;
+		i = 2;
 	}
 	while (instruct->arg[i])
 	{
