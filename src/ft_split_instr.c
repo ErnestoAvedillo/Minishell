@@ -47,7 +47,7 @@ static int	ft_nr_words(char const *s, char c)
 	i = 0;
 	quote[0] = false;
 	quote[1] = false;
-	while (s[i])
+	while (s && s[i])
 	{
 		if (i == 0)
 		{

@@ -109,59 +109,60 @@ char	*fill_instruct(t_instruct *inst, char *str)
 	int		i;
 	int		j;
 	bool	quot[2];
-	char	*ptr;
 
 	quot[0] = false;
 	quot[1] = false;
-	ptr = ft_strnstr(str, "echo",ft_strlen(str));
-	i = -1;
-	if (ptr != NULL && ptr < str+ ft_strlen(str))
+	i = 0;
+	while (str[i])
 	{
-		while(i <= (int)ft_strlen(str))
+		if (!quot[1] && str[i] == '\'')
+			quot[0] = !quot[0];
+		else if (!quot[0] && str[i] == '\"')
+			quot[1] = !quot[1];
+		if (str[i] == '$' && !quot[0])
+			str = replace_env_var(str, i, inst->header->out_status);
+		else if (str[i] == '~' && !quot[0] && !quot[1])
+			str = repl_home_dir(str, i);
+		i++;
+	}
+	quot[0] = false;
+	quot[1] = false;
+	i = 0;
+	while(i <= (int)ft_strlen(str))
+	{
+		if (str[i] == '\\' && !quot[1] && !quot[0])
+			ft_strrmchr(str, i);
+		else if (!quot[1] && str[i] == '\'')
 		{
-			if (str[i] == '\\' && !quot[1] && !quot[0])
-				ft_strrmchr(str, i);
-			else if (!quot[1] && str[i] == '\'')
-			{
-				quot[0] = !quot[0];
-				ft_strrmchr(str, i);
-				i--;
-			}
-			else if (!quot[0] && str[i] == '\"')
-			{
-				quot[1] = !quot[1];
-				ft_strrmchr(str, i);
-				i--;
-			}
-			else if (str[i] == '$' && !quot[1] && !quot[0] && (str[i + 1] == ' ' || str[i + 1] == '\"'))
-			{
-				ft_strrmchr(str, i);
-				i--;
-			}
-			else if (str[i] == '$' && ((!quot[0] && !quot[1]) || quot[1]))
-				str = replace_env_var(str, i, inst->header->out_status);
-			else if (str[i] == '~' && !quot[0] && !quot[1])
-				str = repl_home_dir(str, i);
-			else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
-				str[i] = (char)0xff;
-			i++;
+			quot[0] = !quot[0];
+			ft_strrmchr(str, i);
+			i--;
 		}
+		else if (!quot[0] && str[i] == '\"')
+		{
+			quot[1] = !quot[1];
+			ft_strrmchr(str, i);
+			i--;
+		}
+		else if (str[i] == '$' && !quot[1] && !quot[0] && (str[i + 1] == ' ' || str[i + 1] == '\"'))
+		{
+			ft_strrmchr(str, i);
+			i--;
+		}
+		else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
+			str[i] = (char)0xff;
+		i++;
+	}
 
-		inst->arg = ft_split(str, ' ');
-		j = -1;
-		while (inst->arg[++j])
-		{
-			i = -1;
-			while (inst->arg[j][++i])
-				if (inst->arg[j][i] == (char)0xff)
-					inst->arg[j][i] = ' ';
-		}
-		inst->instruc = ft_strdup(inst->arg[0]);
-	}
-	else
+	inst->arg = ft_split(str, ' ');
+	j = -1;
+	while (inst->arg[++j])
 	{
-		inst->arg = ft_split(str, ' ');
-		inst->instruc = ft_strdup(inst->arg[0]);
+		i = -1;
+		while (inst->arg[j][++i])
+			if (inst->arg[j][i] == (char)0xff)
+				inst->arg[j][i] = ' ';
 	}
+//	inst->instruc = ft_strdup(inst->arg[0]);
 	return (str);
 }

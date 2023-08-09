@@ -142,6 +142,8 @@ void	check_ext_files(t_instruct *instr)
 	char	*out;
 	size_t		pos;
 
+	if(!instr->header->command)
+		return;
 	out = ft_strdup(instr->header->command);
 	pos = check_is_redir(out, '>');
 	if (pos != 0 && pos < ft_strlen(out))

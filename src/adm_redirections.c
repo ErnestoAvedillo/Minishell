@@ -103,8 +103,10 @@ int	check_is_1_command(void)
 	int			leninst;
 
 	leninst = leninstr(g_first_instruct);
-	if (leninst == 0 || !g_first_instruct->header->command[0])
+	if (leninst == 0 )
 		return (1);
+	printf("comando%s\n",g_first_instruct->header->command);
+		//return(1);
 	if (leninst == 1)
 	{
 		work_1_command(g_first_instruct);
@@ -118,7 +120,9 @@ void	adm_redirections(void)
 	t_instruct	*instr;
 	int			status;
 
-	if (check_is_1_command() || !create_pipes())
+	if (check_is_1_command())
+		return;
+	if (!create_pipes())
 		return ;
 	instr = g_first_instruct;
 	while (instr)
