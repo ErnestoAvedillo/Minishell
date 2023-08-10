@@ -16,6 +16,7 @@ char *ft_strrmstr(char *str,int start, int end)
 {
 	char *out;
 	int i;
+	int k;
 
 	if(!str)
 		return (str);
@@ -25,14 +26,21 @@ char *ft_strrmstr(char *str,int start, int end)
 		return (str);
 	end = ft_min(end , ft_strlen(str));
 	i = -1;
+	k = 0;
 	out = (char *)malloc((ft_strlen(str) + 1 - start + end) * sizeof(char));
 	while (str[++i])
 	{
 		if(i < start)
-			out[i] = str[i];
+		{
+			out[k] = str[i];
+			k++;
+		}
 		else if (i >= end)
-			out[i - start + end] = str[i];
+		{
+			out[k] = str[i];
+			k++;
+		}
 	}
-	out[i - start + end] = '\0';
+	out[k] = '\0';
 	return (out);
 }

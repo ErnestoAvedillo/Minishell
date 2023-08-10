@@ -46,18 +46,7 @@ void	free_cmd_data(t_data *data)
 	if (data->command)
 		free(data->command);
 	data->command = NULL;
-	if (data->in_fd_type)
-	{
-		free(data->in_fd_name);
-		data->in_fd_name = NULL;
-		data->in_fd_type = 0;
-	}
-	if (data->out_fd_type)
-	{
-		free(data->out_fd_name);
-		data->out_fd_name = NULL;
-		data->out_fd_type = 0;
-	}
+
 }
 
 void free_fd_data(t_fd_struc *fd_ptr)
@@ -86,9 +75,6 @@ void	free_inst(void)
 	{
 		free(instruct->pre_oper);
 		free(instruct->post_oper);
-		if(instruct->instruc)
-			free(instruct->instruc);
-		instruct->instruc = NULL;
 		free_arrchar(instruct->arg);
 		free(instruct->in);
 		free(instruct->out);

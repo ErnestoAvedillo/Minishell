@@ -30,6 +30,10 @@ void	print_inst(t_instruct *instructions)
 				i++;
 			}
 		}
+		if(inst->in)
+			printf (" redirección in %i, vale-%s-\n",inst->in->fd_type, inst->in->fd_name);
+		if(inst->out)
+			printf (" redirección out %i, vale-%s-\n",inst->out->fd_type, inst->out->fd_name);
 		printf("fd 0 = %i -- fd1 = %i\n", inst->pipefd[0], inst->pipefd[1]);
 		inst = inst->next;
 	}

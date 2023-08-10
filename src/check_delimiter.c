@@ -92,24 +92,26 @@ char *insert_in_line(char *cmd, char *str, char *ptr)
  *   operands should be allways in betewwn blanks
  *
  */
-void check_delimiter(t_data *data)
+void check_delimiter(t_instruct *instr)
 {
-	char	*add_line[2];
-	char	*ptr;
-	char	*delimit;
+	char	*readed;
+	char	*delimiter;
+	char	*aux;
 
-	ptr = ft_strnstr(data->command, "<<", ft_strlen(data->command));
-	while (ptr != NULL && (size_t)(ptr - data->command) < ft_strlen(data->command))
+	delimiter = ft_strdup(instr->in->fd_name);
+	instr->in->fd_type = 2;
+	aux = ft_itoa(instr->header->contador);
+	instr->header->contador++;
+	instr->in->fd_name = ft_strjoin("tmp",aux);
+	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
+	readed = readline("> ");
+	while (ft_strncmp(readed, delimiter, 0, ft_strlen(readed)))
 	{
-		delimit = get_delimit(ptr);
-		add_line[1] = readline(">");
-		add_line[0] = ft_strdup("");
-		while (ft_strncmp(add_line[1], delimit, 0, (int)ft_strlen(add_line[1])))
-		{
-			add_line[0] = concat_cmd(add_line[0], add_line[1]);
-			add_line[1] = readline(">");
-		}
-		data->command = insert_in_line(data->command, add_line[0], ptr);
-		ptr = ft_strnstr(data->command, "<<", ft_strlen(data->command));
+		ft_putstr_fd(readed, instr->in->fd);
+		ft_putstr_fd("\n", instr->in->fd );
+		free(readed);
+		readed = readline("> ");
 	}
+	close(instr->in->fd );
+	return ;
 }

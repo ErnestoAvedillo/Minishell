@@ -35,7 +35,7 @@ void	output_file_redir(t_instruct *inst)
 		inst->out->fd = open(inst->out->fd_name,
 							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (inst->out->fd_type == 2)
-		inst->out->fd = open(inst->out->fd_name, O_WRONLY, 0666);
+		inst->out->fd = open(inst->out->fd_name, O_RDONLY, 0666);
 	if (inst->out->fd_type)
 	{
 		dup2(inst->out->fd, 1);

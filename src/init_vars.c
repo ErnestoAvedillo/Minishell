@@ -34,6 +34,7 @@ t_data	*init_vars(char **env)
 	data->env = ft_cpy_str_arr(env);
 	data->command = NULL;
 	data->out_status = 0;
+	data->contador = 0;
 	data->my_stdin = dup(STDIN_FILENO);
 	data->my_stdout = dup(STDOUT_FILENO);
 	set_func_list(data);
@@ -46,7 +47,6 @@ t_instruct	*init_instructions(t_data *data)
 
 	first_inst = (t_instruct *) malloc (sizeof(t_instruct));
 	first_inst->header = data;
-	first_inst->instruc = NULL;
 	first_inst->prev = NULL;
 	first_inst->next = NULL;
 	first_inst->pre_oper = NULL;

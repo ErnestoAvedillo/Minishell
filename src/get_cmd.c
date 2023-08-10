@@ -26,7 +26,7 @@ void	get_cmd(t_data *data)
 {
 	while (1)
 	{
-		if (isatty(fileno(stdin)))
+/*		if (isatty(fileno(stdin)))
 			data->command = readline("Enter a command Minishell>");
 		else
 		{
@@ -35,11 +35,9 @@ void	get_cmd(t_data *data)
 			data->command = ft_strtrim(line, "\n");
 			free(line);
 		}
-		/*		while (!data->command || data->command[0] == 0)
+*/				while (!data->command || data->command[0] == 0)
 					data->command = readline("Enter a command Minishell>");
 				check_cmd_line(data);
-				check_delimiter(data);
-		*/
 		if (!data->command)
 			return;
 		add_history(data->command);

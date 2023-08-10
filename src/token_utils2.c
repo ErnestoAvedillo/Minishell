@@ -76,7 +76,8 @@ char	*ext_out_file(t_instruct *instr, int start, char *str)
 		pos++;
 	end = pos;
 	while (aux[start + end] && aux[start + end] != ' ' \
-			&& aux[start + end] != '>')
+			&& aux[start + end] != '>' && aux[start + end] != '<' \
+			&& aux[start + end] != '|')
 		end++;
 	instr->out->fd_name = ft_substr(aux, start + pos, end);
 	free(aux);
@@ -84,33 +85,28 @@ char	*ext_out_file(t_instruct *instr, int start, char *str)
 	return (out);
 }
 
-void	ext_in_file(t_instruct *instr, int start)
+char	*ext_in_file(t_instruct *instr, int start, char *str)
 {
 	char	*out;
-	char	*aux;
 	int		end;
 	int		pos;
 
+	instr->in = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
 	pos = 0;
-	aux = ft_strdup(instr->header->command);
-	if (aux[start] == '<' && aux[start + 1] == '<')
-		instr->header->in_fd_type = 2;
+	if (str[start] == '<' && str[start + 1] == '<')
+		instr->in->fd_type = 2;
 	else
-		instr->header->in_fd_type = 1;
-	pos += instr->header->in_fd_type;
-	while (aux[start + pos] == ' ')
+		instr->in->fd_type = 1;
+	pos += instr->in->fd_type;
+	while (str[start + pos] == ' ')
 		pos++;
 	end = pos;
-	while (aux[start + end] && aux[start + end] != ' ' \
-			&& aux[start + end] != '|')
+	while (str[start + end] && str[start + end] != ' ' \
+			&& str[start + end] != '|' && str[start + end] != '>')
 		end++;
-	instr->header->in_fd_name = ft_substr(aux, start + pos, end - pos);
-	out = ft_strdup(instr->header->command);
-	out[start] = '\0';
-	aux = out + start + end;
-	ft_strlcat(out, aux, ft_strlen(instr->header->command));
-	free(instr->header->command);
-	instr->header->command = out;
+	instr->in->fd_name = ft_substr(str, start + pos, end - pos);
+	out = ft_strrmstr(str,start, start + end);
+	return (out);
 }
 
 size_t	check_is_redir(char *str, char c)
@@ -136,7 +132,8 @@ size_t	check_is_redir(char *str, char c)
 char	*check_ext_files(t_instruct *instr, char *str)
 {
 	char	*out;
-	size_t		pos;
+	char	*out2;
+	size_t	pos;
 
 	if(!str)
 		return (str);
@@ -145,12 +142,15 @@ char	*check_ext_files(t_instruct *instr, char *str)
 		out = ext_out_file(instr, (int)pos, str);
 	else
 		out = ft_strdup(str);
-/*	pos = check_is_redir(out, '<');
+	pos = check_is_redir(out, '<');
 	if (pos != 0 && pos < ft_strlen(out))
 	{
-		out = ext_in_file(instr, (int)pos, out);
-*/
-	
+		out2 = ext_in_file(instr, (int)pos, out);
+		free(str);
+		free(out);
+		return (out2);
+	}
+	free(str);
 	return (out);
 }
 

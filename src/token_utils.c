@@ -172,6 +172,5 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			if (inst->arg[j][i] == (char)0xff)
 				inst->arg[j][i] = ' ';
 	}
-//	inst->instruc = ft_strdup(inst->arg[0]);
 	return (str);
 }

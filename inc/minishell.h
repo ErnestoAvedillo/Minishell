@@ -55,12 +55,6 @@ typedef struct s_fd_struc
 typedef struct s_data
 {
 	char *command;
-	int in_fd;
-	int in_fd_type;
-	char *in_fd_name;
-	int out_fd;
-	int out_fd_type;
-	char *out_fd_name;
 	char **env;
 	char **cmd_list;
 	char **oper_list;
@@ -68,6 +62,7 @@ typedef struct s_data
 	int my_stdin;
 	int my_stdout;
 	int out_status;
+	int	contador;
 	struct termios term;
 } t_data;
 
@@ -75,7 +70,6 @@ typedef struct s_instruct
 {
 	char *pre_oper;
 	char *post_oper;
-	char *instruc;
 	char **arg;
 //	char **out;
 	t_data *header;
@@ -112,7 +106,7 @@ void work_1_command(t_instruct *instr);
 // check_cmd_line
 void check_cmd_line(t_data *data);
 // check_delimiter
-void check_delimiter(t_data *data);
+void check_delimiter(t_instruct *instr);
 // check_quotes
 bool quotes_ok(char *str);
 // token_utils
