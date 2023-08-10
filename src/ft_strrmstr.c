@@ -1,0 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strrmstr.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 08:46:25 by eavedill          #+#    #+#             */
+/*   Updated: 2023/08/10 08:46:28 by eavedill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../inc/minishell.h"
+
+char *ft_strrmstr(char *str,int start, int end)
+{
+	char *out;
+	int i;
+
+	if(!str)
+		return (str);
+	if (start < 0)
+		start = 0;
+	if (end < start)
+		return (str);
+	end = ft_min(end , ft_strlen(str));
+	i = -1;
+	out = (char *)malloc((ft_strlen(str) + 1 - start + end) * sizeof(char));
+	while (str[++i])
+	{
+		if(i < start)
+			out[i] = str[i];
+		else if (i >= end)
+			out[i - start + end] = str[i];
+	}
+	out[i - start + end] = '\0';
+	return (out);
+}

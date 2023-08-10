@@ -14,12 +14,12 @@
 
 static void	back_2_screen(t_instruct *instr)
 {
-	if (instr->header->in_fd)
+	if (instr->in)
 	{
 		dup2(instr->header->my_stdin, STDIN_FILENO);
 		close(instr->header->my_stdin);
 	}
-	if (instr->header->out_fd)
+	if (instr->out)
 	{
 		dup2(instr->header->my_stdout, STDOUT_FILENO);
 		close(instr->header->my_stdout);
@@ -48,7 +48,7 @@ void	work_1_command(t_instruct *instr)
 	int	j;
 
 	i = -1;
-	adm_file_redir(instr->header);
+	adm_file_redir(instr);
 	while (++i <= EXIT_CMD)
 	{
 		j = ft_strncmp(instr->arg[0], instr->header->cmd_list[i], 0, \

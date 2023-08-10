@@ -12,48 +12,39 @@
 
 #include "../inc/minishell.h"
 
-void	input_file_redir(t_data *header)
+void	input_file_redir(t_instruct *inst)
 {
-	if (header->in_fd_type == 1)
-		header->in_fd = open(header->in_fd_name, O_RDONLY, 0666);
-	else if (header->in_fd_type == 2)
-		header->in_fd = open(header->in_fd_name, O_RDONLY, 0666);
-	if (header->in_fd_type)
+	if (!inst->in)
+		return ;
+	if (inst->in->fd_type == 1)
+		inst->in->fd = open(inst->in->fd_name, O_RDONLY, 0666);
+	else if (inst->in->fd_type == 2)
+		inst->in->fd = open(inst->in->fd_name, O_RDONLY, 0666);
+	if (inst->in->fd_type)
 	{
-		dup2(header->in_fd, 0);
-		close(header->in_fd);
+		dup2(inst->in->fd, 0);
+		close(inst->in->fd);
 	}
 }
 
-void	output_file_redir(t_data *header)
+void	output_file_redir(t_instruct *inst)
 {
-	if (header->out_fd_type == 1)
-		header->out_fd = open(header->out_fd_name, \
-							O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	else if (header->out_fd_type == 2)
-		header->out_fd = open(header->out_fd_name, O_WRONLY | O_CREAT, 0666);
-	if (header->out_fd_type)
+	if (!inst->out)
+		return ;
+	if (inst->out->fd_type == 1)
+		inst->out->fd = open(inst->out->fd_name,
+							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	else if (inst->out->fd_type == 2)
+		inst->out->fd = open(inst->out->fd_name, O_WRONLY, 0666);
+	if (inst->out->fd_type)
 	{
-		dup2(header->out_fd, 1);
-		close(header->out_fd);
+		dup2(inst->out->fd, 1);
+		close(inst->out->fd);
 	}
 }
 
-void	adm_file_redir(t_data *header)
+void	adm_file_redir(t_instruct *inst)
 {
-	input_file_redir(header);
-	output_file_redir(header);
+	input_file_redir(inst);
+	output_file_redir(inst);
 }
-
-/*
-void	close_file_redir(t_data *header)
-{
-	if (header->in_fd_type)
-		close(header->in_fd);
-	if (header->out_fd_type)
-	{
-		dup(1);
-		close(STDOUT_FILENO);
-	}
-}
-*/

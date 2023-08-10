@@ -60,6 +60,22 @@ void	free_cmd_data(t_data *data)
 	}
 }
 
+void free_fd_data(t_fd_struc *fd_ptr)
+{
+	t_fd_struc	*ptr;
+
+	ptr = fd_ptr;
+	while (ptr)
+	{
+		ptr->fd = 0;
+		ptr->fd_type = 0;
+		free(ptr->fd_name);
+		fd_ptr = ptr->next;
+		free(ptr);
+		ptr = fd_ptr;
+	}
+}
+
 void	free_inst(void)
 {
 	t_instruct	*instruct;
@@ -74,6 +90,8 @@ void	free_inst(void)
 			free(instruct->instruc);
 		instruct->instruc = NULL;
 		free_arrchar(instruct->arg);
+		free(instruct->in);
+		free(instruct->out);
 		g_first_instruct = instruct->next;
 		free(instruct);
 		instruct = g_first_instruct;

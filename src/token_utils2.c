@@ -57,35 +57,31 @@ void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 	}
 }
 
-void	ext_out_file(t_instruct *instr, int start)
+char	*ext_out_file(t_instruct *instr, int start, char *str)
 {
 	char	*out;
 	char	*aux;
 	int		end;
 	int		pos;
 
+	instr->out = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
 	pos = 0;
-	aux = ft_strdup(instr->header->command);
+	aux = ft_strdup(str);
 	if (aux[start] == '>' && aux[start + 1] == '>')
-		instr->header->out_fd_type = 2;
+		instr->out->fd_type = 2;
 	else
-		instr->header->out_fd_type = 1;
-	pos += instr->header->out_fd_type;
+		instr->out->fd_type = 1;
+	pos += instr->out->fd_type;
 	while (aux[start + pos] == ' ')
 		pos++;
 	end = pos;
 	while (aux[start + end] && aux[start + end] != ' ' \
-			&& aux[start + end] != '|')
+			&& aux[start + end] != '>')
 		end++;
-	instr->header->out_fd_name = ft_substr(aux, start + pos, end);
+	instr->out->fd_name = ft_substr(aux, start + pos, end);
 	free(aux);
-	out = ft_strdup(instr->header->command);
-	out[start] = '\0';
-	aux = out + end;
-	//ft_strlcat(out, ft_substr(out, end, ft_strlen(out)), ft_strlen(out));
-	ft_strlcat(out, aux, ft_strlen(out));
-	free(instr->header->command);
-	instr->header->command = out;
+	out = ft_strrmstr(str,start, start + end);
+	return (out);
 }
 
 void	ext_in_file(t_instruct *instr, int start)
@@ -137,23 +133,25 @@ size_t	check_is_redir(char *str, char c)
 	return (0);
 }
 
-void	check_ext_files(t_instruct *instr)
+char	*check_ext_files(t_instruct *instr, char *str)
 {
 	char	*out;
 	size_t		pos;
 
-	if(!instr->header->command)
-		return;
-	out = ft_strdup(instr->header->command);
-	pos = check_is_redir(out, '>');
+	if(!str)
+		return (str);
+	pos = check_is_redir(str, '>');
+	if (pos != 0 && pos < ft_strlen(str))
+		out = ext_out_file(instr, (int)pos, str);
+	else
+		out = ft_strdup(str);
+/*	pos = check_is_redir(out, '<');
 	if (pos != 0 && pos < ft_strlen(out))
-		ext_out_file(instr, (int)pos);
-	free(out);
-	out = ft_strdup(instr->header->command);
-	pos = check_is_redir(out, '<');
-	if (pos != 0 && pos < ft_strlen(out))
-		ext_in_file(instr, (int)pos);
-	free(out);
+	{
+		out = ext_in_file(instr, (int)pos, out);
+*/
+	
+	return (out);
 }
 
 void ft_strrmchr(char *str, int n)

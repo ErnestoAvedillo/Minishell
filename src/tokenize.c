@@ -25,7 +25,6 @@ t_instruct	*tokenize(t_data *data)
 	int			i;
 
 	instruct[0] = init_instructions(data);
-	check_ext_files(instruct[0]);
 	if (instruct[0] == NULL)
 		return (NULL);
 	instruct[1] = instruct[0];

@@ -33,13 +33,6 @@ t_data	*init_vars(char **env)
 	data->oper_list = ft_split(OPERANDS, ' ');
 	data->env = ft_cpy_str_arr(env);
 	data->command = NULL;
-	data->in_fd = 0;
-	data->in_fd = 0;
-	data->in_fd_name = NULL;
-	data->in_fd_type = 0;
-	data->out_fd = 0;
-	data->out_fd_name = NULL;
-	data->out_fd_type = 0;
 	data->out_status = 0;
 	data->my_stdin = dup(STDIN_FILENO);
 	data->my_stdout = dup(STDOUT_FILENO);
@@ -59,6 +52,8 @@ t_instruct	*init_instructions(t_data *data)
 	first_inst->pre_oper = NULL;
 	first_inst->post_oper = NULL;
 	first_inst->arg = NULL;
+	first_inst->out = NULL;
+	first_inst->in = NULL;
 	first_inst->out = NULL;
 	return (first_inst);
 }

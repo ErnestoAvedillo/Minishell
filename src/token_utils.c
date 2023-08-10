@@ -114,6 +114,7 @@ char	*fill_instruct(t_instruct *inst, char *str)
 	quot[1] = false;
 	quot[2] = false;
 	i = 0;
+	str = check_ext_files(inst, str);
 	while (str[i])
 	{
 		if (!quot[1] && str[i] == '\'')
