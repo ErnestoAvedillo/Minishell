@@ -20,8 +20,6 @@ void listOpenFileDescriptors()
 		if (fcntl(fd, F_GETFD) != -1 || errno != EBADF)
 		{
 			printf("File descriptor %d is open.\n", fd);
-			if (fd > 2)
-				close(fd);
 		}
 	}
 }

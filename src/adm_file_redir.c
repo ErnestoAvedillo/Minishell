@@ -12,33 +12,28 @@
 
 #include "../inc/minishell.h"
 
-void	input_file_redir(t_instruct *inst)
+bool	input_file_redir(t_instruct *inst)
 {
 	if (!inst->in)
-		return ;
-//	if (inst->in->fd_type == 1)
-		inst->in->fd = open(inst->in->fd_name, O_RDONLY, 0666);
-	//	else if (inst->in->fd_type == 2)
-	//		inst->in->fd = open(inst->in->fd_name, O_RDONLY, 0666);
-//	if (inst->in->fd_type)
-//	{
-		dup2(inst->in->fd, STDIN_FILENO);
-		close(inst->in->fd);
-//}
+		return (false);
+	inst->in->fd = open(inst->in->fd_name, O_RDONLY, 0666);
+	dup2(inst->in->fd, STDIN_FILENO);
+	close(inst->in->fd);
+	return (true);
 }
 
-void	output_file_redir(t_instruct *inst)
+bool	output_file_redir(t_instruct *inst)
 {
 	if (!inst->out)
-		return ;
+		return (false);
 	if (inst->out->fd_type == 1)
 		inst->out->fd = open(inst->out->fd_name,
 							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (inst->out->fd_type == 2)
-		inst->out->fd = open(inst->out->fd_name, O_RDONLY, 0666);
-	//if (inst->out->fd_type)
+		inst->out->fd = open(inst->out->fd_name, O_WRONLY | O_APPEND, 0666);
 	dup2(inst->out->fd, STDOUT_FILENO);
 	close(inst->out->fd);
+	return (true);
 }
 
 void	adm_file_redir(t_instruct *inst)

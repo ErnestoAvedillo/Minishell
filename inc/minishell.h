@@ -127,6 +127,7 @@ char *concat_env(char *name_var);
 // print_var
 void print_inst(t_instruct *instruct);
 void print_arr(char **arr);
+void listOpenFileDescriptors();
 // replace_env_var
 char *replace_env_var(char *str, int pos, int status);
 char *repl_home_dir(char *str, int pos);
@@ -148,8 +149,8 @@ char **ft_str_arr_add(char **arr, char *str);
 char **ft_str_arr_rem(char **arr, int pos);
 // adm_file_redir
 void adm_file_redir(t_instruct *intr);
-void output_file_redir(t_instruct *intr);
-void input_file_redir(t_instruct *intr);
+bool output_file_redir(t_instruct *intr);
+bool input_file_redir(t_instruct *intr);
 // void		close_file_redir(t_data *header);
 // ft_split_instr
 char **ft_split_instr(char const *s, char c);
