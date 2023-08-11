@@ -83,7 +83,7 @@ void	close_prev_pipes(t_instruct *cur_inst)
 	if ((cur_inst->prev == NULL) && (cur_inst->next != NULL))
 	{
 		if(cur_inst->out)
-			close(cur_inst->in->fd);
+			close(cur_inst->out->fd);
 		else
 			close(cur_inst->pipefd[1]);
 	}
@@ -133,7 +133,9 @@ void	adm_redirections(void)
 	int			status;
 
 	if (check_is_1_command())
+	{
 		return;
+	}
 	if (!create_pipes())
 		return ;
 	instr = g_first_instruct;

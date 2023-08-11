@@ -11,21 +11,21 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
+/*
 static void	back_2_screen(t_instruct *instr)
 {
-	if (instr->in)
-	{
+//	if (instr->in)
+//	{
 		dup2(instr->header->my_stdin, STDIN_FILENO);
 		close(instr->header->my_stdin);
-	}
-	if (instr->out)
-	{
+//	}
+//	if (instr->out)
+//	{
 		dup2(instr->header->my_stdout, STDOUT_FILENO);
 		close(instr->header->my_stdout);
-	}
+//	}
 }
-
+*/
 static void	exec_ext_cmd(t_instruct *instr)
 {
 	int status;
@@ -38,17 +38,24 @@ static void	exec_ext_cmd(t_instruct *instr)
 	}
 	else if (instr->pid == 0)
 		cmd_exec(instr);
-	wait(&status);
-	instr->header->out_status = WEXITSTATUS(status);
+	else
+	{
+		wait(&status);
+		instr->header->out_status = WEXITSTATUS(status);
+	}
 }
 
 void	work_1_command(t_instruct *instr)
 {
 	int	i;
 	int	j;
+	int fd[2];
 
 	i = -1;
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
 	adm_file_redir(instr);
+	print_inst(instr);
 	while (++i <= EXIT_CMD)
 	{
 		j = ft_strncmp(instr->arg[0], instr->header->cmd_list[i], 0, \
@@ -57,15 +64,26 @@ void	work_1_command(t_instruct *instr)
 		{
 			instr->header->out_status = ((int (*)(t_instruct *)) \
 					((void **)instr->header->functions_ptr)[i])(instr);
-			back_2_screen(instr);
-			return ;
+			dup2(STDIN_FILENO,fd[0]);
+			close(fd[0]);
+			dup2(STDOUT_FILENO, fd[1]);
+			close(fd[1]);
+			// back_2_screen(instr);
+			printf("vuelvo a escribir en la pantalla \n");
+			return;
 		}
 	}
 	if (is_char_in_str(instr->arg[0], '='))
+	{
 		instr->header->out_status = cmd_setenv(instr);
+	}
 	else
 		exec_ext_cmd(instr);
-	back_2_screen(instr);
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	dup2(fd[1], STDIN_FILENO);
+	close(fd[1]);
+	// back_2_screen(instr);
 }
 
 void	work_command(t_instruct *instr)

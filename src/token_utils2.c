@@ -79,7 +79,7 @@ char	*ext_out_file(t_instruct *instr, int start, char *str)
 			&& aux[start + end] != '>' && aux[start + end] != '<' \
 			&& aux[start + end] != '|')
 		end++;
-	instr->out->fd_name = ft_substr(aux, start + pos, end);
+	instr->out->fd_name = ft_substr(aux, start + pos, end - pos);
 	free(aux);
 	out = ft_strrmstr(str,start, start + end);
 	return (out);
