@@ -140,8 +140,7 @@ char	*fill_instruct(t_instruct *inst, char *str)
 		else if (str[i] == '$' && !quot[0] && !quot[2])
 		{
 			str = replace_env_var(str, i, inst->header->out_status);
-			if (str[i] != '$')
-				i--;
+			i--;
 		}
 		if (str[i] == '~' && !quot[0] && !quot[1])
 			str = repl_home_dir(str, i);
@@ -166,12 +165,7 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			ft_strrmchr(str, i);
 			i--;
 		}
-/*		else if (str[i] == '$' && !quot[1] && !quot[0] && (str[i + 1] == ' ' || str[i + 1] == '\"'))
-		{
-			ft_strrmchr(str, i);
-			i--;
-		}
-*/		else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
+		else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
 			str[i] = (char)0xff;
 		i++;
 	}

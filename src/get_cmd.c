@@ -49,7 +49,7 @@ void	get_cmd(t_data *data)
 		//if (data->out_status == 0)
 			//printf("Command not found.\n");
 		//else 
-		if (data->out_status == -2)
+		if (data->exit)
 			break ;
 		free_inst();
 	}

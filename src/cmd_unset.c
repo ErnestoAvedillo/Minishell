@@ -22,5 +22,5 @@ int	cmd_unset(t_instruct *instruct)
 	while (instruct->arg[++i])
 		if (unsetenv(instruct->arg[i]) == 0)
 			instruct->header->env = actualize_env(aux, instruct->arg[i], 0);
-	return (1);
+	return (0);
 }

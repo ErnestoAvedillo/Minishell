@@ -15,28 +15,36 @@
 static void	back_2_screen(t_instruct *instr)
 {
 		if(dup2(instr->header->my_stdin, STDIN_FILENO) == -1)
-			printf("error entrada %i\n", instr->header->my_stdin);
+			print_err("error al devolved fd a teclado\n");
 		if(dup2(instr->header->my_stdout, STDOUT_FILENO) == -1)
-			printf("error salida %i\n", instr->header->my_stdout);
+			print_err("error al devolved fd a pantalla \n");
 }
 
 static void	exec_ext_cmd(t_instruct *instr)
 {
-	int status;
+	int		status;
+	char	*out;
 
+	out = check_file_exists(instr);
+	if (!out)
+	{
+		print_err("minishell: %s : command not found\n",instr->arg[0]);
+		instr->header->out_status =127;
+		free(out);
+		return ;
+	}
+	free(instr->arg[0]);
+	instr->arg[0] = out;
 	instr->pid = fork();
 	if (instr->pid == -1)
 	{
-		//printf("fork error\n");
+		print_err("minishell: error while forking");
 		return ;
 	}
 	else if (instr->pid == 0)
 		cmd_exec(instr);
-	else
-	{
-		wait(&status);
-		instr->header->out_status = WEXITSTATUS(status);
-	}
+	wait(&status);
+	instr->header->out_status = WEXITSTATUS(status);
 }
 
 void	work_1_command(t_instruct *instr)

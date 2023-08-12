@@ -123,13 +123,13 @@ int	cmd_export(t_instruct *instr)
 
 	if (!check_args(instr->header->command))
 	{
-		//printf("Minishell: export: `=': not a valid identifier");
-		return (0);
+		print_err("Minishell: export: `=': not a valid identifier\n");
+		return (1);
 	}
 	if (!instr->arg || !instr->arg[1])
 	{
 		print_env_sorted(instr->header->env);
-		return (1);
+		return (0);
 	}
 	i = 0;
 	while (instr->arg[++i])
@@ -141,5 +141,5 @@ int	cmd_export(t_instruct *instr)
 		if (!instr->header->env)
 			return (-1);
 	}
-	return (1);
+	return (0);
 }

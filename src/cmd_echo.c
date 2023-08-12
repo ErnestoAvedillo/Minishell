@@ -33,5 +33,5 @@ int	cmd_echo(t_instruct *instruct)
 	}
 	if (eol)
 		ft_printf ("\n");
-	return (1);
+	return (0);
 }

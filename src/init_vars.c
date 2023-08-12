@@ -37,6 +37,7 @@ t_data	*init_vars(char **env)
 	data->contador = 0;
 	data->my_stdin = dup(STDIN_FILENO);
 	data->my_stdout = dup(STDOUT_FILENO);
+	data->exit = false;
 	set_func_list(data);
 	return (data);
 }

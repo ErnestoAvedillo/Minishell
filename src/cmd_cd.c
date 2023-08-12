@@ -57,21 +57,27 @@ char	*get_address(t_instruct *instruct)
 int	cmd_cd(t_instruct *instruct)
 {
 	char	*dir;
+	char	*olddir;
 	char	buffer[1024];
 
 	dir = get_address(instruct);
 	if (chdir(dir) == -1)
 	{
-		//printf("bash: cd: %s: No such file or directory .\n", dir);
+		print_err("Minishell: cd: %s: No such file or directory .\n", dir);
 		free(dir);
+		return (1);
 	}
 	else
 	{
 		free(dir);
+		olddir = getenv("PWD");
+		setenv("OLDPWD", olddir, 1);
 		dir = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir, 1);
 		dir = concat_env("PWD");
 		actualize_env(instruct->header->env, dir, 1);
+		olddir = concat_env("OLDPWD");
+		actualize_env(instruct->header->env, olddir, 1);
 	}
 	return (0);
 }

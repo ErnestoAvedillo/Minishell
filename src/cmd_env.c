@@ -35,5 +35,5 @@ int	cmd_env(t_instruct *instruct)
 		ft_printf("%s\n", *ptr);
 		ptr++;
 	}
-	return (1);
+	return (0);
 }

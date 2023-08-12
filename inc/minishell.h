@@ -63,6 +63,7 @@ typedef struct s_data
 	int my_stdout;
 	int out_status;
 	int	contador;
+	bool	exit;
 	struct termios term;
 } t_data;
 
@@ -99,7 +100,10 @@ int cmd_export(t_instruct *instruct);
 int cmd_pwd(t_instruct *instruct);
 int cmd_unset(t_instruct *instruct);
 int cmd_setenv(t_instruct *instruct);
+//cmd_exec
 int cmd_exec(t_instruct *instruct);
+char	*check_file_exists(t_instruct *instruct);
+
 // Work_command
 void work_command(t_instruct *instr);
 void work_1_command(t_instruct *instr);
@@ -111,6 +115,8 @@ void check_delimiter(t_instruct *instr);
 bool quotes_ok(char *str);
 // token_utils
 char *fill_instruct(t_instruct *inst, char *str);
+// token_utils
+char *fill_instruct2(t_instruct *inst, char *str);
 // token_utils2
 void replace_char_btw_quotes(char *str, unsigned int c1,
 								unsigned int c2);
@@ -131,6 +137,7 @@ void listOpenFileDescriptors();
 // replace_env_var
 char *replace_env_var(char *str, int pos, int status);
 char *repl_home_dir(char *str, int pos);
+char *repl_old_dir(char *str, int pos);
 // actualize_env
 char **actualize_env(char **env, char *str, int k);
 // adm_signals
@@ -156,5 +163,6 @@ bool input_file_redir(t_instruct *intr);
 char **ft_split_instr(char const *s, char c);
 // ft_strrmstr
 char *ft_strrmstr(char *str, int start, int end);
-
+//print_err
+int	print_err(char *str, ...);
 #endif

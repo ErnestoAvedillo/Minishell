@@ -84,15 +84,18 @@ int	cmd_exec(t_instruct *instruct)
 
 	out = check_file_exists(instruct);
 	if (!out)
-		return (0);
+	{
+		print_err("minishell: %s : command not found",instruct->arg[0]);
+		return (127);
+	}
 	free(instruct->arg[0]);
 	instruct->arg[0] = out;
 	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
 	if (exec == -1)
 	{
-		//printf ("salgo con error\n");
+		print_err("minishell: %s : command not foun\n",instruct->arg[0]);
 		free(out);
-		return (1);
+		return (exec);
 	}
 	return (0);
 }
