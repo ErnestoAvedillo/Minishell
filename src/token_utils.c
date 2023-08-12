@@ -20,7 +20,7 @@
 *					int end where yhe instruction ends.
 *   Returns:		The pointer of the string
 */
-char	*get_pre_oper(char *str, int pos)
+/*char	*get_pre_oper(char *str, int pos)
 {
 	char	*pre_oper;
 
@@ -45,7 +45,7 @@ char	*get_pre_oper(char *str, int pos)
 	}
 	return (pre_oper);
 }
-
+*/
 /*
 *   Descriptinon:	returns the pre_operation of the instruction.
 *   Arguments:		char *str The variable where it is the instruction.
@@ -53,7 +53,7 @@ char	*get_pre_oper(char *str, int pos)
 *					int end where yhe instruction ends.
 *   Returns:		The pointer of the string
 */
-char	*get_post_oper(char *str, int pos)
+/*char	*get_post_oper(char *str, int pos)
 {
 	char	*post_oper;
 
@@ -78,7 +78,7 @@ char	*get_post_oper(char *str, int pos)
 	}
 	return (post_oper);
 }
-
+*/
 /*
  *   Descriptinon:	Replace all charachtes of the string equal of c1 
  *					and replaces them from c2.
@@ -125,12 +125,25 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			quot[2] = !quot[2];
 		else if(str[i] != '$' && str[i - 1] != '\\')
 			quot[2] = false;
-		if (str[i] == '$' && !quot[0] && !quot[2])
+		if (str[i] == '$' && str[i + 1] == '\'' && !quot[0])
 		{
-			str = replace_env_var(str, i, inst->header->out_status);
+			ft_strrmchr(str, i);
 			i--;
 		}
-		else if (str[i] == '~' && !quot[0] && !quot[1])
+		else if (str[i] == '$' && str[i + 1] == '\"' && !quot[1])
+		{
+			ft_strrmchr(str, i);
+			i--;
+		}
+		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1]) || str[i + 1] == '\0' || str[i + 1] == ' ' || (str[i + 1] == '\'' && quot[0])))
+			;
+		else if (str[i] == '$' && !quot[0] && !quot[2])
+		{
+			str = replace_env_var(str, i, inst->header->out_status);
+			if (str[i] != '$')
+				i--;
+		}
+		if (str[i] == '~' && !quot[0] && !quot[1])
 			str = repl_home_dir(str, i);
 		i++;
 	}
@@ -153,12 +166,12 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			ft_strrmchr(str, i);
 			i--;
 		}
-		else if (str[i] == '$' && !quot[1] && !quot[0] && (str[i + 1] == ' ' || str[i + 1] == '\"'))
+/*		else if (str[i] == '$' && !quot[1] && !quot[0] && (str[i + 1] == ' ' || str[i + 1] == '\"'))
 		{
 			ft_strrmchr(str, i);
 			i--;
 		}
-		else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
+*/		else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
 			str[i] = (char)0xff;
 		i++;
 	}
