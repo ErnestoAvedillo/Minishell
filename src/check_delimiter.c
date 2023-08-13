@@ -104,14 +104,18 @@ void check_delimiter(t_instruct *instr)
 	instr->header->contador++;
 	instr->in->fd_name = ft_strjoin("tmp",aux);
 	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
-	readed = readline("> ");
+	free(aux);
+	aux = ft_strjoin(delimiter, ">");
+	readed = readline(aux);
 	while (ft_strncmp(readed, delimiter, 0, ft_strlen(readed)))
 	{
 		ft_putstr_fd(readed, instr->in->fd);
 		ft_putstr_fd("\n", instr->in->fd );
 		free(readed);
-		readed = readline("> ");
+		readed = readline(aux);
 	}
-	close(instr->in->fd );
+	free(delimiter);
+	free(aux);
+	close(instr->in->fd);
 	return ;
 }

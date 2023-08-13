@@ -55,6 +55,6 @@ t_instruct	*init_instructions(t_data *data)
 	first_inst->arg = NULL;
 	first_inst->out = NULL;
 	first_inst->in = NULL;
-	first_inst->out = NULL;
+	first_inst->err = NULL;
 	return (first_inst);
 }

@@ -81,6 +81,7 @@ typedef struct s_instruct
 	int pipefd[2];
 	t_fd_struc *in;
 	t_fd_struc *out;
+	t_fd_struc *err;
 } t_instruct;
 
 // init_vars
