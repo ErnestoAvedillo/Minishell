@@ -72,7 +72,6 @@ typedef struct s_instruct
 	char *pre_oper;
 	char *post_oper;
 	char **arg;
-//	char **out;
 	t_data *header;
 	void *next;
 	void *prev;
@@ -109,7 +108,7 @@ char	*check_file_exists(t_instruct *instruct);
 void work_command(t_instruct *instr);
 void work_1_command(t_instruct *instr);
 // check_cmd_line
-void check_cmd_line(t_data *data);
+int check_cmd_line(t_data *data);
 // check_delimiter
 void check_delimiter(t_instruct *instr);
 // check_quotes
@@ -158,6 +157,7 @@ char **ft_str_arr_rem(char **arr, int pos);
 // adm_file_redir
 void adm_file_redir(t_instruct *intr);
 bool output_file_redir(t_instruct *intr);
+bool output_error_file_redir(t_instruct *intr);
 bool input_file_redir(t_instruct *intr);
 // void		close_file_redir(t_data *header);
 // ft_split_instr

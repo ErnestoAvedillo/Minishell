@@ -35,22 +35,22 @@ void	get_cmd(t_data *data)
 			data->command = ft_strtrim(line, "\n");
 			free(line);
 		}
-/*				while (!data->command || data->command[0] == 0)
-					data->command = readline("Enter a command Minishell>");
-*/				check_cmd_line(data);
 		if (!data->command)
 			return;
+/*				while (!data->command || data->command[0] == 0)
+					data->command = readline("Enter a command Minishell>");
+*/		
 		add_history(data->command);
-		g_first_instruct = tokenize(data);
-		if (g_first_instruct)
-			//printf("Memory alloc. error\n");
-		//else
-			adm_redirections();
-		//if (data->out_status == 0)
-			//printf("Command not found.\n");
-		//else 
-		if (data->exit)
-			break ;
-		free_inst();
+		if (check_cmd_line(data))
+		{
+			g_first_instruct = tokenize(data);
+			if (!g_first_instruct)
+				print_err("Memory alloc. error\n");
+			else
+				adm_redirections();
+			if (data->exit)
+				break ;
+			free_inst();
+		}
 	}
 }

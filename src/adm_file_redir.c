@@ -46,8 +46,28 @@ bool	output_file_redir(t_instruct *inst)
 	return (true);
 }
 
+bool	output_error_file_redir(t_instruct *inst)
+{
+	if (!inst->err)
+		return (false);
+	if (inst->err->fd_type == 1)
+		inst->err->fd = open(inst->err->fd_name,
+							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	else if (inst->err->fd_type == 2)
+		inst->err->fd = open(inst->err->fd_name, O_WRONLY | O_APPEND, 0666);
+	if (inst->err->fd == -1)
+	{
+		print_err("Minishell:%s: No such file or directory\n",inst->err->fd_name);
+		return (false);
+	}
+	dup2(inst->err->fd, STDERR_FILENO);
+	close(inst->err->fd);
+	return (true);
+}
+
 void	adm_file_redir(t_instruct *inst)
 {
 	input_file_redir(inst);
 	output_file_redir(inst);
+	output_error_file_redir(inst);
 }

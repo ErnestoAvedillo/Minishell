@@ -37,6 +37,7 @@ void	redirect(t_instruct *cur_inst)
 	t_instruct	*instr_pre;
 
 	instr_pre = cur_inst->prev;
+	output_error_file_redir(cur_inst);
 	if ((cur_inst->prev == NULL) && (cur_inst->next != NULL))
 	{
 		close(cur_inst->pipefd[0]);
@@ -127,7 +128,7 @@ void	adm_redirections(void)
 		instr->pid = fork();
 		if (instr->pid == -1)
 		{
-			//printf("fork error\n");
+			print_err("Fork error in piping\n");
 			return ;
 		}
 		else if (instr->pid == 0)
