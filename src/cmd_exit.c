@@ -12,30 +12,64 @@
 
 #include "../inc/minishell.h"
 
+static bool check_is_num(t_instruct *inst)
+{
+	int i;
+	int dig;
+
+	dig = 0;
+	i = 0;
+	if (inst->arg[1])
+		if (inst->arg[1][i] == '-' || inst->arg[1][i] == '+')
+			i++;
+
+		while(inst->arg[1] && inst->arg[1][i])
+		{
+			dig = ft_isdigit(inst->arg[1][i]);
+			if (!dig)
+			{
+				print_err("exit: %s: numeric argument required\n",inst->arg[1]);
+				return (false);
+			}
+			i++;
+		}
+	return (true);
+}
+
+static bool check_args (t_instruct *inst)
+{
+	int i;
+
+	i = ft_len_str_arr(inst->arg);
+	if (i > 2)
+		{
+
+			print_err("exit: too many arguments\n");
+			return (false);
+		}
+	return (true);
+}
+
+
 int	cmd_exit(t_instruct *inst)
 {
 	int	i;
-	int dig;
 
 	//printf ("Gracias por usar minishell\n");
-	dig = 0;
-	inst->header->exit = true;
-	i = 0;
-	if(inst->arg[1])
-		while(inst->arg[1][i] == '-' || inst->arg[1][i] == '+')
-			i++;
-	while(inst->arg[1] && inst->arg[1][i])
+	if (!check_is_num(inst))
 	{
-		dig = ft_isdigit(inst->arg[1][i]);
-		if (!dig)
-		{
-			print_err("exit: %s: numeric argument required\n",inst->arg[1]);
-			return (255);
-		}
-		i++;
+		inst->header->exit = true;
+		return (255);
 	}
-	if (dig)
+	if (!check_args(inst))
+		return (1);
+	else
+		inst->header->exit = true;
+	i = 0;
+	if (inst->arg[1])
 		inst->header->out_status = ft_atoi(inst->arg[1]) % 256;
+	else
+		return (0);
 	if (inst->header->out_status < 0)
 		inst->header->out_status -= 256;
 	return (inst->header->out_status);

@@ -24,8 +24,14 @@ char	*check_file_exists(t_instruct *instruct)
 	char		*out;
 	struct stat	file_stat;
 
-	if (lstat(instruct->arg[0], &file_stat) == 0)
-		return (ft_strdup(instruct->arg[0]));
+	if ((instruct->arg[0][0] == '.' && instruct->arg[0][1] == '/') || \
+			instruct->arg[0][0] == '/' )
+	{
+		if (lstat(instruct->arg[0], &file_stat) == 0)
+			return (ft_strdup(instruct->arg[0]));
+		else
+			return (NULL);
+	}
 	out = (char *)malloc(1024 * sizeof(char));
 	out[0] = '\0';
 	path_arr = ft_split(getenv("PATH"), ':');
@@ -81,11 +87,13 @@ int	cmd_exec(t_instruct *instruct)
 {
 	char	*out;
 	int		exec;
-
+	
+	if (ft_strlen(instruct->arg[0]) == 0)
+		return (0);
 	out = check_file_exists(instruct);
 	if (!out)
 	{
-		print_err("minishell: %s : command not found",instruct->arg[0]);
+		print_err("minishell: %s : command not found\n",instruct->arg[0]);
 		return (127);
 	}
 	free(instruct->arg[0]);

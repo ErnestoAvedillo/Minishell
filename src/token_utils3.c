@@ -153,10 +153,10 @@ char	*expand_home_dir(char *str)
 */
 char	*fill_instruct2(t_instruct *inst, char *str)
 {
-	str = check_ext_files(inst, str);
 	str = expand_home_dir(str);
 	str = expand_variables(str, inst);
 	prepare_for_split(str);
+	str = check_ext_files(inst, str);
 	split_args(inst, str);
 	return (str);
 }

@@ -97,13 +97,13 @@ int	check_is_1_command(void)
 		return (1);
 	if(!g_first_instruct->header->command[0])
 		return(1);
-	if (g_first_instruct->arg[0][0] == 0)
+/*	if (g_first_instruct->arg[0][0] == 0)
 	{
 		print_err("minishell: : command not found\n");
 		g_first_instruct->header->out_status = 127;
 		return (1) ;
 	}
-	if (leninst == 1)
+*/	if (leninst == 1)
 	{
 		work_1_command(g_first_instruct);
 		return (1);
@@ -134,7 +134,7 @@ void	adm_redirections(void)
 		else if (instr->pid == 0)
 		{
 			redirect(instr);
-			work_command(instr);
+				work_command(instr);
 		}
 		close_prev_pipes(instr);
 		wait(&status);

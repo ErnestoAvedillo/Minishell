@@ -21,7 +21,49 @@
  *
  * Returns:			Boolean variable. True is sstructure OK. False is structure NOK
  **/
-bool	check_args(char *str)
+static char *check_all_chars(char *str)
+{
+	int		i;
+	char	*ptr;
+	char	*aux;
+
+	if (str[0] == '=')
+		return (str);
+	if (str[0] == '?')
+		return (str);
+	if (ft_isdigit(str[0]))
+		return (str);
+	aux = ft_strdup("+.{}-#@!^~");
+	i = 0;
+	while(aux[i] && aux[i] != '=')
+	{
+		ptr = ft_strchr(str,0, aux[i]);
+		if (ptr != NULL && ptr < str + ft_strlen(str))
+		{
+			free (aux);
+			return (ptr);
+		}
+		i++;
+	}
+	free (aux);
+	return (NULL);
+}
+static int check_args(char *str)
+{
+	char *ptr;
+
+	ptr = check_all_chars(str);
+	if (ptr != NULL && ptr < str + ft_strlen(str))
+	{
+		print_err("export: %s: not a valid identifier\n",str);
+		if(str[0] == '-')
+			return(2);
+		return (1);
+	}
+	return (0);
+}
+/*
+static bool	check_args(char *str)
 {
 	int	i;
 
@@ -32,7 +74,7 @@ bool	check_args(char *str)
 			return (false);
 	return (true);
 }
-
+*/
 /**
  *
  * Description:		Printe the environment variables sorted
@@ -119,27 +161,28 @@ static char	**exp_val(char *var, char **env)
  **/
 int	cmd_export(t_instruct *instr)
 {
-	int		i;
+	int	i;
+	int	out[2];
 
-	if (!check_args(instr->header->command))
-	{
-		print_err("Minishell: export: `=': not a valid identifier\n");
-		return (1);
-	}
 	if (!instr->arg || !instr->arg[1])
 	{
 		print_env_sorted(instr->header->env);
 		return (0);
 	}
 	i = 0;
+	out[0] = 0;
+	out[1] = 0;
 	while (instr->arg[++i])
 	{
-		if (ft_strchr(instr->arg[i], 0, '=') == NULL )
+		out[0] = check_args(instr->arg[i]);
+		if (!out[1] && out[0])
+			out[1] = out[0];
+		if (!out[0] && ft_strchr(instr->arg[i], 0, '=') == NULL )
 			instr->header->env = exp_no_val(instr->arg[i], instr->header->env);
-		else
+		else if (!out[0])
 			instr->header->env = exp_val(instr->arg[i], instr->header->env);
-		if (!instr->header->env)
-			return (-1);
+//		if (!instr->header->env)
+//			return (-1);
 	}
-	return (0);
+	return (out[0]);
 }

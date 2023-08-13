@@ -54,24 +54,27 @@ void	work_1_command(t_instruct *instr)
 
 	i = -1;
 	adm_file_redir(instr);
-	while (++i <= EXIT_CMD)
+	if(instr->arg[0])
 	{
-		j = ft_strncmp(instr->arg[0], instr->header->cmd_list[i], 0, \
-						ft_strlen(instr->arg[0]));
-		if (instr->arg[0] && !j)
+		while (++i <= EXIT_CMD)
 		{
-			instr->header->out_status = ((int (*)(t_instruct *)) \
-					((void **)instr->header->functions_ptr)[i])(instr);
-			back_2_screen(instr);
-			return;
+			j = ft_strncmp(instr->arg[0], instr->header->cmd_list[i], 0, \
+							ft_strlen(instr->arg[0]));
+			if (instr->arg[0] && !j)
+			{
+				instr->header->out_status = ((int (*)(t_instruct *)) \
+						((void **)instr->header->functions_ptr)[i])(instr);
+				back_2_screen(instr);
+				return;
+			}
 		}
+		if (is_char_in_str(instr->arg[0], '='))
+		{
+			instr->header->out_status = cmd_setenv(instr);
+		}
+		else
+			exec_ext_cmd(instr);
 	}
-	if (is_char_in_str(instr->arg[0], '='))
-	{
-		instr->header->out_status = cmd_setenv(instr);
-	}
-	else
-		exec_ext_cmd(instr);
 	back_2_screen(instr);
 }
 

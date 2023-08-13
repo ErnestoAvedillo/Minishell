@@ -42,22 +42,26 @@ int check_pipes (t_data *data)
 
 int check_redir (t_data *data)
 {
-	int	i;
-
+	int		i;
+	bool	blank;
 	
+	blank = false;
 	i = -1;
 	while(data->command[++i])
 	{
 		if(data->command[i] == '>' || data->command[i] == '<')
+		{
 			while (data->command[++i] == ' ')
-			;
-		if(data->command[i] == '>')
+				if (!blank)
+					blank = !blank;
+		}
+		if(data->command[i] == '>' && blank)
 			{
 				print_err("Minishell: syntax error near unexpected token '>'\n");
 				data->out_status = 258;
 				return (0);
 			}
-		else if (data->command[i] == '<')
+		else if (data->command[i] == '<' && blank)
 			{
 				print_err("Minishell: syntax error near unexpected token '<'\n");
 				data->out_status = 258;

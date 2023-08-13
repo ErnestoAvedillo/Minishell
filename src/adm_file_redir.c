@@ -35,7 +35,7 @@ bool	output_file_redir(t_instruct *inst)
 		inst->out->fd = open(inst->out->fd_name,
 							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (inst->out->fd_type == 2)
-		inst->out->fd = open(inst->out->fd_name, O_WRONLY | O_APPEND, 0666);
+		inst->out->fd = open(inst->out->fd_name, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (inst->out->fd == -1)
 	{
 		print_err("Minishell:%s: No such file or directory\n",inst->out->fd_name);

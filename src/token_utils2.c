@@ -96,6 +96,7 @@ char *ext_err_file(t_instruct *instr, int start, char *str)
 		instr->out = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
 //	else
 //		while instr->out->next
+//			void
 	pos = 0;
 	aux = ft_strdup(str);
 	if (aux[start] == '>' && aux[start + 1] == '>')
@@ -155,7 +156,7 @@ size_t	check_is_redir(char *str, char c)
 		if(str[pos] == c && !quot[0] && !quot[1])
 			return (pos);
 	}
-	return (0);
+	return (-1);
 }
 
 char	*check_ext_files(t_instruct *instr, char *str)
@@ -167,7 +168,7 @@ char	*check_ext_files(t_instruct *instr, char *str)
 	if(!str)
 		return (str);
 	pos = check_is_redir(str, '>');
-	if (pos != 0 && pos < ft_strlen(str))
+	if (pos >= 0 && pos < ft_strlen(str))
 		if(pos > 0 && str[pos - 1] == '2')
 			out = ext_err_file(instr, (int)pos, str);
 		else
