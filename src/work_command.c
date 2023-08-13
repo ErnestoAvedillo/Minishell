@@ -15,9 +15,11 @@
 static void	back_2_screen(t_instruct *instr)
 {
 		if(dup2(instr->header->my_stdin, STDIN_FILENO) == -1)
-			print_err("error al devolved fd a teclado\n");
+			print_err("error al devolver fd in a teclado\n");
 		if(dup2(instr->header->my_stdout, STDOUT_FILENO) == -1)
-			print_err("error al devolved fd a pantalla \n");
+			print_err("error al devolver fd out a pantalla \n");
+		if(dup2(instr->header->my_stderr, STDERR_FILENO) == -1)
+			print_err("error al devolver fd error a pantalla \n");
 }
 
 static void	exec_ext_cmd(t_instruct *instr)

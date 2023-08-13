@@ -61,6 +61,7 @@ typedef struct s_data
 	void **functions_ptr;
 	int my_stdin;
 	int my_stdout;
+	int my_stderr;
 	int out_status;
 	int	contador;
 	bool	exit;

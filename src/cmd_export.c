@@ -48,6 +48,7 @@ static char *check_all_chars(char *str)
 	free (aux);
 	return (NULL);
 }
+
 static int check_args(char *str)
 {
 	char *ptr;
