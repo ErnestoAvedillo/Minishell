@@ -51,12 +51,19 @@ int	get_var_cur_pos(char **env, char *str)
 {
 	int		i;
 	char	**out;
+	int		cmp;
 
 	i = -1;
 	out = ft_split(str, '=');
 	while (env[++i])
-		if (!ft_strncmp(env[i], out[0], 0, ft_strlen(out[0])))
-			break ;
+	{
+		if (env[i] && out[0])
+		{
+			cmp = ft_strncmp(env[i], out[0], 0, ft_strlen(out[0]));
+			if (!cmp)
+				break;
+		}
+	}
 	free_arrchar(out);
 	return (i);
 }

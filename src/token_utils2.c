@@ -138,8 +138,16 @@ char	*ext_in_file(t_instruct *instr, int start, char *str)
 	out = ft_strrmstr(str,start, start + end);
 	return (out);
 }
-
-size_t	check_is_redir(char *str, char c)
+/**
+ *
+ * Description:		Looks for the position of a char c excluding those which are between quotes.
+ *					
+ * Arguments:		char* where to look at
+ *					char charachter to look for.
+ * Returns:			int: >= 0 with the position of the charachterin the str
+ * 							-1 if there is none.
+ **/
+int	check_is_redir(char *str, char c)
 {
 	int		pos;
 	bool	quot[2];
@@ -163,20 +171,21 @@ char	*check_ext_files(t_instruct *instr, char *str)
 {
 	char	*out;
 	char	*out2;
-	size_t	pos;
+	int		pos;
 
 	if(!str)
 		return (str);
 	pos = check_is_redir(str, '>');
-	if (pos >= 0 && pos < ft_strlen(str))
-		if(pos > 0 && str[pos - 1] == '2')
+	if (pos >= 0 && pos < (int)ft_strlen(str))
+		if ((pos > 1 && str[pos - 1] == '2' && str[pos - 2] == ' ') || \
+				(pos > 0 && str[pos - 1] == '2'))
 			out = ext_err_file(instr, (int)pos, str);
 		else
 			out = ext_out_file(instr, (int)pos, str);
 	else
 		out = ft_strdup(str);
 	pos = check_is_redir(out, '<');
-	if (pos != 0 && pos < ft_strlen(out))
+	if (pos >= 0 && pos < (int)ft_strlen(out))
 	{
 		out2 = ext_in_file(instr, (int)pos, out);
 		free(str);

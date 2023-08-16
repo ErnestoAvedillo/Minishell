@@ -182,8 +182,8 @@ int	cmd_export(t_instruct *instr)
 			instr->header->env = exp_no_val(instr->arg[i], instr->header->env);
 		else if (!out[0])
 			instr->header->env = exp_val(instr->arg[i], instr->header->env);
-//		if (!instr->header->env)
-//			return (-1);
+		//		if (!instr->header->env)
+		//			return (-1);
 	}
 	return (out[0]);
 }

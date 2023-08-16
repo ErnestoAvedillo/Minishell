@@ -63,7 +63,7 @@ int	cmd_unset(t_instruct *instruct)
 	{	
 		out[0] = check_args(instruct->arg[i]);
 		if (!out[1] && out[0])
-			out[1] = out[0]; 
+			out[1] = out[0];
 		if (!out[0] && unsetenv(instruct->arg[i]) == 0)
 			instruct->header->env = actualize_env(aux, instruct->arg[i], 0);
 	}

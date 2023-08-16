@@ -48,9 +48,9 @@ void	get_cmd(t_data *data)
 				print_err("Memory alloc. error\n");
 			else
 				adm_redirections();
+			free_inst();
 			if (data->exit)
 				break ;
-			free_inst();
 		}
 	}
 }

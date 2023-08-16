@@ -42,7 +42,10 @@ char	*check_file_exists(t_instruct *instruct)
 		ft_strlcat(out, "/", 1024);
 		ft_strlcat(out, instruct->arg[0], 1024);
 		if (lstat(out, &file_stat) == 0)
+		{
+			free_arrchar(path_arr);
 			return (out);
+		}
 		out[0] = '\0';
 	}
 	free_arrchar(path_arr);
