@@ -84,12 +84,13 @@ char *repl_home_dir(char *str, int pos)
 {
 	char *var_val[2];
 
-	if ((str[pos + 1] == ' ' || str[pos +1] == '\0') && str[pos - 1] == ' ')
+	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/') && str[pos - 1] == ' ')
 	{
 		var_val[0] = ft_strdup("~");
-		var_val[1] = getenv("HOME");
+		var_val[1] = ft_strjoin(getenv("HOME"),"/");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);
+		free(var_val[1]);
 	}
 	return (str);
 }

@@ -54,10 +54,10 @@ bool	output_error_file_redir(t_instruct *inst)
 		inst->err->fd = open(inst->err->fd_name,
 							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (inst->err->fd_type == 2)
-		inst->err->fd = open(inst->err->fd_name, O_WRONLY | O_APPEND, 0666);
+		inst->err->fd = open(inst->err->fd_name, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (inst->err->fd == -1)
 	{
-		print_err("Minishell:%s: No such file or directory\n",inst->err->fd_name);
+		print_err("Minishell:%s: Error opening/creating file.\n",inst->err->fd_name);
 		return (false);
 	}
 	dup2(inst->err->fd, STDERR_FILENO);

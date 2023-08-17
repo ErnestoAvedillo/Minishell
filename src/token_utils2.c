@@ -65,6 +65,7 @@ char	*ext_out_file(t_instruct *instr, int start, char *str)
 	int		pos;
 
 	instr->out = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	instr->out->next = NULL;
 	pos = 0;
 	aux = ft_strdup(str);
 	if (aux[start] == '>' && aux[start + 1] == '>')
@@ -92,24 +93,21 @@ char *ext_err_file(t_instruct *instr, int start, char *str)
 	int end;
 	int pos;
 
-//	if (instr->out = NULL)
-		instr->out = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
-//	else
-//		while instr->out->next
-//			void
+	instr->err = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	instr->err->next = NULL;
 	pos = 0;
 	aux = ft_strdup(str);
 	if (aux[start] == '>' && aux[start + 1] == '>')
-		instr->out->fd_type = 2;
+		instr->err->fd_type = 2;
 	else
-		instr->out->fd_type = 1;
-	pos += instr->out->fd_type;
+		instr->err->fd_type = 1;
+	pos += instr->err->fd_type;
 	while (aux[start + pos] == ' ')
 		pos++;
 	end = pos;
 	while (aux[start + end] && aux[start + end] != ' ' && aux[start + end] != '>' && aux[start + end] != '<' && aux[start + end] != '|')
 		end++;
-	instr->out->fd_name = ft_substr(aux, start + pos, end - pos);
+	instr->err->fd_name = ft_substr(aux, start + pos, end - pos);
 	free(aux);
 	out = ft_strrmstr(str, start - 1, start + end);
 	return (out);
@@ -122,6 +120,7 @@ char	*ext_in_file(t_instruct *instr, int start, char *str)
 	int		pos;
 
 	instr->in = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	instr->err->next = NULL;
 	pos = 0;
 	if (str[start] == '<' && str[start + 1] == '<')
 		instr->in->fd_type = 2;
@@ -177,11 +176,13 @@ char	*check_ext_files(t_instruct *instr, char *str)
 		return (str);
 	pos = check_is_redir(str, '>');
 	if (pos >= 0 && pos < (int)ft_strlen(str))
+	{
 		if ((pos > 1 && str[pos - 1] == '2' && str[pos - 2] == ' ') || \
 				(pos > 0 && str[pos - 1] == '2'))
 			out = ext_err_file(instr, (int)pos, str);
 		else
 			out = ext_out_file(instr, (int)pos, str);
+	}
 	else
 		out = ft_strdup(str);
 	pos = check_is_redir(out, '<');

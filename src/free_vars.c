@@ -76,8 +76,9 @@ void	free_inst(void)
 		free(instruct->pre_oper);
 		free(instruct->post_oper);
 		free_arrchar(instruct->arg);
-		free(instruct->in);
-		free(instruct->out);
+		free_fd_data(instruct->in);
+		free_fd_data(instruct->out);
+		free_fd_data(instruct->err);
 		g_first_instruct = instruct->next;
 		free(instruct);
 		instruct = g_first_instruct;

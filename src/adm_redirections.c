@@ -134,7 +134,7 @@ void	adm_redirections(void)
 		else if (instr->pid == 0)
 		{
 			redirect(instr);
-				work_command(instr);
+			work_command(instr);
 		}
 		close_prev_pipes(instr);
 		wait(&status);

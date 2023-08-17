@@ -87,6 +87,8 @@ void	work_command(t_instruct *instr)
 	int	leninst;
 
 	i = -1;
+	if (instr->arg[0] == NULL)
+		exit(0);
 	leninst = ft_strlen(instr->arg[0]);
 	while (++i <= EXIT_CMD)
 	{
