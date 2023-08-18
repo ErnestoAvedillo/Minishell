@@ -120,7 +120,7 @@ char	*ext_in_file(t_instruct *instr, int start, char *str)
 	int		pos;
 
 	instr->in = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
-	instr->err->next = NULL;
+	instr->in->next = NULL;
 	pos = 0;
 	if (str[start] == '<' && str[start + 1] == '<')
 		instr->in->fd_type = 2;
