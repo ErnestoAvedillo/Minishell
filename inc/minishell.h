@@ -41,6 +41,8 @@
 
 # define OPERANDS	"> < >> << | ="
 
+# define SITNAX_ERR ">>> >>< <<> <<< <<| >>| "
+
 # define NON_REDIR_CMD "cd export unset alias source"
 # define NON_REDIR_CMD_L "ls echo printf find"
 

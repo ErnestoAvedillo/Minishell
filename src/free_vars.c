@@ -59,8 +59,10 @@ void free_fd_data(t_fd_struc *fd_ptr)
 		ptr->fd = 0;
 		ptr->fd_type = 0;
 		free(ptr->fd_name);
+		ptr->fd_name = NULL;
 		fd_ptr = ptr->next;
 		free(ptr);
+		ptr = NULL;
 		ptr = fd_ptr;
 	}
 }
