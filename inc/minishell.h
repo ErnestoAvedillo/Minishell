@@ -159,9 +159,9 @@ char **ft_str_arr_add(char **arr, char *str);
 char **ft_str_arr_rem(char **arr, int pos);
 // adm_file_redir
 void adm_file_redir(t_instruct *intr);
-bool output_file_redir(t_instruct *intr);
-bool output_error_file_redir(t_instruct *intr);
-bool input_file_redir(t_instruct *intr);
+bool output_file_redir(t_fd_struc *out);
+bool output_error_file_redir(t_fd_struc *err);
+bool input_file_redir(t_fd_struc *in);
 // void		close_file_redir(t_data *header);
 // ft_split_instr
 char **ft_split_instr(char const *s, char c);

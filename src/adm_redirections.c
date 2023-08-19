@@ -37,32 +37,32 @@ void	redirect(t_instruct *cur_inst)
 	t_instruct	*instr_pre;
 
 	instr_pre = cur_inst->prev;
-	output_error_file_redir(cur_inst);
+	output_error_file_redir(cur_inst->err);
 	if ((cur_inst->prev == NULL) && (cur_inst->next != NULL))
 	{
 		close(cur_inst->pipefd[0]);
-		input_file_redir(cur_inst);
-		if (!output_file_redir(cur_inst))
+		input_file_redir(cur_inst->in);
+		if (!output_file_redir(cur_inst->out))
 			dup2(cur_inst->pipefd[1], STDOUT_FILENO);
 		close(cur_inst->pipefd[1]);
 	}
 	else if ((cur_inst->prev != NULL) && (cur_inst->next != NULL))
 	{
-		if(!input_file_redir(cur_inst))
+		if(!input_file_redir(cur_inst->in))
 			dup2(instr_pre->pipefd[0], STDIN_FILENO);
 		close(cur_inst->pipefd[0]);
 		close(instr_pre->pipefd[0]);
-		if (!output_file_redir(cur_inst))
+		if (!output_file_redir(cur_inst->out))
 			dup2(cur_inst->pipefd[1], STDOUT_FILENO);
 		close(cur_inst->pipefd[1]);
 		close(cur_inst->pipefd[1]);
 	}
 	else if ((cur_inst->prev != NULL) && (cur_inst->next == NULL))
 	{
-		if(!input_file_redir(cur_inst))
+		if(!input_file_redir(cur_inst->in))
 			dup2(instr_pre->pipefd[0], STDIN_FILENO);
 		close(instr_pre->pipefd[0]);
-		output_file_redir(cur_inst);
+		output_file_redir(cur_inst->out);
 		close(instr_pre->pipefd[0]);
 	}
 }

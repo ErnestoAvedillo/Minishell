@@ -50,21 +50,23 @@ char	**rem_elem_from_env(char **env, char *str)
 int	get_var_cur_pos(char **env, char *str)
 {
 	int		i;
-	char	**out;
+	char	**out[2];
 	int		cmp;
 
 	i = -1;
-	out = ft_split(str, '=');
+	out[0] = ft_split(str, '=');
 	while (env[++i])
 	{
 		if (env[i] && out[0])
 		{
-			cmp = ft_strncmp(env[i], out[0], 0, ft_strlen(out[0]));
+			out[1] = ft_split(env[i], '=');
+			cmp = ft_strncmp(out[1][0], out[0][0], 0, ft_strlen(out[1][0]));
+			free_arrchar(out[1]);
 			if (!cmp)
 				break;
 		}
 	}
-	free_arrchar(out);
+	free_arrchar(out[0]);
 	return (i);
 }
 

@@ -12,62 +12,79 @@
 
 #include "../inc/minishell.h"
 
-bool	input_file_redir(t_instruct *inst)
+bool	input_file_redir(t_fd_struc *in)
 {
-	if (!inst->in)
+	if (!in)
 		return (false);
-	inst->in->fd = open(inst->in->fd_name, O_RDONLY, 0666);
-	if (inst->in->fd == -1)
+	in->fd = open(in->fd_name, O_RDONLY, 0666);
+	if (in->fd == -1)
 	{
-		print_err("Minishell:%s: No such file or directory\n",inst->in->fd_name);
+		print_err("Minishell:%s: No such file or directory\n",in->fd_name);
 		return (false);
 	}
-	dup2(inst->in->fd, STDIN_FILENO);
-	close(inst->in->fd);
+	dup2(in->fd, STDIN_FILENO);
+	close(in->fd);
 	return (true);
 }
 
-bool	output_file_redir(t_instruct *inst)
+bool	output_file_redir(t_fd_struc *out)
 {
-	if (!inst->out)
+	if (!out)
 		return (false);
-	if (inst->out->fd_type == 1)
-		inst->out->fd = open(inst->out->fd_name,
+	if (out->fd_type == 1)
+		out->fd = open(out->fd_name,
 							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	else if (inst->out->fd_type == 2)
-		inst->out->fd = open(inst->out->fd_name, O_WRONLY | O_APPEND | O_CREAT, 0666);
-	if (inst->out->fd == -1)
+	else if (out->fd_type == 2)
+		out->fd = open(out->fd_name, O_WRONLY | O_APPEND | O_CREAT, 0666);
+	if (out->fd == -1)
 	{
-		print_err("Minishell:%s: No such file or directory\n",inst->out->fd_name);
+		print_err("Minishell:%s: No such file or directory\n",out->fd_name);
 		return (false);
 	}
-	dup2(inst->out->fd, STDOUT_FILENO);
-	close(inst->out->fd);
+	dup2(out->fd, STDOUT_FILENO);
+	close(out->fd);
 	return (true);
 }
 
-bool	output_error_file_redir(t_instruct *inst)
+bool	output_error_file_redir(t_fd_struc *err)
 {
-	if (!inst->err)
+	if (!err)
 		return (false);
-	if (inst->err->fd_type == 1)
-		inst->err->fd = open(inst->err->fd_name,
+	if (err->fd_type == 1)
+		err->fd = open(err->fd_name,
 							 O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	else if (inst->err->fd_type == 2)
-		inst->err->fd = open(inst->err->fd_name, O_WRONLY | O_APPEND | O_CREAT, 0666);
-	if (inst->err->fd == -1)
+	else if (err->fd_type == 2)
+		err->fd = open(err->fd_name, O_WRONLY | O_APPEND | O_CREAT, 0666);
+	if (err->fd == -1)
 	{
-		print_err("Minishell:%s: Error opening/creating file.\n",inst->err->fd_name);
+		print_err("Minishell:%s: Error opening/creating file.\n",err->fd_name);
 		return (false);
 	}
-	dup2(inst->err->fd, STDERR_FILENO);
-	close(inst->err->fd);
+	dup2(err->fd, STDERR_FILENO);
+	close(err->fd);
 	return (true);
 }
 
 void	adm_file_redir(t_instruct *inst)
 {
-	input_file_redir(inst);
-	output_file_redir(inst);
-	output_error_file_redir(inst);
+	t_fd_struc	*redir;
+
+	redir = inst->in;
+	while (redir)
+	{
+		input_file_redir(redir);
+		redir = redir->next;
+	}
+	redir = inst->out;
+	while (redir)
+	{
+		output_file_redir(redir);
+		redir = redir->next;
+	}
+	redir = inst->err;
+	while (redir)
+	{
+		output_error_file_redir(redir);
+		redir = redir->next;
+	}
 }
