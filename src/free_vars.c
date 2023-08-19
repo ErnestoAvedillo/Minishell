@@ -59,8 +59,10 @@ void free_fd_data(t_fd_struc *fd_ptr)
 		ptr->fd = 0;
 		ptr->fd_type = 0;
 		free(ptr->fd_name);
+		ptr->fd_name = NULL;
 		fd_ptr = ptr->next;
 		free(ptr);
+		ptr = NULL;
 		ptr = fd_ptr;
 	}
 }
@@ -76,8 +78,9 @@ void	free_inst(void)
 		free(instruct->pre_oper);
 		free(instruct->post_oper);
 		free_arrchar(instruct->arg);
-		free(instruct->in);
-		free(instruct->out);
+		free_fd_data(instruct->in);
+		free_fd_data(instruct->out);
+		free_fd_data(instruct->err);
 		g_first_instruct = instruct->next;
 		free(instruct);
 		instruct = g_first_instruct;

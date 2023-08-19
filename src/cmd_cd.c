@@ -25,7 +25,8 @@
 char	*get_address(t_instruct *instruct)
 {
 	char	*dir;
-	int		len_dir;
+//	char	*aux;
+//	int		len_dir;
 
 	dir = (char *) malloc(1024 * sizeof(char));
 	dir [0] = '\0';
@@ -33,14 +34,16 @@ char	*get_address(t_instruct *instruct)
 		ft_strlcpy(dir, getenv("HOME"), 1024);
 	else
 	{
-		len_dir = ft_strlen(instruct->arg[1]);
+/*		len_dir = ft_strlen(instruct->arg[1]);
 		if (instruct->arg[1][0] == '~')
 		{
 			ft_strlcat(dir, getenv("HOME"), 1024);
-			ft_strlcat(dir, ft_substr(instruct->arg[1], 1, len_dir), 1024);
+			aux = ft_substr(instruct->arg[1], 1, len_dir);
 		}
 		else
-			ft_strlcat(dir, ft_substr(instruct->arg[1], 0, len_dir), 1024);
+			aux = ft_substr(instruct->arg[1], 0, len_dir);
+*/		ft_strlcat(dir, instruct->arg[1], 1024);
+//		free(aux);
 	}
 	return (dir);
 }
@@ -75,9 +78,11 @@ int	cmd_cd(t_instruct *instruct)
 		dir = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir, 1);
 		dir = concat_env("PWD");
-		actualize_env(instruct->header->env, dir, 1);
+		instruct->header->env = actualize_env(instruct->header->env, dir, 1);
+		free(dir);
 		olddir = concat_env("OLDPWD");
-		actualize_env(instruct->header->env, olddir, 1);
+		instruct->header->env = actualize_env(instruct->header->env, olddir, 1);
+		free(olddir);
 	}
 	return (0);
 }

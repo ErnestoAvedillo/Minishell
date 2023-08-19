@@ -29,7 +29,7 @@ static char	*get_var_name(char *str, int pos)
 	int	i;
 	
 	i = pos + 1;
-	while (str[i] && (str[i] != ' ' && str[i] != '\"' && str[i] != '\'' && str[i] != '$'))
+	while (str[i] && (str[i] != ' ' && str[i] != '\"' && str[i] != '\'' && str[i] != '$' && str[i] != '/'))
 		i++;
 	return (ft_substr(str, pos + 1, i - pos - 1));
 }
@@ -42,7 +42,6 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 
 	lenstrout = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
 	out = (char *) malloc(lenstrout * sizeof(char));
-	out[lenstrout - 1] = '\0';
 	j = -1;
 	while (++j <= lenstrout)
 	{
@@ -53,7 +52,8 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 		else if (value)
 			out[j] = value[j - pos];
 	}
-	free (str);
+	out[j] = '\0';
+	free(str);
 	return (out);
 }
 
@@ -84,12 +84,13 @@ char *repl_home_dir(char *str, int pos)
 {
 	char *var_val[2];
 
-	if ((str[pos + 1] == ' ' || str[pos +1] == '\0') && str[pos - 1] == ' ')
+	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/') && str[pos - 1] == ' ')
 	{
 		var_val[0] = ft_strdup("~");
-		var_val[1] = getenv("HOME");
+		var_val[1] = ft_strjoin(getenv("HOME"),"/");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);
+		free(var_val[1]);
 	}
 	return (str);
 }

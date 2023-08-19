@@ -57,89 +57,147 @@ void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 	}
 }
 
+t_fd_struc *get_fd_in_address(t_instruct *instr)
+{
+	t_fd_struc *new_fd;
+	t_fd_struc *cur_fd;
+
+	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	new_fd->next = NULL;
+	cur_fd = instr->in;
+	if (cur_fd != NULL)
+	{
+		while (cur_fd->next)
+			cur_fd = cur_fd->next;
+		cur_fd->next = new_fd;
+	}
+	else
+		instr->in = new_fd;
+	return (new_fd);
+}
+
+t_fd_struc *get_fd_out_address(t_instruct *instr)
+{
+	t_fd_struc *new_fd;
+	t_fd_struc *cur_fd;
+
+	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	new_fd->next = NULL;
+	cur_fd = instr->out;
+	if (cur_fd != NULL)
+	{
+		while (cur_fd->next)
+			cur_fd = cur_fd->next;
+		cur_fd->next = new_fd;
+	}
+	else
+		instr->out = new_fd;
+	return (new_fd);
+}
+
+t_fd_struc *get_fd_err_address(t_instruct *instr)
+{
+	t_fd_struc *new_fd;
+	t_fd_struc *cur_fd;
+
+	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	new_fd->next = NULL;
+	cur_fd = instr->err;
+	if (cur_fd != NULL)
+	{
+		while (cur_fd->next)
+			cur_fd = cur_fd->next;
+		cur_fd->next = new_fd;
+	}
+	else
+		instr->err = new_fd;
+	return (new_fd);
+}
 char	*ext_out_file(t_instruct *instr, int start, char *str)
 {
-	char	*out;
 	char	*aux;
 	int		end;
 	int		pos;
+	t_fd_struc *new_fd;
 
-	instr->out = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	new_fd = get_fd_out_address(instr);
 	pos = 0;
-	aux = ft_strdup(str);
-	if (aux[start] == '>' && aux[start + 1] == '>')
-		instr->out->fd_type = 2;
+	if (str[start] == '>' && str[start + 1] == '>')
+		new_fd->fd_type = 2;
 	else
-		instr->out->fd_type = 1;
-	pos += instr->out->fd_type;
-	while (aux[start + pos] == ' ')
+		new_fd->fd_type = 1;
+	pos += new_fd->fd_type;
+	while (str[start + pos] == ' ')
 		pos++;
 	end = pos;
-	while (aux[start + end] && aux[start + end] != ' ' \
-			&& aux[start + end] != '>' && aux[start + end] != '<' \
-			&& aux[start + end] != '|')
+	while (str[start + end] && str[start + end] != ' ' \
+			&& str[start + end] != '>' && str[start + end] != '<' \
+			&& str[start + end] != '|')
 		end++;
-	instr->out->fd_name = ft_substr(aux, start + pos, end - pos);
-	free(aux);
-	out = ft_strrmstr(str,start, start + end);
-	return (out);
+	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
+	aux = ft_strrmstr(str, start, start + end);
+	return (aux);
 }
 
 char *ext_err_file(t_instruct *instr, int start, char *str)
 {
-	char *out;
 	char *aux;
 	int end;
 	int pos;
+	t_fd_struc *new_fd;
 
-//	if (instr->out = NULL)
-		instr->out = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
-//	else
-//		while instr->out->next
-//			void
+	new_fd = get_fd_err_address(instr);
 	pos = 0;
-	aux = ft_strdup(str);
-	if (aux[start] == '>' && aux[start + 1] == '>')
-		instr->out->fd_type = 2;
+//	aux = ft_strdup(str);
+	if (str[start] == '>' && str[start + 1] == '>')
+		new_fd->fd_type = 2;
 	else
-		instr->out->fd_type = 1;
-	pos += instr->out->fd_type;
-	while (aux[start + pos] == ' ')
+		new_fd->fd_type = 1;
+	pos += new_fd->fd_type;
+	while (str[start + pos] == ' ')
 		pos++;
 	end = pos;
-	while (aux[start + end] && aux[start + end] != ' ' && aux[start + end] != '>' && aux[start + end] != '<' && aux[start + end] != '|')
+	while (str[start + end] && str[start + end] != ' ' && str[start + end] != '>' && str[start + end] != '<' && str[start + end] != '|')
 		end++;
-	instr->out->fd_name = ft_substr(aux, start + pos, end - pos);
-	free(aux);
-	out = ft_strrmstr(str, start - 1, start + end);
-	return (out);
+	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
+	aux = ft_strrmstr(str, start - 1, start + end);
+	return (aux);
 }
 
 char	*ext_in_file(t_instruct *instr, int start, char *str)
 {
-	char	*out;
+	char	*aux;
 	int		end;
 	int		pos;
+	t_fd_struc *new_fd;
 
-	instr->in = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
+	new_fd = get_fd_in_address(instr);
 	pos = 0;
 	if (str[start] == '<' && str[start + 1] == '<')
-		instr->in->fd_type = 2;
+		new_fd->fd_type = 2;
 	else
-		instr->in->fd_type = 1;
-	pos += instr->in->fd_type;
+		new_fd->fd_type = 1;
+	pos += new_fd->fd_type;
 	while (str[start + pos] == ' ')
 		pos++;
 	end = pos;
 	while (str[start + end] && str[start + end] != ' ' \
 			&& str[start + end] != '|' && str[start + end] != '>')
 		end++;
-	instr->in->fd_name = ft_substr(str, start + pos, end - pos);
-	out = ft_strrmstr(str,start, start + end);
-	return (out);
+	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
+	aux = ft_strrmstr(str,start, start + end);
+	return (aux);
 }
-
-size_t	check_is_redir(char *str, char c)
+/**
+ *
+ * Description:		Looks for the position of a char c excluding those which are between quotes.
+ *					
+ * Arguments:		char* where to look at
+ *					char charachter to look for.
+ * Returns:			int: >= 0 with the position of the charachterin the str
+ * 							-1 if there is none.
+ **/
+int	check_is_redir(char *str, char c)
 {
 	int		pos;
 	bool	quot[2];
@@ -161,30 +219,34 @@ size_t	check_is_redir(char *str, char c)
 
 char	*check_ext_files(t_instruct *instr, char *str)
 {
-	char	*out;
-	char	*out2;
-	size_t	pos;
+	char	*out[2];
+	int		pos;
 
 	if(!str)
 		return (str);
-	pos = check_is_redir(str, '>');
-	if (pos >= 0 && pos < ft_strlen(str))
-		if(pos > 0 && str[pos - 1] == '2')
-			out = ext_err_file(instr, (int)pos, str);
-		else
-			out = ext_out_file(instr, (int)pos, str);
-	else
-		out = ft_strdup(str);
-	pos = check_is_redir(out, '<');
-	if (pos != 0 && pos < ft_strlen(out))
+	out[0] = ft_strdup(str);
+	pos = check_is_redir(out[0], '>');
+	while (pos >= 0 && pos < (int)ft_strlen(out[0]))
 	{
-		out2 = ext_in_file(instr, (int)pos, out);
-		free(str);
-		free(out);
-		return (out2);
+		if ((pos > 1 && out[0][pos - 1] == '2' && out[0][pos - 2] == ' ') || \
+				(pos > 0 && out[0][pos - 1] == '2'))
+			out[1] = ext_err_file(instr, (int)pos, out[0]);
+		else
+			out[1] = ext_out_file(instr, (int)pos, out[0]);
+		free(out[0]);
+		out[0] = out[1];
+		pos = check_is_redir(out[0], '>');
+	}
+	pos = check_is_redir(out[0], '<');
+	while (pos >= 0 && pos < (int)ft_strlen(out[0]))
+	{
+		out[1] = ext_in_file(instr, (int)pos, out[0]);
+		free(out[0]);
+		out[0] = out[1];
+		pos = check_is_redir(out[0], '<');
 	}
 	free(str);
-	return (out);
+	return (out[0]);
 }
 
 void ft_strrmchr(char *str, int n)

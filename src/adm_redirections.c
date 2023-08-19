@@ -37,32 +37,32 @@ void	redirect(t_instruct *cur_inst)
 	t_instruct	*instr_pre;
 
 	instr_pre = cur_inst->prev;
-	output_error_file_redir(cur_inst);
+	output_error_file_redir(cur_inst->err);
 	if ((cur_inst->prev == NULL) && (cur_inst->next != NULL))
 	{
 		close(cur_inst->pipefd[0]);
-		input_file_redir(cur_inst);
-		if (!output_file_redir(cur_inst))
+		input_file_redir(cur_inst->in);
+		if (!output_file_redir(cur_inst->out))
 			dup2(cur_inst->pipefd[1], STDOUT_FILENO);
 		close(cur_inst->pipefd[1]);
 	}
 	else if ((cur_inst->prev != NULL) && (cur_inst->next != NULL))
 	{
-		if(!input_file_redir(cur_inst))
+		if(!input_file_redir(cur_inst->in))
 			dup2(instr_pre->pipefd[0], STDIN_FILENO);
 		close(cur_inst->pipefd[0]);
 		close(instr_pre->pipefd[0]);
-		if (!output_file_redir(cur_inst))
+		if (!output_file_redir(cur_inst->out))
 			dup2(cur_inst->pipefd[1], STDOUT_FILENO);
 		close(cur_inst->pipefd[1]);
 		close(cur_inst->pipefd[1]);
 	}
 	else if ((cur_inst->prev != NULL) && (cur_inst->next == NULL))
 	{
-		if(!input_file_redir(cur_inst))
+		if(!input_file_redir(cur_inst->in))
 			dup2(instr_pre->pipefd[0], STDIN_FILENO);
 		close(instr_pre->pipefd[0]);
-		output_file_redir(cur_inst);
+		output_file_redir(cur_inst->out);
 		close(instr_pre->pipefd[0]);
 	}
 }
@@ -97,13 +97,7 @@ int	check_is_1_command(void)
 		return (1);
 	if(!g_first_instruct->header->command[0])
 		return(1);
-/*	if (g_first_instruct->arg[0][0] == 0)
-	{
-		print_err("minishell: : command not found\n");
-		g_first_instruct->header->out_status = 127;
-		return (1) ;
-	}
-*/	if (leninst == 1)
+	if (leninst == 1)
 	{
 		work_1_command(g_first_instruct);
 		return (1);
@@ -134,7 +128,7 @@ void	adm_redirections(void)
 		else if (instr->pid == 0)
 		{
 			redirect(instr);
-				work_command(instr);
+			work_command(instr);
 		}
 		close_prev_pipes(instr);
 		wait(&status);

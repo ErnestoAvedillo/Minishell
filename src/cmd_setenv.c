@@ -75,11 +75,11 @@ int	cmd_setenv(t_instruct *instr)
 		str = ft_split(aux, '=');
 		if (setenv(str[0], str[1], 1) == 0)
 			instr->header->env = actualize_env(instr->header->env, aux, 2);
+		free(aux);
 		i++;
 		free_arrchar(str);
 		if (!instr->arg || syntax_error(instr->arg[i]))
 			return (-1);
-		free(aux);
 		aux = ft_strdup(instr->arg[i]);
 	}
 	free(aux);

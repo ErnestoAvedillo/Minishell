@@ -25,7 +25,7 @@ static char *check_all_chars(char *str)
 {
 	int		i;
 	char	*ptr;
-	char	*aux;
+	char	*aux[2];
 
 	if (str[0] == '=')
 		return (str);
@@ -33,19 +33,22 @@ static char *check_all_chars(char *str)
 		return (str);
 	if (ft_isdigit(str[0]))
 		return (str);
-	aux = ft_strdup("+.{}-#@!^~");
+	aux[1] = ft_strchr(str, 0, '=');
+	if(!str[1])
+		return (str);
+	aux[0] = ft_strdup("+.{}-#@!^~");
 	i = 0;
-	while(aux[i] && aux[i] != '=')
+	while(aux[0][i])
 	{
-		ptr = ft_strchr(str,0, aux[i]);
-		if (ptr != NULL && ptr < str + ft_strlen(str))
+		ptr = ft_strchr(str,0, aux[0][i]);
+		if (ptr != NULL && ptr < aux[1] )
 		{
-			free (aux);
+			free (aux[0]);
 			return (ptr);
 		}
 		i++;
 	}
-	free (aux);
+	free (aux[0]);
 	return (NULL);
 }
 
@@ -182,8 +185,8 @@ int	cmd_export(t_instruct *instr)
 			instr->header->env = exp_no_val(instr->arg[i], instr->header->env);
 		else if (!out[0])
 			instr->header->env = exp_val(instr->arg[i], instr->header->env);
-//		if (!instr->header->env)
-//			return (-1);
+		//		if (!instr->header->env)
+		//			return (-1);
 	}
 	return (out[0]);
 }

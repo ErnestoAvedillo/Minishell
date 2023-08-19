@@ -17,22 +17,22 @@ static bool check_is_num(t_instruct *inst)
 	int i;
 	int dig;
 
+
 	dig = 0;
 	i = 0;
 	if (inst->arg[1])
 		if (inst->arg[1][i] == '-' || inst->arg[1][i] == '+')
 			i++;
-
-		while(inst->arg[1] && inst->arg[1][i])
+	while(inst->arg[1] && inst->arg[1][i])
+	{
+		dig = ft_isdigit(inst->arg[1][i]);
+		if (!dig)
 		{
-			dig = ft_isdigit(inst->arg[1][i]);
-			if (!dig)
-			{
-				print_err("exit: %s: numeric argument required\n",inst->arg[1]);
-				return (false);
-			}
-			i++;
+			print_err("exit: %s: numeric argument required\n",inst->arg[1]);
+			return (false);
 		}
+		i++;
+	}
 	return (true);
 }
 
@@ -53,8 +53,6 @@ static bool check_args (t_instruct *inst)
 
 int	cmd_exit(t_instruct *inst)
 {
-	int	i;
-
 	//printf ("Gracias por usar minishell\n");
 	if (!check_is_num(inst))
 	{
@@ -65,7 +63,6 @@ int	cmd_exit(t_instruct *inst)
 		return (1);
 	else
 		inst->header->exit = true;
-	i = 0;
 	if (inst->arg[1])
 		inst->header->out_status = ft_atoi(inst->arg[1]) % 256;
 	else
