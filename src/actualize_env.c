@@ -55,9 +55,9 @@ int	get_var_cur_pos(char **env, char *str)
 
 	i = -1;
 	out[0] = ft_split(str, '=');
-	while (env[++i])
+	while (out[0] && env[++i])
 	{
-		if (env[i] && out[0])
+		if (env[i])
 		{
 			out[1] = ft_split(env[i], '=');
 			cmp = ft_strncmp(out[1][0], out[0][0], 0, ft_strlen(out[1][0]));
@@ -74,9 +74,9 @@ int	get_var_cur_pos(char **env, char *str)
  *
  * Description:		Actualizes the array of the environment variable.
  *
- * Arguments:		char **env: Pointer to teh env variable
+ * Arguments:		char **env: Pointer to the env variable
  *					variable to be added or removed
- *					int i : 0 indicating to remove
+ *					int k : 0 indicating to remove
  *							1 indicating to add or modify
  *							2 indicating only modify if exists
  * Returns:			NONE.

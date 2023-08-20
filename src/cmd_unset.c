@@ -53,11 +53,9 @@ int	cmd_unset(t_instruct *instruct)
 {
 	int		i;
 	int		out[2];
-	char	**aux;
 
 	out[0] = 0;
 	out[1] = 0;
-	aux = instruct->header->env;
 	i = 0;
 	while (instruct->arg[++i])
 	{	
@@ -65,7 +63,7 @@ int	cmd_unset(t_instruct *instruct)
 		if (!out[1] && out[0])
 			out[1] = out[0];
 		if (!out[0] && unsetenv(instruct->arg[i]) == 0)
-			instruct->header->env = actualize_env(aux, instruct->arg[i], 0);
+			instruct->header->env = actualize_env(instruct->header->env, instruct->arg[i], 0);
 	}
 	return (out[1]);
 }

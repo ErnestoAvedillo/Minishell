@@ -41,10 +41,13 @@
 
 # define OPERANDS	"> < >> << | ="
 
-# define SITNAX_ERR ">>> >>< <<> <<< <<| >>| "
+# define SNTX_258_ERR ">>> >>< <<> <<| >>| <| >|"
+# define SNTX_127_ERR "\"\""
 
 # define NON_REDIR_CMD "cd export unset alias source"
 # define NON_REDIR_CMD_L "ls echo printf find"
+
+# define CUR_PATH "./:"
 
 typedef struct s_fd_struc
 {

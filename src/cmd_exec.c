@@ -34,7 +34,10 @@ char	*check_file_exists(t_instruct *instruct)
 	}
 	out = (char *)malloc(1024 * sizeof(char));
 	out[0] = '\0';
-	path_arr = ft_split(getenv("PATH"), ':');
+	if(!getenv("PATH"))
+		path_arr = ft_split(CUR_PATH, ':');
+	else
+		path_arr = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (path_arr && path_arr[++i])
 	{

@@ -107,13 +107,14 @@ void check_delimiter(t_instruct *instr)
 	free(aux);
 	aux = ft_strjoin(delimiter, ">");
 	readed = readline(aux);
-	while (ft_strncmp(readed, delimiter, 0, ft_strlen(readed)))
-	{
-		ft_putstr_fd(readed, instr->in->fd);
-		ft_putstr_fd("\n", instr->in->fd );
-		free(readed);
-		readed = readline(aux);
-	}
+	if (readed)
+		while (ft_strncmp(readed, delimiter, 0, ft_strlen(readed)))
+		{
+			ft_putstr_fd(readed, instr->in->fd);
+			ft_putstr_fd("\n", instr->in->fd );
+			free(readed);
+			readed = readline(aux);
+		}
 	free(delimiter);
 	free(aux);
 	close(instr->in->fd);

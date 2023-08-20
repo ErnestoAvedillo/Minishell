@@ -13,42 +13,45 @@
 #include "../inc/minishell.h"
 
 /*
- *   Descriptinon:	Looks if there is more than one "=" in the str.
- *   Arguments:		char *s : the string to work with.
- *   Returns:		True or false.
- */
-bool	more_th_1(char *str)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = 0;
-	while (str[++i])
-		if (str[i] == '=')
-			j++;
-	if (j > 1)
-		return (true);
-	return (false);
-}
-
-/*
  *   Descriptinon:	Checks the syntaxis of the instruction.
  *   Arguments:		char *str The instruction
  *
  *   Returns:		int 1 if true
  * 					int 0 if false.
  */
-static int	syntax_error(char *str)
+static int	syntax_error(char **str)
 {
-	if (!str)
-		return (1);
-	if (!is_char_in_str(str, '=') || more_th_1(str))
-	{
-		ft_printf("Command not found.\n");
-		return (1);
-	}
+	int	i;
+
+	i = -1;
+	while(str[++i])
+		if (!is_char_in_str(str[i], '='))
+		{
+			print_err("Command not found.\n");
+			return (1);
+		}
 	return (0);
+}
+
+/*
+ *   Descriptinon:	Removes the value part of the variable to be set.
+ *   Arguments:		char *str The assignement str.  
+ *   Returns:		char * Str with the name of the variable.
+ */
+static char 	*rm_value(char *str)
+{
+	char	*out;
+	int		i;
+
+	out = ft_strdup(str);
+	i = -1;
+	while(out[++i])
+		if (out[i] == '=')
+		{
+			out[i] = '\0';
+			break;
+		}
+	return (out);
 }
 
 /*
@@ -60,26 +63,23 @@ static int	syntax_error(char *str)
 int	cmd_setenv(t_instruct *instr)
 {
 	int		i;
-	char	**str;
+	char	*str[2];
 	char	*aux;
 
-	if (more_th_1(instr->arg[0]))
-	{
-		ft_printf("Command not found.\n");
-		return (1);
-	}
+	if (syntax_error(instr->arg))
+		return (127);
 	aux = ft_strdup(instr->arg[0]);
 	i = 0;
 	while (aux)
 	{
-		str = ft_split(aux, '=');
+		str[1] = ft_strdup(ft_strchr(aux, 0, '=') + 1);
+		str[0] = rm_value(aux);
 		if (setenv(str[0], str[1], 1) == 0)
 			instr->header->env = actualize_env(instr->header->env, aux, 2);
 		free(aux);
 		i++;
-		free_arrchar(str);
-		if (!instr->arg || syntax_error(instr->arg[i]))
-			return (-1);
+		free(str[0]);
+		free(str[1]);
 		aux = ft_strdup(instr->arg[i]);
 	}
 	free(aux);

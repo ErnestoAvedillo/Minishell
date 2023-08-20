@@ -26,7 +26,10 @@ int	cmd_env(t_instruct *instruct)
 			ft_printf("%s\n", curdir);
 		}
 		else
+		{
+			instruct->header->out_status = 127;
 			ft_printf("Too many arguments env.\n");
+		}
 		return (1);
 	}
 	ptr = instruct->header->env;

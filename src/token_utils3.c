@@ -65,10 +65,10 @@ void prepare_for_split(char *str)
 	while (str[i])
 	{
 		check_quotes(str, i, quot);
-		if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
-					str[i] = (char)0xff;
 		if (str[i] == '\t')
 			str[i] = ' ';
+		if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
+					str[i] = (char)0xff;
 		i++;
 	}
 
