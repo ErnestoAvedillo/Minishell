@@ -29,7 +29,6 @@ int	main(int av, char **ac, char **environ)
 	get_cmd(data);
 	out = data->out_status;
 	free_vars(data);
-	//printf("Goodbye!\n");
 	return (out);
 	(void) av;
 	(void) ac;

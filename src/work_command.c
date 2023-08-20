@@ -14,12 +14,12 @@
 
 static void	back_2_screen(t_instruct *instr)
 {
-		if(dup2(instr->header->my_stdin, STDIN_FILENO) == -1)
-			print_err("error al devolver fd in a teclado\n");
-		if(dup2(instr->header->my_stdout, STDOUT_FILENO) == -1)
-			print_err("error al devolver fd out a pantalla \n");
-		if(dup2(instr->header->my_stderr, STDERR_FILENO) == -1)
-			print_err("error al devolver fd error a pantalla \n");
+	if (dup2(instr->header->my_stdin, STDIN_FILENO) == -1)
+		print_err("error al devolver fd in a teclado\n");
+	if (dup2(instr->header->my_stdout, STDOUT_FILENO) == -1)
+		print_err("error al devolver fd out a pantalla \n");
+	if (dup2(instr->header->my_stderr, STDERR_FILENO) == -1)
+		print_err("error al devolver fd error a pantalla \n");
 }
 
 static void	exec_ext_cmd(t_instruct *instr)
@@ -30,8 +30,8 @@ static void	exec_ext_cmd(t_instruct *instr)
 	out = check_file_exists(instr);
 	if (!out)
 	{
-		print_err("minishell: %s : command not found\n",instr->arg[0]);
-		instr->header->out_status =127;
+		print_err("minishell: %s : command not found\n", instr->arg[0]);
+		instr->header->out_status = 127;
 		free(out);
 		return ;
 	}
@@ -56,7 +56,7 @@ void	work_1_command(t_instruct *instr)
 
 	i = -1;
 	adm_file_redir(instr);
-	if(instr->arg[0])
+	if (instr->arg[0])
 	{
 		while (++i <= EXIT_CMD)
 		{
@@ -67,13 +67,11 @@ void	work_1_command(t_instruct *instr)
 				instr->header->out_status = ((int (*)(t_instruct *)) \
 						((void **)instr->header->functions_ptr)[i])(instr);
 				back_2_screen(instr);
-				return;
+				return ;
 			}
 		}
 		if (is_char_in_str(instr->arg[0], '='))
-		{
 			instr->header->out_status = cmd_setenv(instr);
-		}
 		else
 			exec_ext_cmd(instr);
 	}

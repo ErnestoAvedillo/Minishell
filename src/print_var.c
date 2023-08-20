@@ -12,15 +12,21 @@
 
 #include "../inc/minishell.h"
 #include <errno.h>
-void listOpenFileDescriptors()
+
+void	list_open_file_descriptors(void)
 {
-	int max_fd = sysconf(_SC_OPEN_MAX); // Get the maximum number of open file descriptors
-	for (int fd = 0; fd < max_fd; fd++)
+	int	max_fd;
+	int	fd;
+
+	max_fd = sysconf(_SC_OPEN_MAX);
+	fd = 0;
+	while (fd < max_fd)
 	{
 		if (fcntl(fd, F_GETFD) != -1 || errno != EBADF)
 		{
 			printf("File descriptor %d is open.\n", fd);
 		}
+		fd ++;
 	}
 }
 
@@ -42,14 +48,17 @@ void	print_inst(t_instruct *instructions)
 				i++;
 			}
 		}
-		if(inst->in)
-			printf (" redirección in %i, vale-%s con fd %i-\n",inst->in->fd_type, inst->in->fd_name, inst->in->fd);
-		if(inst->out)
-			printf (" redirección out %i, vale-%s con fd %i-\n",inst->out->fd_type, inst->out->fd_name, inst->out->fd);
-		printf("pipe fd 0 = %i -- pipe fd1 = %i\n", inst->pipefd[0], inst->pipefd[1]);
+		if (inst->in)
+			printf (" redirección in %i, vale-%s con fd %i-\n", \
+				inst->in->fd_type, inst->in->fd_name, inst->in->fd);
+		if (inst->out)
+			printf (" redirección out %i, vale-%s con fd %i-\n", \
+				inst->out->fd_type, inst->out->fd_name, inst->out->fd);
+		printf("pipe fd 0 = %i -- pipe fd1 = %i\n", \
+			inst->pipefd[0], inst->pipefd[1]);
 		inst = inst->next;
 	}
-	listOpenFileDescriptors();
+	list_open_file_descriptors();
 }
 
 void	print_arr(char **arr)

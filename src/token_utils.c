@@ -14,7 +14,8 @@
 
 /*
 *   Descriptinon:	returns the pre_operation of the instruction. 
-*					NOTE: pos in the string should be at least 1 or 2 to have some operands. 
+*					NOTE: pos in the string should be at least 1 or 2 to 
+*					have some operands. 
 *   Arguments:		char *str The variable where it is the instruction.
 *					int pos position where is starting the instruction
 *					int end where yhe instruction ends.
@@ -95,7 +96,6 @@ void	replace_char_in_str(char *str, unsigned int c1, unsigned int c2)
 			str[i] = c2;
 }
 
-
 /*
 *   Descriptinon:	Fill all data for the current instrucion.
 *   Arguments:		t_instruct *inst : the variable to fill in.
@@ -123,7 +123,7 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			quot[1] = !quot[1];
 		if (str[i] == '\\' && (str[i + 1] == '\\' || str[i + 1] == '$'))
 			quot[2] = !quot[2];
-		else if(str[i] != '$' && str[i - 1] != '\\')
+		else if (str[i] != '$' && str[i - 1] != '\\')
 			quot[2] = false;
 		if (str[i] == '$' && str[i + 1] == '\'' && !quot[0])
 		{
@@ -135,7 +135,9 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			ft_strrmchr(str, i);
 			i--;
 		}
-		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1]) || str[i + 1] == '\0' || str[i + 1] == ' ' || (str[i + 1] == '\'' && quot[0])))
+		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1]) \
+			|| str[i + 1] == '\0' || str[i + 1] == ' ' || (str[i + 1] == '\'' \
+			&& quot[0])))
 			;
 		else if (str[i] == '$' && !quot[0] && !quot[2])
 		{
@@ -149,7 +151,7 @@ char	*fill_instruct(t_instruct *inst, char *str)
 	quot[0] = false;
 	quot[1] = false;
 	i = 0;
-	while(i <= (int)ft_strlen(str))
+	while (i <= (int)ft_strlen(str))
 	{
 		if (str[i] == '\\' && !quot[1] && !quot[0])
 			ft_strrmchr(str, i);
@@ -169,7 +171,6 @@ char	*fill_instruct(t_instruct *inst, char *str)
 			str[i] = (char)0xff;
 		i++;
 	}
-
 	inst->arg = ft_split(str, ' ');
 	j = -1;
 	while (inst->arg[++j])

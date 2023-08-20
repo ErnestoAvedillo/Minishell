@@ -30,9 +30,8 @@ t_instruct	*tokenize(t_data *data)
 	instruct[1] = instruct[0];
 	subcommands = ft_split_instr(data->command, '|');
 	i = -1;
-	while(subcommands[++i])
+	while (subcommands[++i])
 	{
-		//subcommands[i] = fill_instruct(instruct[1], subcommands[i]);
 		subcommands[i] = fill_instruct2(instruct[1], subcommands[i]);
 		if (instruct[1]->in && instruct[1]->in->fd_type == 2)
 			check_delimiter(instruct[1]);

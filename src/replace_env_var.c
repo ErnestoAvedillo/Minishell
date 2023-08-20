@@ -27,9 +27,10 @@ static int	move_2_next_sing_quote(char *str, int pos)
 static char	*get_var_name(char *str, int pos)
 {
 	int	i;
-	
+
 	i = pos + 1;
-	while (str[i] && (str[i] != ' ' && str[i] != '\"' && str[i] != '\'' && str[i] != '$' && str[i] != '/'))
+	while (str[i] && (str[i] != ' ' && str[i] != '\"' && str[i] != '\'' \
+		&& str[i] != '$' && str[i] != '/'))
 		i++;
 	return (ft_substr(str, pos + 1, i - pos - 1));
 }
@@ -80,14 +81,15 @@ char	*replace_env_var(char *str, int pos, int status)
 	return (str);
 }
 
-char *repl_home_dir(char *str, int pos)
+char	*repl_home_dir(char *str, int pos)
 {
-	char *var_val[2];
+	char	*var_val[2];
 
-	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/') && str[pos - 1] == ' ')
+	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/') \
+		&& str[pos - 1] == ' ')
 	{
 		var_val[0] = ft_strdup("~");
-		var_val[1] = ft_strjoin(getenv("HOME"),"/");
+		var_val[1] = ft_strjoin(getenv("HOME"), "/");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);
 		free(var_val[1]);
@@ -95,9 +97,9 @@ char *repl_home_dir(char *str, int pos)
 	return (str);
 }
 
-char *repl_old_dir(char *str, int pos)
+char	*repl_old_dir(char *str, int pos)
 {
-	char *var_val[2];
+	char	*var_val[2];
 
 	if ((str[pos + 1] == ' ' || str[pos +1] == '\0') && str[pos - 1] == ' ')
 	{

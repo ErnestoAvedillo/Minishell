@@ -12,25 +12,25 @@
 
 #include "../inc/minishell.h"
 
-char *ft_strrmstr(char *str,int start, int end)
+char	*ft_strrmstr(char *str, int start, int end)
 {
-	char *out;
-	int i;
-	int k;
+	char	*out;
+	int		i;
+	int		k;
 
-	if(!str)
+	if (!str)
 		return (str);
 	if (start < 0)
 		start = 0;
 	if (end < start)
 		return (str);
-	end = ft_min(end , ft_strlen(str));
+	end = ft_min(end, ft_strlen(str));
 	i = -1;
 	k = 0;
 	out = (char *)malloc((ft_strlen(str) + 1 - start + end) * sizeof(char));
 	while (str[++i])
 	{
-		if(i < start)
+		if (i < start)
 		{
 			out[k] = str[i];
 			k++;

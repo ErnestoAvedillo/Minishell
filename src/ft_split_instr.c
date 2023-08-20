@@ -15,7 +15,7 @@
 static size_t	ft_nextendpos(char const *s, size_t ini, char c)
 {
 	size_t	i;
-	bool quote[2];
+	bool	quote[2];
 
 	i = ini;
 	quote[0] = false;

@@ -24,7 +24,7 @@ static int	syntax_error(char **str)
 	int	i;
 
 	i = -1;
-	while(str[++i])
+	while (str[++i])
 		if (!is_char_in_str(str[i], '='))
 		{
 			print_err("Command not found.\n");

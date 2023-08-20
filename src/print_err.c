@@ -38,7 +38,7 @@ int	print_err(char *str, ...)
 			i++;
 		}
 		else
-			val_ret = write(STDERR_FILENO ,&str[i], 1);
+			val_ret = write(STDERR_FILENO , &str[i], 1);
 		i++;
 	}
 	va_end (args);

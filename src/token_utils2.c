@@ -57,10 +57,10 @@ void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 	}
 }
 
-t_fd_struc *get_fd_in_address(t_instruct *instr)
+t_fd_struc	*get_fd_in_address(t_instruct *instr)
 {
-	t_fd_struc *new_fd;
-	t_fd_struc *cur_fd;
+	t_fd_struc	*new_fd;
+	t_fd_struc	*cur_fd;
 
 	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
 	new_fd->next = NULL;
@@ -76,10 +76,10 @@ t_fd_struc *get_fd_in_address(t_instruct *instr)
 	return (new_fd);
 }
 
-t_fd_struc *get_fd_out_address(t_instruct *instr)
+t_fd_struc	*get_fd_out_address(t_instruct *instr)
 {
-	t_fd_struc *new_fd;
-	t_fd_struc *cur_fd;
+	t_fd_struc	*new_fd;
+	t_fd_struc	*cur_fd;
 
 	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
 	new_fd->next = NULL;
@@ -95,10 +95,10 @@ t_fd_struc *get_fd_out_address(t_instruct *instr)
 	return (new_fd);
 }
 
-t_fd_struc *get_fd_err_address(t_instruct *instr)
+t_fd_struc	*get_fd_err_address(t_instruct *instr)
 {
-	t_fd_struc *new_fd;
-	t_fd_struc *cur_fd;
+	t_fd_struc	*new_fd;
+	t_fd_struc	*cur_fd;
 
 	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
 	new_fd->next = NULL;
@@ -113,12 +113,13 @@ t_fd_struc *get_fd_err_address(t_instruct *instr)
 		instr->err = new_fd;
 	return (new_fd);
 }
+
 char	*ext_out_file(t_instruct *instr, int start, char *str)
 {
-	char	*aux;
-	int		end;
-	int		pos;
-	t_fd_struc *new_fd;
+	char		*aux;
+	int			end;
+	int			pos;
+	t_fd_struc	*new_fd;
 
 	new_fd = get_fd_out_address(instr);
 	pos = 0;
@@ -139,16 +140,15 @@ char	*ext_out_file(t_instruct *instr, int start, char *str)
 	return (aux);
 }
 
-char *ext_err_file(t_instruct *instr, int start, char *str)
+char	*ext_err_file(t_instruct *instr, int start, char *str)
 {
-	char *aux;
-	int end;
-	int pos;
-	t_fd_struc *new_fd;
+	char		*aux;
+	int			end;
+	int			pos;
+	t_fd_struc	*new_fd;
 
 	new_fd = get_fd_err_address(instr);
 	pos = 0;
-//	aux = ft_strdup(str);
 	if (str[start] == '>' && str[start + 1] == '>')
 		new_fd->fd_type = 2;
 	else
@@ -157,7 +157,9 @@ char *ext_err_file(t_instruct *instr, int start, char *str)
 	while (str[start + pos] == ' ')
 		pos++;
 	end = pos;
-	while (str[start + end] && str[start + end] != ' ' && str[start + end] != '>' && str[start + end] != '<' && str[start + end] != '|')
+	while (str[start + end] && str[start + end] != ' ' \
+		&& str[start + end] != '>' && str[start + end] != '<' \
+		&& str[start + end] != '|')
 		end++;
 	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
 	aux = ft_strrmstr(str, start - 1, start + end);
@@ -166,10 +168,10 @@ char *ext_err_file(t_instruct *instr, int start, char *str)
 
 char	*ext_in_file(t_instruct *instr, int start, char *str)
 {
-	char	*aux;
-	int		end;
-	int		pos;
-	t_fd_struc *new_fd;
+	char		*aux;
+	int			end;
+	int			pos;
+	t_fd_struc	*new_fd;
 
 	new_fd = get_fd_in_address(instr);
 	pos = 0;
@@ -185,12 +187,14 @@ char	*ext_in_file(t_instruct *instr, int start, char *str)
 			&& str[start + end] != '|' && str[start + end] != '>')
 		end++;
 	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
-	aux = ft_strrmstr(str,start, start + end);
+	aux = ft_strrmstr(str, start, start + end);
 	return (aux);
 }
+
 /**
  *
- * Description:		Looks for the position of a char c excluding those which are between quotes.
+ * Description:		Looks for the position of a char c excluding 
+ * 					those which are between quotes.
  *					
  * Arguments:		char* where to look at
  *					char charachter to look for.
@@ -207,11 +211,11 @@ int	check_is_redir(char *str, char c)
 	quot[0] = false;
 	while (str[++pos])
 	{
-		if(str[pos] == '\'')
+		if (str[pos] == '\'')
 			quot[0] = !quot[0];
-		if(str[pos] == '\"')
+		if (str[pos] == '\"')
 			quot[1] = !quot[1];
-		if(str[pos] == c && !quot[0] && !quot[1])
+		if (str[pos] == c && !quot[0] && !quot[1])
 			return (pos);
 	}
 	return (-1);
@@ -222,7 +226,7 @@ char	*check_ext_files(t_instruct *instr, char *str)
 	char	*out[2];
 	int		pos;
 
-	if(!str)
+	if (!str)
 		return (str);
 	out[0] = ft_strdup(str);
 	pos = check_is_redir(out[0], '>');
@@ -249,16 +253,16 @@ char	*check_ext_files(t_instruct *instr, char *str)
 	return (out[0]);
 }
 
-void ft_strrmchr(char *str, int n)
+void	ft_strrmchr(char *str, int n)
 {
-	int i;
-	int str_len;
+	int	i;
+	int	str_len;
 
 	str_len = ft_strlen(str);
 	i = -1;
 	while (++i < str_len)
 	{
-		if(i >= n)
+		if (i >= n)
 			str[i] = str[i + 1];
 	}
 }

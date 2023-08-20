@@ -46,10 +46,9 @@ void	free_cmd_data(t_data *data)
 	if (data->command)
 		free(data->command);
 	data->command = NULL;
-
 }
 
-void free_fd_data(t_fd_struc *fd_ptr)
+void	free_fd_data(t_fd_struc *fd_ptr)
 {
 	t_fd_struc	*ptr;
 

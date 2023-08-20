@@ -12,15 +12,14 @@
 
 #include "../inc/minishell.h"
 
-
-void check_quotes(char *str, int pos, bool *quot)
+void	check_quotes(char *str, int pos, bool *quot)
 {
 	if (pos == -1)
 	{
 		quot[0] = 0;
 		quot[1] = 0;
 		quot[2] = 0;
-		return;
+		return ;
 	}
 	if (!quot[1] && str[pos] == '\'')
 		quot[0] = !quot[0];
@@ -55,7 +54,7 @@ char	*process_quotes(char *str)
 	return (str);
 }
 
-void prepare_for_split(char *str)
+void	prepare_for_split(char *str)
 {
 	bool	quot[3];
 	int		i;
@@ -68,12 +67,10 @@ void prepare_for_split(char *str)
 		if (str[i] == '\t')
 			str[i] = ' ';
 		if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
-					str[i] = (char)0xff;
+			str[i] = (char)0xff;
 		i++;
 	}
-
 }
-
 
 /* Parte de fill_instruct */
 void	split_args(t_instruct *inst, char *str)
@@ -96,26 +93,25 @@ void	split_args(t_instruct *inst, char *str)
 }
 
 /* Parte de fill_instruct */
-char *expand_variables(char *str, t_instruct *inst)
+char	*expand_variables(char *str, t_instruct *inst)
 {
-	int	i;
-	bool quot[3];
+	int		i;
+	bool	quot[3];
 
 	check_quotes(str, -1, quot);
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		check_quotes (str, i, quot);
 		if ((str[i] == '$' && str[i + 1] == '\'' && !quot[0])
-				|| (str[i] == '$' && str[i + 1] == '\"' && !quot[1]))
+			|| (str[i] == '$' && str[i + 1] == '\"' && !quot[1]))
 		{
 			ft_strrmchr(str, i);
 			i--;
 		}
 		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1])
-					|| str[i + 1] == '\0' || str[i + 1] == ' '
-					|| (str[i + 1] == '\'' && quot[0]) \
-					|| (str[i + 1] == '/')))
+				|| str[i + 1] == '\0' || str[i + 1] == ' '
+				|| (str[i + 1] == '\'' && quot[0]) || (str[i + 1] == '/')))
 			;
 		else if (str[i] == '$' && !quot[0] && !quot[2])
 		{
@@ -126,6 +122,7 @@ char *expand_variables(char *str, t_instruct *inst)
 	}
 	return (str);
 }
+
 char	*expand_home_dir(char *str)
 {
 	int		i;
@@ -144,6 +141,7 @@ char	*expand_home_dir(char *str)
 	}
 	return (str);
 }
+
 /*
 *   Descriptinon:	Fill all data for the current instrucion.
 *   Arguments:		t_instruct *inst : the variable to fill in.
