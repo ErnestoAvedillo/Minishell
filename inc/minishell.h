@@ -41,7 +41,7 @@
 
 # define OPERANDS	"> < >> << | ="
 
-# define SNTX_258_ERR ">>> >>< <<> <<| >>| <| >|"
+# define SNTX_258_ERR ">>> >>< <<> <<< <<| >>| <| >|"
 # define SNTX_127_ERR "\"\""
 
 # define NON_REDIR_CMD "cd export unset alias source"
@@ -55,121 +55,141 @@ typedef struct s_fd_struc
 	int		fd_type;
 	char	*fd_name;
 	void	*next;
-} t_fd_struc;
+}	t_fd_struc;
 
 typedef struct s_data
 {
-	char *command;
-	char **env;
-	char **cmd_list;
-	char **oper_list;
-	void **functions_ptr;
-	int my_stdin;
-	int my_stdout;
-	int my_stderr;
-	int out_status;
-	int	contador;
-	bool	exit;
-	struct termios term;
-} t_data;
+	char			*command;
+	char			**env;
+	char			**cmd_list;
+	char			**oper_list;
+	void			**functions_ptr;
+	int				my_stdin;
+	int				my_stdout;
+	int				my_stderr;
+	int				out_status;
+	int				contador;
+	bool			exit;
+	struct termios	term;
+}	t_data;
 
 typedef struct s_instruct
 {
-	char *pre_oper;
-	char *post_oper;
-	char **arg;
-	t_data *header;
-	void *next;
-	void *prev;
-	int signal;
-	pid_t pid;
-	int pipefd[2];
-	t_fd_struc *in;
-	t_fd_struc *out;
-	t_fd_struc *err;
-} t_instruct;
+	char		*pre_oper;
+	char		*post_oper;
+	char		**arg;
+	t_data		*header;
+	void		*next;
+	void		*prev;
+	int			signal;
+	pid_t		pid;
+	int			pipefd[2];
+	t_fd_struc	*in;
+	t_fd_struc	*out;
+	t_fd_struc	*err;
+}	t_instruct;
 
 // init_vars
-t_data *init_vars(char **env);
-t_instruct *init_instructions(t_data *data);
-
+t_data		*init_vars(char **env);
+t_instruct	*init_instructions(t_data *data);
 // freevars
-void free_vars(t_data *data);
-void free_arrchar(char **arrchr);
-void free_inst(void);
+void		free_vars(t_data *data);
+void		free_arrchar(char **arrchr);
+void		free_inst(void);
 
-int cmd_echo(t_instruct *instruct);
-int cmd_cd(t_instruct *instruct);
-int cmd_env(t_instruct *instruct);
-int cmd_exit(t_instruct *instruct);
-int cmd_export(t_instruct *instruct);
-int cmd_pwd(t_instruct *instruct);
-int cmd_unset(t_instruct *instruct);
-int cmd_setenv(t_instruct *instruct);
+int			cmd_echo(t_instruct *instruct);
+int			cmd_cd(t_instruct *instruct);
+int			cmd_env(t_instruct *instruct);
+int			cmd_exit(t_instruct *instruct);
+int			cmd_export(t_instruct *instruct);
+void		print_env_sorted(char **env);
+int			cmd_pwd(t_instruct *instruct);
+int			cmd_unset(t_instruct *instruct);
+int			cmd_setenv(t_instruct *instruct);
 //cmd_exec
-int cmd_exec(t_instruct *instruct);
-char	*check_file_exists(t_instruct *instruct);
+int			cmd_exec(t_instruct *instruct);
+char		*check_file_exists(t_instruct *instruct);
 
 // Work_command
-void work_command(t_instruct *instr);
-void work_1_command(t_instruct *instr);
+void		work_command(t_instruct *instr);
+void		work_1_command(t_instruct *instr);
 // check_cmd_line
-int check_cmd_line(t_data *data);
+int			check_cmd_line(t_data *data);
 // check_delimiter
-void check_delimiter(t_instruct *instr);
+void		check_delimiter(t_instruct *instr);
+// check_delimiter1
+char		*get_start_delimit(char *str);
+char		*get_end_delimit(char *str);
 // check_quotes
-bool quotes_ok(char *str);
+bool		quotes_ok(char *str);
 // token_utils
-char *fill_instruct(t_instruct *inst, char *str);
+char		*fill_instruct(t_instruct *inst, char *str);
 // token_utils
-char *fill_instruct2(t_instruct *inst, char *str);
+char		*fill_instruct2(t_instruct *inst, char *str);
 // token_utils2
-void replace_char_btw_quotes(char *str, unsigned int c1,
-								unsigned int c2);
-char	*check_ext_files(t_instruct *instr, char *str);
-void ft_strrmchr(char *str, int n);
+void		replace_char_btw_quotes(char *str, unsigned int c1,
+				unsigned int c2);
+char		*check_ext_files(t_instruct *instr, char *str);
+// token_utils3
+char		*expand_variables(char *str, t_instruct *inst);
+void		prepare_for_split(char *str);
+void		split_args(t_instruct *inst, char *str);
+void		check_quotes(char *str, int pos, bool *quot);
 // tokenize
-t_instruct *tokenize(t_data *data);
+t_instruct	*tokenize(t_data *data);
+//admin_fd0
+t_fd_struc	*get_fd_in_address(t_instruct *instr);
+t_fd_struc	*get_fd_out_address(t_instruct *instr);
+t_fd_struc	*get_fd_err_address(t_instruct *instr);
+//admin_fd1
+char	*ext_out_file(t_instruct *instr, int start, char *str);
+char	*ext_err_file(t_instruct *instr, int start, char *str);
+char	*ext_in_file(t_instruct *instr, int start, char *str);
 // utils
-char *get_env_value(char *name_env, char **env);
-char *get_env_name(char *str);
-bool is_char_in_str(char *str, char c);
-bool is_oper(char *str);
-char *concat_env(char *name_var);
+char		*get_env_value(char *name_env, char **env);
+char		*get_env_name(char *str);
+bool		is_char_in_str(char *str, char c);
+bool		is_oper(char *str);
+char		*concat_env(char *name_var);
+// utils2
+void		ft_strrmchr(char *str, int n);
+char		replace_char(char c, char c1, char c2);
 // print_var
-void print_inst(t_instruct *instruct);
-void print_arr(char **arr);
-void listOpenFileDescriptors();
+void		print_inst(t_instruct *instruct);
+void		print_arr(char **arr);
+void		listOpenFileDescriptors(void);
 // replace_env_var
-char *replace_env_var(char *str, int pos, int status);
-char *repl_home_dir(char *str, int pos);
-char *repl_old_dir(char *str, int pos);
+char		*replace_env_var(char *str, int pos, int status);
+char		*repl_home_dir(char *str, int pos);
+char		*repl_old_dir(char *str, int pos);
 // actualize_env
-char **actualize_env(char **env, char *str, int k);
+char		**actualize_env(char **env, char *str, int k);
 // adm_signals
-int add_signals(t_data *header);
+int			add_signals(t_data *header);
 // concat_cmd
-char *concat_cmd(char *str1, char *str2);
+char		*concat_cmd(char *str1, char *str2);
 // get_cmd
-void get_cmd(t_data *data);
+void		get_cmd(t_data *data);
 // ft_leninst
-int leninstr(t_instruct *list_instr);
+int			leninstr(t_instruct *list_instr);
 // adm_redirections
-void adm_redirections(void);
+void		adm_redirections(void);
+// adm_redirections1
+void		redirect(t_instruct *cur_inst);
 // ft_str_arr_add
-char **ft_str_arr_add(char **arr, char *str);
+char		**ft_str_arr_add(char **arr, char *str);
 // ft_str_arr_rem
-char **ft_str_arr_rem(char **arr, int pos);
+char		**ft_str_arr_rem(char **arr, int pos);
 // adm_file_redir
-void adm_file_redir(t_instruct *intr);
-bool output_file_redir(t_fd_struc *out);
-bool output_error_file_redir(t_fd_struc *err);
-bool input_file_redir(t_fd_struc *in);
+void		adm_file_redir(t_instruct *intr);
+bool		output_file_redir(t_fd_struc *out);
+bool		output_error_file_redir(t_fd_struc *err);
+bool		input_file_redir(t_fd_struc *in);
 // void		close_file_redir(t_data *header);
 // ft_split_instr
-char **ft_split_instr(char const *s, char c);
+char		**ft_split_instr(char const *s, char c);
 // ft_strrmstr
-char *ft_strrmstr(char *str, int start, int end);
+char		*ft_strrmstr(char *str, int start, int end);
 //print_err
-int	print_err(char *str, ...);
+int			print_err(char *str, ...);
 #endif

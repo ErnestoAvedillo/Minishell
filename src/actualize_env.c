@@ -63,7 +63,7 @@ int	get_var_cur_pos(char **env, char *str)
 			cmp = ft_strncmp(out[1][0], out[0][0], 0, ft_strlen(out[1][0]));
 			free_arrchar(out[1]);
 			if (!cmp)
-				break;
+				break ;
 		}
 	}
 	free_arrchar(out[0]);

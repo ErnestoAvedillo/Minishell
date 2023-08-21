@@ -99,18 +99,18 @@ char	*expand_variables(char *str, t_instruct *inst)
 	bool	quot[3];
 
 	check_quotes(str, -1, quot);
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		check_quotes (str, i, quot);
-		if ((str[i] == '$' && str[i + 1] == '\'' && !quot[0])
+		if ((str[i] == '$' && str[i + 1] == '\'' && !quot[0]) \
 			|| (str[i] == '$' && str[i + 1] == '\"' && !quot[1]))
 		{
 			ft_strrmchr(str, i);
 			i--;
 		}
-		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1])
-				|| str[i + 1] == '\0' || str[i + 1] == ' '
+		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1]) \
+				|| str[i + 1] == '\0' || str[i + 1] == ' ' \
 				|| (str[i + 1] == '\'' && quot[0]) || (str[i + 1] == '/')))
 			;
 		else if (str[i] == '$' && !quot[0] && !quot[2])
@@ -118,44 +118,6 @@ char	*expand_variables(char *str, t_instruct *inst)
 			str = replace_env_var(str, i, inst->header->out_status);
 			i--;
 		}
-		i++;
 	}
-	return (str);
-}
-
-char	*expand_home_dir(char *str)
-{
-	int		i;
-	bool	quot[3];
-
-	check_quotes(str, -1, quot);
-	i = 0;
-	while (str[i])
-	{
-		check_quotes (str, i, quot);
-		if (str[i] == '~' && !quot[0] && !quot[1])
-			str = repl_home_dir(str, i);
-		if (str[i] == '-' && !quot[0] && !quot[1])
-			str = repl_old_dir(str, i);
-		i++;
-	}
-	return (str);
-}
-
-/*
-*   Descriptinon:	Fill all data for the current instrucion.
-*   Arguments:		t_instruct *inst : the variable to fill in.
-*					char *str The variable where it is the instruction.
-*					int start position where is t\starting the instruction
-*					int end where the instruction ends.
-*   Returns:		Nothing
-*/
-char	*fill_instruct2(t_instruct *inst, char *str)
-{
-	str = expand_home_dir(str);
-	str = expand_variables(str, inst);
-	prepare_for_split(str);
-	str = check_ext_files(inst, str);
-	split_args(inst, str);
 	return (str);
 }

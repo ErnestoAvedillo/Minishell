@@ -30,24 +30,31 @@ void	list_open_file_descriptors(void)
 	}
 }
 
+void	print_args(char **arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg != NULL)
+	{
+		while (arg[i])
+		{
+			printf (" argumento %i, vale-%s-\n", i, arg[i]);
+			i++;
+		}
+	}
+	return ;
+}
+
 void	print_inst(t_instruct *instructions)
 {
 	t_instruct	*inst;
-	int			i;
 
 	inst = instructions;
 	while (inst)
 	{
+		print_args(inst->arg);
 		printf ("comando %s\n", inst->arg[0]);
-		i = 0;
-		if (inst->arg != NULL)
-		{
-			while (inst->arg[i])
-			{
-				printf (" argumento %i, vale-%s-\n", i, inst->arg[i]);
-				i++;
-			}
-		}
 		if (inst->in)
 			printf (" redirección in %i, vale-%s con fd %i-\n", \
 				inst->in->fd_type, inst->in->fd_name, inst->in->fd);

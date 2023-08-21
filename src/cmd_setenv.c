@@ -25,11 +25,13 @@ static int	syntax_error(char **str)
 
 	i = -1;
 	while (str[++i])
+	{
 		if (!is_char_in_str(str[i], '='))
 		{
 			print_err("Command not found.\n");
 			return (1);
 		}
+	}
 	return (0);
 }
 
@@ -38,19 +40,21 @@ static int	syntax_error(char **str)
  *   Arguments:		char *str The assignement str.  
  *   Returns:		char * Str with the name of the variable.
  */
-static char 	*rm_value(char *str)
+static char	*rm_value(char *str)
 {
 	char	*out;
 	int		i;
 
 	out = ft_strdup(str);
 	i = -1;
-	while(out[++i])
+	while (out[++i])
+	{
 		if (out[i] == '=')
 		{
 			out[i] = '\0';
-			break;
+			break ;
 		}
+	}
 	return (out);
 }
 

@@ -12,23 +12,22 @@
 
 #include "../inc/minishell.h"
 
-static bool check_is_num(t_instruct *inst)
+static bool	check_is_num(t_instruct *inst)
 {
-	int i;
-	int dig;
-
+	int	i;
+	int	dig;
 
 	dig = 0;
 	i = 0;
 	if (inst->arg[1])
 		if (inst->arg[1][i] == '-' || inst->arg[1][i] == '+')
 			i++;
-	while(inst->arg[1] && inst->arg[1][i])
+	while (inst->arg[1] && inst->arg[1][i])
 	{
 		dig = ft_isdigit(inst->arg[1][i]);
 		if (!dig)
 		{
-			print_err("exit: %s: numeric argument required\n",inst->arg[1]);
+			print_err("exit: %s: numeric argument required\n", inst->arg[1]);
 			return (false);
 		}
 		i++;
@@ -36,24 +35,21 @@ static bool check_is_num(t_instruct *inst)
 	return (true);
 }
 
-static bool check_args (t_instruct *inst)
+static bool	check_args(t_instruct *inst)
 {
-	int i;
+	int	i;
 
 	i = ft_len_str_arr(inst->arg);
 	if (i > 2)
-		{
-
-			print_err("exit: too many arguments\n");
-			return (false);
-		}
+	{
+		print_err("exit: too many arguments\n");
+		return (false);
+	}
 	return (true);
 }
 
-
 int	cmd_exit(t_instruct *inst)
 {
-	//printf ("Gracias por usar minishell\n");
 	if (!check_is_num(inst))
 	{
 		inst->header->exit = true;

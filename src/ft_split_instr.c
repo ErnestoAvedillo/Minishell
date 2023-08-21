@@ -55,12 +55,8 @@ static int	ft_nr_words(char const *s, char c)
 				rep++;
 		}
 		else
-		{
 			if (s[i - 1] == c && s[i] != c && !quote[0] && !quote[1])
-			{
 				rep++;
-			}
-		}
 		if (s[i] == '\"')
 			quote[1] = !quote[1];
 		if (s[i] == '\'')

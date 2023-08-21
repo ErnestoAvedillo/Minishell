@@ -3,9 +3,9 @@ NAME = minishell
 SRC = $(NAME) cmd_echo cmd_cd cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init_vars \
 	free_vars utils utils2 work_command cmd_setenv check_cmd_line check_quotes \
 	tokenize token_utils token_utils3 token_utils2 print_var replace_env_var cmd_exec adm_signal \
-	actualize_env concat_cmd get_cmd ft_leninstr adm_redirections ft_str_arr_add \
-	ft_str_arr_rem adm_file_redir check_delimiter ft_split_instr ft_strrmstr \
-	print_err
+	actualize_env concat_cmd get_cmd ft_leninstr adm_redirections adm_redirections1 ft_str_arr_add \
+	ft_str_arr_rem adm_file_redir check_delimiter check_delimiter1 ft_split_instr ft_strrmstr \
+	print_err admin_fd0 admin_fd1 cmd_export_print
 	
 #añadir nombres de ficheros.c  aqui
 

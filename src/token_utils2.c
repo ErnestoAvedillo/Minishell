@@ -12,13 +12,6 @@
 
 #include "../inc/minishell.h"
 
-char	replace_char(char c, char c1, char c2)
-{
-	if (c && c == (char)c1)
-		return (c2);
-	return (c);
-}
-
 /**
  *
  * Description:		Replace all charachtes beteween quotes.
@@ -57,140 +50,6 @@ void	replace_char_btw_quotes(char *str, unsigned int c1, unsigned int c2)
 	}
 }
 
-t_fd_struc	*get_fd_in_address(t_instruct *instr)
-{
-	t_fd_struc	*new_fd;
-	t_fd_struc	*cur_fd;
-
-	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
-	new_fd->next = NULL;
-	cur_fd = instr->in;
-	if (cur_fd != NULL)
-	{
-		while (cur_fd->next)
-			cur_fd = cur_fd->next;
-		cur_fd->next = new_fd;
-	}
-	else
-		instr->in = new_fd;
-	return (new_fd);
-}
-
-t_fd_struc	*get_fd_out_address(t_instruct *instr)
-{
-	t_fd_struc	*new_fd;
-	t_fd_struc	*cur_fd;
-
-	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
-	new_fd->next = NULL;
-	cur_fd = instr->out;
-	if (cur_fd != NULL)
-	{
-		while (cur_fd->next)
-			cur_fd = cur_fd->next;
-		cur_fd->next = new_fd;
-	}
-	else
-		instr->out = new_fd;
-	return (new_fd);
-}
-
-t_fd_struc	*get_fd_err_address(t_instruct *instr)
-{
-	t_fd_struc	*new_fd;
-	t_fd_struc	*cur_fd;
-
-	new_fd = (t_fd_struc *)malloc(1 * sizeof(t_fd_struc));
-	new_fd->next = NULL;
-	cur_fd = instr->err;
-	if (cur_fd != NULL)
-	{
-		while (cur_fd->next)
-			cur_fd = cur_fd->next;
-		cur_fd->next = new_fd;
-	}
-	else
-		instr->err = new_fd;
-	return (new_fd);
-}
-
-char	*ext_out_file(t_instruct *instr, int start, char *str)
-{
-	char		*aux;
-	int			end;
-	int			pos;
-	t_fd_struc	*new_fd;
-
-	new_fd = get_fd_out_address(instr);
-	pos = 0;
-	if (str[start] == '>' && str[start + 1] == '>')
-		new_fd->fd_type = 2;
-	else
-		new_fd->fd_type = 1;
-	pos += new_fd->fd_type;
-	while (str[start + pos] == ' ')
-		pos++;
-	end = pos;
-	while (str[start + end] && str[start + end] != ' ' \
-			&& str[start + end] != '>' && str[start + end] != '<' \
-			&& str[start + end] != '|')
-		end++;
-	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
-	aux = ft_strrmstr(str, start, start + end);
-	return (aux);
-}
-
-char	*ext_err_file(t_instruct *instr, int start, char *str)
-{
-	char		*aux;
-	int			end;
-	int			pos;
-	t_fd_struc	*new_fd;
-
-	new_fd = get_fd_err_address(instr);
-	pos = 0;
-	if (str[start] == '>' && str[start + 1] == '>')
-		new_fd->fd_type = 2;
-	else
-		new_fd->fd_type = 1;
-	pos += new_fd->fd_type;
-	while (str[start + pos] == ' ')
-		pos++;
-	end = pos;
-	while (str[start + end] && str[start + end] != ' ' \
-		&& str[start + end] != '>' && str[start + end] != '<' \
-		&& str[start + end] != '|')
-		end++;
-	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
-	aux = ft_strrmstr(str, start - 1, start + end);
-	return (aux);
-}
-
-char	*ext_in_file(t_instruct *instr, int start, char *str)
-{
-	char		*aux;
-	int			end;
-	int			pos;
-	t_fd_struc	*new_fd;
-
-	new_fd = get_fd_in_address(instr);
-	pos = 0;
-	if (str[start] == '<' && str[start + 1] == '<')
-		new_fd->fd_type = 2;
-	else
-		new_fd->fd_type = 1;
-	pos += new_fd->fd_type;
-	while (str[start + pos] == ' ')
-		pos++;
-	end = pos;
-	while (str[start + end] && str[start + end] != ' ' \
-			&& str[start + end] != '|' && str[start + end] != '>')
-		end++;
-	new_fd->fd_name = ft_substr(str, start + pos, end - pos);
-	aux = ft_strrmstr(str, start, start + end);
-	return (aux);
-}
-
 /**
  *
  * Description:		Looks for the position of a char c excluding 
@@ -221,13 +80,11 @@ int	check_is_redir(char *str, char c)
 	return (-1);
 }
 
-char	*check_ext_files(t_instruct *instr, char *str)
+static char	*extract_all_out_err_fd(t_instruct *instr, char *str)
 {
 	char	*out[2];
 	int		pos;
 
-	if (!str)
-		return (str);
 	out[0] = ft_strdup(str);
 	pos = check_is_redir(out[0], '>');
 	while (pos >= 0 && pos < (int)ft_strlen(out[0]))
@@ -241,6 +98,16 @@ char	*check_ext_files(t_instruct *instr, char *str)
 		out[0] = out[1];
 		pos = check_is_redir(out[0], '>');
 	}
+	free(str);
+	return (out[0]);
+}
+
+static char	*extract_all_in_fd(t_instruct *instr, char *str)
+{
+	char	*out[2];
+	int		pos;
+
+	out[0] = ft_strdup(str);
 	pos = check_is_redir(out[0], '<');
 	while (pos >= 0 && pos < (int)ft_strlen(out[0]))
 	{
@@ -253,16 +120,13 @@ char	*check_ext_files(t_instruct *instr, char *str)
 	return (out[0]);
 }
 
-void	ft_strrmchr(char *str, int n)
+char	*check_ext_files(t_instruct *instr, char *str)
 {
-	int	i;
-	int	str_len;
+	char	*out;
 
-	str_len = ft_strlen(str);
-	i = -1;
-	while (++i < str_len)
-	{
-		if (i >= n)
-			str[i] = str[i + 1];
-	}
+	if (!str)
+		return (str);
+	out = extract_all_out_err_fd(instr, str);
+	out = extract_all_in_fd(instr, out);
+	return (out);
 }

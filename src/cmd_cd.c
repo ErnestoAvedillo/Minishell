@@ -25,8 +25,6 @@
 char	*get_address(t_instruct *instruct)
 {
 	char	*dir;
-//	char	*aux;
-//	int		len_dir;
 
 	dir = (char *) malloc(1024 * sizeof(char));
 	dir [0] = '\0';
@@ -34,16 +32,7 @@ char	*get_address(t_instruct *instruct)
 		ft_strlcpy(dir, getenv("HOME"), 1024);
 	else
 	{
-/*		len_dir = ft_strlen(instruct->arg[1]);
-		if (instruct->arg[1][0] == '~')
-		{
-			ft_strlcat(dir, getenv("HOME"), 1024);
-			aux = ft_substr(instruct->arg[1], 1, len_dir);
-		}
-		else
-			aux = ft_substr(instruct->arg[1], 0, len_dir);
-*/		ft_strlcat(dir, instruct->arg[1], 1024);
-//		free(aux);
+		ft_strlcat(dir, instruct->arg[1], 1024);
 	}
 	return (dir);
 }
@@ -59,30 +48,29 @@ char	*get_address(t_instruct *instruct)
  **/
 int	cmd_cd(t_instruct *instruct)
 {
-	char	*dir;
-	char	*olddir;
+	char	*dir[2];
 	char	buffer[1024];
 
-	dir = get_address(instruct);
-	if (chdir(dir) == -1)
+	dir[0] = get_address(instruct);
+	if (chdir(dir[0]) == -1)
 	{
-		print_err("Minishell: cd: %s: No such file or directory .\n", dir);
-		free(dir);
+		print_err("Minishell: cd: %s: No such file or directory .\n", dir[0]);
+		free(dir[0]);
 		return (1);
 	}
 	else
 	{
-		free(dir);
-		olddir = getenv("PWD");
-		setenv("OLDPWD", olddir, 1);
-		dir = getcwd(buffer, sizeof(buffer));
-		setenv("PWD", dir, 1);
-		dir = concat_env("PWD");
-		instruct->header->env = actualize_env(instruct->header->env, dir, 1);
-		free(dir);
-		olddir = concat_env("OLDPWD");
-		instruct->header->env = actualize_env(instruct->header->env, olddir, 1);
-		free(olddir);
+		free(dir[0]);
+		dir[1] = getenv("PWD");
+		setenv("OLDPWD", dir[1], 1);
+		dir[0] = getcwd(buffer, sizeof(buffer));
+		setenv("PWD", dir[0], 1);
+		dir[0] = concat_env("PWD");
+		instruct->header->env = actualize_env(instruct->header->env, dir[0], 1);
+		free(dir[0]);
+		dir[1] = concat_env("OLDPWD");
+		instruct->header->env = actualize_env(instruct->header->env, dir[1], 1);
+		free(dir[1]);
 	}
 	return (0);
 }

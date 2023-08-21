@@ -79,6 +79,8 @@
 	}
 	return (post_oper);
 }
+
+
 */
 /*
  *   Descriptinon:	Replace all charachtes of the string equal of c1 
@@ -96,6 +98,25 @@ void	replace_char_in_str(char *str, unsigned int c1, unsigned int c2)
 			str[i] = c2;
 }
 
+char	*expand_home_dir(char *str)
+{
+	int		i;
+	bool	quot[3];
+
+	check_quotes(str, -1, quot);
+	i = 0;
+	while (str[i])
+	{
+		check_quotes (str, i, quot);
+		if (str[i] == '~' && !quot[0] && !quot[1])
+			str = repl_home_dir(str, i);
+		if (str[i] == '-' && !quot[0] && !quot[1])
+			str = repl_old_dir(str, i);
+		i++;
+	}
+	return (str);
+}
+
 /*
 *   Descriptinon:	Fill all data for the current instrucion.
 *   Arguments:		t_instruct *inst : the variable to fill in.
@@ -104,81 +125,12 @@ void	replace_char_in_str(char *str, unsigned int c1, unsigned int c2)
 *					int end where the instruction ends.
 *   Returns:		Nothing
 */
-char	*fill_instruct(t_instruct *inst, char *str)
+char	*fill_instruct2(t_instruct *inst, char *str)
 {
-	int		i;
-	int		j;
-	bool	quot[3];
-
-	quot[0] = false;
-	quot[1] = false;
-	quot[2] = false;
-	i = 0;
+	str = expand_home_dir(str);
+	str = expand_variables(str, inst);
+	prepare_for_split(str);
 	str = check_ext_files(inst, str);
-	while (str[i])
-	{
-		if (!quot[1] && str[i] == '\'')
-			quot[0] = !quot[0];
-		else if (!quot[0] && str[i] == '\"')
-			quot[1] = !quot[1];
-		if (str[i] == '\\' && (str[i + 1] == '\\' || str[i + 1] == '$'))
-			quot[2] = !quot[2];
-		else if (str[i] != '$' && str[i - 1] != '\\')
-			quot[2] = false;
-		if (str[i] == '$' && str[i + 1] == '\'' && !quot[0])
-		{
-			ft_strrmchr(str, i);
-			i--;
-		}
-		else if (str[i] == '$' && str[i + 1] == '\"' && !quot[1])
-		{
-			ft_strrmchr(str, i);
-			i--;
-		}
-		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1]) \
-			|| str[i + 1] == '\0' || str[i + 1] == ' ' || (str[i + 1] == '\'' \
-			&& quot[0])))
-			;
-		else if (str[i] == '$' && !quot[0] && !quot[2])
-		{
-			str = replace_env_var(str, i, inst->header->out_status);
-			i--;
-		}
-		if (str[i] == '~' && !quot[0] && !quot[1])
-			str = repl_home_dir(str, i);
-		i++;
-	}
-	quot[0] = false;
-	quot[1] = false;
-	i = 0;
-	while (i <= (int)ft_strlen(str))
-	{
-		if (str[i] == '\\' && !quot[1] && !quot[0])
-			ft_strrmchr(str, i);
-		else if (!quot[1] && str[i] == '\'')
-		{
-			quot[0] = !quot[0];
-			ft_strrmchr(str, i);
-			i--;
-		}
-		else if (!quot[0] && str[i] == '\"')
-		{
-			quot[1] = !quot[1];
-			ft_strrmchr(str, i);
-			i--;
-		}
-		else if ((quot[0] && str[i] == ' ') || (quot[1] && str[i] == ' '))
-			str[i] = (char)0xff;
-		i++;
-	}
-	inst->arg = ft_split(str, ' ');
-	j = -1;
-	while (inst->arg[++j])
-	{
-		i = -1;
-		while (inst->arg[j][++i])
-			if (inst->arg[j][i] == (char)0xff)
-				inst->arg[j][i] = ' ';
-	}
+	split_args(inst, str);
 	return (str);
 }

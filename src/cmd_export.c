@@ -21,27 +21,23 @@
  *
  * Returns:			Boolean variable. True is sstructure OK. False is structure NOK
  **/
-static char *check_all_chars(char *str)
+static char	*check_all_chars(char *str)
 {
 	int		i;
 	char	*ptr;
 	char	*aux[2];
 
-	if (str[0] == '=')
-		return (str);
-	if (str[0] == '?')
-		return (str);
-	if (ft_isdigit(str[0]))
+	if (str[0] == '=' || str[0] == '?' || ft_isdigit(str[0]))
 		return (str);
 	aux[1] = ft_strchr(str, 0, '=');
-	if(!str[1])
+	if (!str[1])
 		return (str);
 	aux[0] = ft_strdup("+.{}-#@!^~");
 	i = 0;
-	while(aux[0][i])
+	while (aux[0][i])
 	{
-		ptr = ft_strchr(str,0, aux[0][i]);
-		if (ptr != NULL && ptr < aux[1] )
+		ptr = ft_strchr(str, 0, aux[0][i]);
+		if (ptr != NULL && ptr < aux[1])
 		{
 			free (aux[0]);
 			return (ptr);
@@ -52,54 +48,19 @@ static char *check_all_chars(char *str)
 	return (NULL);
 }
 
-static int check_args(char *str)
+static int	check_args(char *str)
 {
-	char *ptr;
+	char	*ptr;
 
 	ptr = check_all_chars(str);
 	if (ptr != NULL && ptr < str + ft_strlen(str))
 	{
-		print_err("export: %s: not a valid identifier\n",str);
-		if(str[0] == '-')
-			return(2);
+		print_err("export: %s: not a valid identifier\n", str);
+		if (str[0] == '-')
+			return (2);
 		return (1);
 	}
 	return (0);
-}
-/*
-static bool	check_args(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if ((str[i] == '=' && str[i + 1] == ' ') || \
-			(str[i] == '=' && str[i - 1] == ' '))
-			return (false);
-	return (true);
-}
-*/
-/**
- *
- * Description:		Printe the environment variables sorted
- *					
- * Arguments:		char **env
- *					
- * Returns:			NONE
- * 
- **/
-void	print_env_sorted(char **env)
-{
-	int		i;
-	char	**aux;
-
-	aux = ft_cpy_str_arr(env);
-	aux = ft_strsort_arr(aux, 1);
-	i = -1;
-	while (aux[++i] != NULL)
-		ft_printf("declare -x %s\n", aux[i]);
-	free(aux);
-	return ;
 }
 
 /**
@@ -185,8 +146,6 @@ int	cmd_export(t_instruct *instr)
 			instr->header->env = exp_no_val(instr->arg[i], instr->header->env);
 		else if (!out[0])
 			instr->header->env = exp_val(instr->arg[i], instr->header->env);
-		//		if (!instr->header->env)
-		//			return (-1);
 	}
 	return (out[0]);
 }
