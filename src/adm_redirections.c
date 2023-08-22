@@ -12,24 +12,22 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct	*g_first_instruct;
-
-int	create_pipes(void)
+int	create_pipes(t_instruct *frst_inst)
 {
 	t_instruct	*instr;
 
-	instr = g_first_instruct;
+	instr = frst_inst;
 	while (instr->next)
 	{
 		if (pipe(instr->pipefd) == -1)
 		{
 			print_err("Pipe error\n");
-			g_first_instruct->header->out_status = 127;
+			frst_inst->header->out_status = 127;
 			return (0);
 		}
 		instr = instr->next;
 	}
-	g_first_instruct->header->out_status = 0;
+	frst_inst->header->out_status = 0;
 	return (1);
 }
 
@@ -54,40 +52,40 @@ void	close_prev_pipes(t_instruct *cur_inst)
 	}
 }
 
-int	check_is_1_command(void)
+int	check_is_1_command(t_instruct *frst_inst)
 {
 	int			leninst;
 
-	leninst = leninstr(g_first_instruct);
+	leninst = leninstr(frst_inst);
 	if (leninst == 0)
 		return (1);
-	if (!g_first_instruct->header->command[0])
+	if (!frst_inst->header->command[0])
 		return (1);
 	if (leninst == 1)
 	{
-		work_1_command(g_first_instruct);
+		work_1_command(frst_inst);
 		return (1);
 	}
 	return (0);
 }
 
-void	adm_redirections(void)
+void	adm_redirections(t_instruct *frst_inst)
 {
 	t_instruct	*instr;
 	int			status;
 
-	if (check_is_1_command() || !create_pipes())
+	if (check_is_1_command(frst_inst) || !create_pipes(frst_inst))
 		return ;
-	instr = g_first_instruct;
+	instr = frst_inst;
 	while (instr)
 	{
-		instr->pid = fork();
-		if (instr->pid == -1)
+		instr->header->pid = fork();
+		if (instr->header->pid == -1)
 		{
 			print_err("Fork error in piping\n");
 			return ;
 		}
-		else if (instr->pid == 0)
+		else if (instr->header->pid == 0)
 		{
 			redirect(instr);
 			work_command(instr);
@@ -96,6 +94,6 @@ void	adm_redirections(void)
 		wait(&status);
 		instr = instr->next;
 	}
-	g_first_instruct->header->out_status = WEXITSTATUS(status);
+	frst_inst->header->out_status = WEXITSTATUS(status);
 	return ;
 }

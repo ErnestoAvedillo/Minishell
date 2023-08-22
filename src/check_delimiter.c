@@ -81,7 +81,7 @@ void	check_delimiter(t_instruct *instr)
 	instr->in->fd_type = 2;
 	aux[0] = ft_itoa(instr->header->contador);
 	instr->header->contador++;
-	instr->in->fd_name = ft_strjoin("tmp", aux[0]);
+	instr->in->fd_name = ft_strjoin("/tmp/tmp", aux[0]);
 	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
 	free(aux[0]);
 	aux[0] = ft_strjoin(aux[2], ">");

@@ -37,13 +37,13 @@ static void	exec_ext_cmd(t_instruct *instr)
 	}
 	free(instr->arg[0]);
 	instr->arg[0] = out;
-	instr->pid = fork();
-	if (instr->pid == -1)
+	instr->header->pid = fork();
+	if (instr->header->pid == -1)
 	{
 		print_err("minishell: error while forking");
 		return ;
 	}
-	else if (instr->pid == 0)
+	else if (instr->header->pid == 0)
 		cmd_exec(instr);
 	wait(&status);
 	instr->header->out_status = WEXITSTATUS(status);

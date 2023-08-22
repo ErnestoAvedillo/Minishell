@@ -5,7 +5,7 @@ SRC = $(NAME) cmd_echo cmd_cd cmd_env cmd_exit cmd_export cmd_pwd cmd_unset init
 	tokenize token_utils token_utils3 token_utils2 print_var replace_env_var cmd_exec adm_signal \
 	actualize_env concat_cmd get_cmd ft_leninstr adm_redirections adm_redirections1 ft_str_arr_add \
 	ft_str_arr_rem adm_file_redir check_delimiter check_delimiter1 ft_split_instr ft_strrmstr \
-	print_err admin_fd0 admin_fd1 cmd_export_print
+	print_err admin_fd0 admin_fd1 cmd_export_print check_syntax check_redir check_pipes
 	
 #añadir nombres de ficheros.c  aqui
 

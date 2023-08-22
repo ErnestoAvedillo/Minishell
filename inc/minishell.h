@@ -70,6 +70,7 @@ typedef struct s_data
 	int				out_status;
 	int				contador;
 	bool			exit;
+	pid_t			pid;
 	struct termios	term;
 }	t_data;
 
@@ -82,7 +83,6 @@ typedef struct s_instruct
 	void		*next;
 	void		*prev;
 	int			signal;
-	pid_t		pid;
 	int			pipefd[2];
 	t_fd_struc	*in;
 	t_fd_struc	*out;
@@ -95,7 +95,7 @@ t_instruct	*init_instructions(t_data *data);
 // freevars
 void		free_vars(t_data *data);
 void		free_arrchar(char **arrchr);
-void		free_inst(void);
+void		free_inst(t_instruct *frst_inst);
 
 int			cmd_echo(t_instruct *instruct);
 int			cmd_cd(t_instruct *instruct);
@@ -109,12 +109,18 @@ int			cmd_setenv(t_instruct *instruct);
 //cmd_exec
 int			cmd_exec(t_instruct *instruct);
 char		*check_file_exists(t_instruct *instruct);
-
 // Work_command
 void		work_command(t_instruct *instr);
 void		work_1_command(t_instruct *instr);
 // check_cmd_line
 int			check_cmd_line(t_data *data);
+//check_syntax
+int			check_syntax(t_data *data);
+int			check_redir(t_data *data);
+//check_pipes
+int			check_pipes(t_data *data);
+//check_redir
+int			check_redir(t_data *data);
 // check_delimiter
 void		check_delimiter(t_instruct *instr);
 // check_delimiter1
@@ -142,9 +148,9 @@ t_fd_struc	*get_fd_in_address(t_instruct *instr);
 t_fd_struc	*get_fd_out_address(t_instruct *instr);
 t_fd_struc	*get_fd_err_address(t_instruct *instr);
 //admin_fd1
-char	*ext_out_file(t_instruct *instr, int start, char *str);
-char	*ext_err_file(t_instruct *instr, int start, char *str);
-char	*ext_in_file(t_instruct *instr, int start, char *str);
+char		*ext_out_file(t_instruct *instr, int start, char *str);
+char		*ext_err_file(t_instruct *instr, int start, char *str);
+char		*ext_in_file(t_instruct *instr, int start, char *str);
 // utils
 char		*get_env_value(char *name_env, char **env);
 char		*get_env_name(char *str);
@@ -173,7 +179,7 @@ void		get_cmd(t_data *data);
 // ft_leninst
 int			leninstr(t_instruct *list_instr);
 // adm_redirections
-void		adm_redirections(void);
+void		adm_redirections(t_instruct *frst_inst);
 // adm_redirections1
 void		redirect(t_instruct *cur_inst);
 // ft_str_arr_add

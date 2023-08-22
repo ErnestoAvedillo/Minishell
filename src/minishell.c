@@ -25,7 +25,7 @@ int	main(int av, char **ac, char **environ)
 	int		out;
 
 	data = init_vars(environ);
-//	add_signals(data);
+	add_signals(data);
 	get_cmd(data);
 	out = data->out_status;
 	free_vars(data);

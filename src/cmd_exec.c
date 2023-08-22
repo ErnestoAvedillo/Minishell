@@ -12,6 +12,45 @@
 
 #include "../inc/minishell.h"
 
+static char	**get_arr_path(void)
+{
+	char		**path_arr;
+
+	if (!getenv("PATH"))
+		path_arr = ft_split(CUR_PATH, ':');
+	else
+		path_arr = ft_split(getenv("PATH"), ':');
+	return (path_arr);
+}
+
+static char	*check_file_paths(char *file )
+{
+	char		*out;
+	struct stat	file_stat;
+	int			i;
+	char		**path_arr;
+
+	path_arr = get_arr_path();
+	out = (char *)malloc(1024 * sizeof(char));
+	out[0] = '\0';
+	i = -1;
+	while (path_arr && path_arr[++i])
+	{
+		ft_strlcat(out, path_arr[i], 1024);
+		ft_strlcat(out, "/", 1024);
+		ft_strlcat(out, file, 1024);
+		if (lstat(out, &file_stat) == 0)
+		{
+			free_arrchar(path_arr);
+			return (out);
+		}
+		out[0] = '\0';
+	}
+	free_arrchar(path_arr);
+	free (out);
+	return (NULL);
+}
+
 /*
 *	execute a given command..
 *	Argument: 	t_instruct *instruct; structure with the command and arguments.
@@ -19,8 +58,6 @@
 */
 char	*check_file_exists(t_instruct *instruct)
 {
-	int			i;
-	char		**path_arr;
 	char		*out;
 	struct stat	file_stat;
 
@@ -32,27 +69,9 @@ char	*check_file_exists(t_instruct *instruct)
 		else
 			return (NULL);
 	}
-	out = (char *)malloc(1024 * sizeof(char));
-	out[0] = '\0';
-	if (!getenv("PATH"))
-		path_arr = ft_split(CUR_PATH, ':');
-	else
-		path_arr = ft_split(getenv("PATH"), ':');
-	i = -1;
-	while (path_arr && path_arr[++i])
-	{
-		ft_strlcat(out, path_arr[i], 1024);
-		ft_strlcat(out, "/", 1024);
-		ft_strlcat(out, instruct->arg[0], 1024);
-		if (lstat(out, &file_stat) == 0)
-		{
-			free_arrchar(path_arr);
-			return (out);
-		}
-		out[0] = '\0';
-	}
-	free_arrchar(path_arr);
-	free(out);
+	out = check_file_paths(instruct->arg[0]);
+	if (out != NULL)
+		return (out);
 	return (NULL);
 }
 
