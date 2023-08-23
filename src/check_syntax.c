@@ -28,6 +28,7 @@ static void	ft_rm_btw_quotes_1(char *str)
 	bool	isquote;
 
 	i = -1;
+	isquote = false;
 	while (str[++i])
 	{
 		if (str[i] == '\"')
@@ -47,6 +48,7 @@ static void	ft_rm_btw_quotes_2(char *str)
 	bool	isquote;
 
 	i = -1;
+	isquote = false;
 	while (str[++i])
 	{
 		if (str[i] == '\'')

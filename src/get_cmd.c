@@ -12,7 +12,6 @@
 
 #include "../inc/minishell.h"
 
-t_data	*g_header;
 
 /**
  *
@@ -28,7 +27,7 @@ void	get_cmd(t_data *data)
 
 	while (1)
 	{
-		if (isatty(fileno(stdin)))
+/*		if (isatty(fileno(stdin)))
 			data->command = readline("Enter a command Minishell>");
 		else
 		{
@@ -39,9 +38,9 @@ void	get_cmd(t_data *data)
 		}
 		if (!data->command)
 			return;
-/*		while (!data->command || data->command[0] == 0)
+*/		while (!data->command || data->command[0] == 0)
 			data->command = readline("Enter a command Minishell>");
-*/		add_history(data->command);
+		add_history(data->command);
 		if (check_cmd_line(data))
 		{
 			frst_inst = tokenize(data);

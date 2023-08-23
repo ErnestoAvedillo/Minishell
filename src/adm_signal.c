@@ -16,14 +16,13 @@ extern t_data	*g_header;
 
 void	hndl_ctrl_c(int signal)
 {
+	(void)signal;
 	if (g_header->pid != 0)
 	{
 		g_header->out_status = 130;
-		kill (g_header->pid, signal);
 	}
 	else
 		g_header->out_status = 1;
-	g_header->command = NULL;
 	rl_on_new_line();
 }
 

@@ -16,18 +16,21 @@ static int	print_var(va_list args, char c)
 {
 	char	*aux;
 	int		aux1;
+	int 	n;
 
+	n = 0;
 	if (c == 's')
 	{
 		aux = va_arg(args, char *);
 		ft_putstr_fd(aux, STDERR_FILENO);
+		n = ft_strlen(aux);
 	}
 	else if (c == 'c')
 	{
 		aux1 = va_arg(args, int);
-		write (STDERR_FILENO, &aux1, 1);
+		n = write(STDERR_FILENO, &aux1, 1);
 	}
-	return (ft_strlen(aux));
+	return (n);
 }
 
 int	print_err(char *str, ...)

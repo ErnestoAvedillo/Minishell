@@ -19,16 +19,17 @@
 *	in this case the variable env does not remains updated.
 */
 
+t_data *g_header;
+
 int	main(int av, char **ac, char **environ)
 {
-	t_data	*data;
 	int		out;
 
-	data = init_vars(environ);
-	add_signals(data);
-	get_cmd(data);
-	out = data->out_status;
-	free_vars(data);
+	g_header = init_vars(environ);
+	add_signals(g_header);
+	get_cmd(g_header);
+	out = g_header->out_status;
+	free_vars(g_header);
 	return (out);
 	(void) av;
 	(void) ac;
