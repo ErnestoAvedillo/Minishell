@@ -16,7 +16,7 @@ static int	print_var(va_list args, char c)
 {
 	char	*aux;
 	int		aux1;
-	int 	n;
+	int		n;
 
 	n = 0;
 	if (c == 's')

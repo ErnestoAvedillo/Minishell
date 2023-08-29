@@ -129,8 +129,6 @@ char		*get_end_delimit(char *str);
 // check_quotes
 bool		quotes_ok(char *str);
 // token_utils
-char		*fill_instruct(t_instruct *inst, char *str);
-// token_utils
 char		*fill_instruct2(t_instruct *inst, char *str);
 // token_utils2
 void		replace_char_btw_quotes(char *str, unsigned int c1,
@@ -164,6 +162,8 @@ char		replace_char(char c, char c1, char c2);
 void		print_inst(t_instruct *instruct);
 void		print_arr(char **arr);
 void		listOpenFileDescriptors(void);
+//get_var_name
+char		*get_var_name(char *str, int pos);
 // replace_env_var
 char		*replace_env_var(char *str, int pos, int status);
 char		*repl_home_dir(char *str, int pos);
@@ -186,7 +186,9 @@ void		redirect(t_instruct *cur_inst);
 char		**ft_str_arr_add(char **arr, char *str);
 // ft_str_arr_rem
 char		**ft_str_arr_rem(char **arr, int pos);
-// adm_file_redir
+// ft_strrmallchr
+void		ft_strrmallchr(char *str, char c);
+// adm_fileredir
 void		adm_file_redir(t_instruct *intr);
 bool		output_file_redir(t_fd_struc *out);
 bool		output_error_file_redir(t_fd_struc *err);

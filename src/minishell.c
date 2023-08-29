@@ -19,7 +19,7 @@
 *	in this case the variable env does not remains updated.
 */
 
-t_data *g_header;
+t_data	*g_header;
 
 int	main(int av, char **ac, char **environ)
 {

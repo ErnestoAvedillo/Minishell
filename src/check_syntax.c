@@ -12,16 +12,6 @@
 
 #include "../inc/minishell.h"
 
-static void	ft_strrmallchr(char *str, char c)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == c)
-			ft_strrmchr(str, i);
-}
-
 static void	ft_rm_btw_quotes_1(char *str)
 {
 	int		i;

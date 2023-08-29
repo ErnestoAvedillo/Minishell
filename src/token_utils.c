@@ -117,6 +117,38 @@ char	*expand_home_dir(char *str)
 	return (str);
 }
 
+/**
+ *
+ * Description:		
+ *					
+ * Arguments:		
+ *					
+ * Returns:			
+ **/
+void	expand_redir(t_instruct *inst)
+{
+	t_fd_struc	*cur_fd;
+
+	cur_fd = inst->out;
+	while (cur_fd)
+	{
+		cur_fd->fd_name = expand_variables(cur_fd->fd_name, inst);
+		cur_fd = cur_fd->next;
+	}
+	cur_fd = inst->in;
+	while (cur_fd)
+	{
+		if (cur_fd->fd_type == 1)
+			cur_fd->fd_name = expand_variables(cur_fd->fd_name, inst);
+		else
+		{
+			ft_strrmallchr(cur_fd->fd_name, '\'');
+			ft_strrmallchr(cur_fd->fd_name, '\"');
+		}
+		cur_fd = cur_fd->next;
+	}
+}
+
 /*
 *   Descriptinon:	Fill all data for the current instrucion.
 *   Arguments:		t_instruct *inst : the variable to fill in.
@@ -127,10 +159,17 @@ char	*expand_home_dir(char *str)
 */
 char	*fill_instruct2(t_instruct *inst, char *str)
 {
-	str = expand_home_dir(str);
-	str = expand_variables(str, inst);
-	prepare_for_split(str);
+	int	i;
+
 	str = check_ext_files(inst, str);
+	prepare_for_split(str);
 	split_args(inst, str);
+	i = -1;
+	while (inst->arg[++i])
+	{
+		inst->arg[i] = expand_home_dir(inst->arg[i]);
+		inst->arg[i] = expand_variables(inst->arg[i], inst);
+	}
+	expand_redir(inst);
 	return (str);
 }

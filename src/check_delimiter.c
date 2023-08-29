@@ -64,6 +64,16 @@ char	*insert_in_line(char *cmd, char *str, char *ptr)
 	return (out);
 }
 
+static bool	end_of_heredoc(char *str1, char *str2)
+{
+	int		i;
+
+	i = ft_max(ft_strlen(str1), ft_strlen(str2));
+	if (!ft_strncmp(str1, str2, 0, i))
+		return (false);
+	return (true);
+}
+
 /*
  *   Checks that the command line does not have following errors
  *   " = " or " =" or "= " --> is not OK
@@ -77,7 +87,7 @@ void	check_delimiter(t_instruct *instr)
 {
 	char	*aux[3];
 
-	aux[2] = ft_strdup(instr->in->fd_name);
+	aux[2] = instr->in->fd_name;
 	instr->in->fd_type = 2;
 	aux[0] = ft_itoa(instr->header->contador);
 	instr->header->contador++;
@@ -86,17 +96,15 @@ void	check_delimiter(t_instruct *instr)
 	free(aux[0]);
 	aux[0] = ft_strjoin(aux[2], ">");
 	aux[1] = readline(aux[0]);
-	if (aux[1])
+	while (aux[1] && end_of_heredoc(aux[1], aux[2]))
 	{
-		while (ft_strncmp(aux[1], aux[2], 0, ft_strlen(aux[1])))
-		{
-			ft_putstr_fd(aux[1], instr->in->fd);
-			ft_putstr_fd("\n", instr->in->fd);
-			free(aux[1]);
-			aux[1] = readline(aux[0]);
-		}
+		ft_putstr_fd(aux[1], instr->in->fd);
+		ft_putstr_fd("\n", instr->in->fd);
+		free(aux[1]);
+		aux[1] = readline(aux[0]);
 	}
 	free(aux[2]);
+	free(aux[1]);
 	free(aux[0]);
 	close(instr->in->fd);
 	return ;
