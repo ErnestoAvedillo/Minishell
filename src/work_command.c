@@ -49,10 +49,17 @@ static void	exec_ext_cmd(t_instruct *instr)
 	instr->header->out_status = WEXITSTATUS(status);
 }
 
+static int	is_build_in_cmd(char *str1, char *str2)
+{
+	int	i;
+
+	i = ft_strncmp(str1, str2, 0, ft_max(ft_strlen(str1), ft_strlen(str2)));
+	return (i);
+}
+
 void	work_1_command(t_instruct *instr)
 {
 	int	i;
-	int	j;
 
 	i = -1;
 	adm_file_redir(instr);
@@ -60,9 +67,8 @@ void	work_1_command(t_instruct *instr)
 	{
 		while (++i <= EXIT_CMD)
 		{
-			j = ft_strncmp(instr->arg[0], instr->header->cmd_list[i], 0, \
-							ft_strlen(instr->arg[0]));
-			if (instr->arg[0] && !j)
+			if (instr->arg[0] && !is_build_in_cmd(instr->arg[0], \
+				instr->header->cmd_list[i]))
 			{
 				instr->header->out_status = ((int (*)(t_instruct *)) \
 						((void **)instr->header->functions_ptr)[i])(instr);
@@ -81,17 +87,14 @@ void	work_1_command(t_instruct *instr)
 void	work_command(t_instruct *instr)
 {
 	int	i;
-	int	j;
-	int	leninst;
 
 	i = -1;
 	if (instr->arg[0] == NULL)
 		exit(0);
-	leninst = ft_strlen(instr->arg[0]);
 	while (++i <= EXIT_CMD)
 	{
-		j = ft_strncmp(instr->arg[0], instr->header->cmd_list[i], 0, leninst);
-		if (instr->arg[0] && !j)
+		if (instr->arg[0] && !is_build_in_cmd(instr->arg[0], \
+				instr->header->cmd_list[i]))
 		{
 			((int (*)(t_instruct *)) \
 					((void **)instr->header->functions_ptr)[i])(instr);

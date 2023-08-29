@@ -61,8 +61,10 @@ char	*check_file_exists(t_instruct *instruct)
 	char		*out;
 	struct stat	file_stat;
 
-	if ((instruct->arg[0][0] == '.' && instruct->arg[0][1] == '/') || \
-			instruct->arg[0][0] == '/' )
+	if (!instruct->arg[0] || instruct->arg[0][0] == '\0')
+		return (NULL);
+	if ((instruct->arg[0][0] == '.' && instruct->arg[0][1] == '/') ||
+		instruct->arg[0][0] == '/')
 	{
 		if (lstat(instruct->arg[0], &file_stat) == 0)
 			return (ft_strdup(instruct->arg[0]));
@@ -126,7 +128,7 @@ int	cmd_exec(t_instruct *instruct)
 	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
 	if (exec == -1)
 	{
-		print_err("minishell: %s : command not foun\n", instruct->arg[0]);
+		print_err("minishell: %s : command not found\n", instruct->arg[0]);
 		free(out);
 		return (exec);
 	}
