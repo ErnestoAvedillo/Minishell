@@ -6,7 +6,7 @@
 /*   By: frmurcia <frmurcia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 16:30:04 by eavedill          #+#    #+#             */
-/*   Updated: 2023/07/07 18:21:06 by frmurcia         ###   ########.fr       */
+/*   Updated: 2023/08/30 17:29:51 by frmurcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@
 # define NON_REDIR_CMD_L "ls echo printf find"
 
 # define CUR_PATH "./:"
+
+# define F_E_F "FirstError"
 
 typedef struct s_fd_struc
 {
@@ -200,4 +202,35 @@ char		**ft_split_instr(char const *s, char c);
 char		*ft_strrmstr(char *str, int start, int end);
 //print_err
 int			print_err(char *str, ...);
+
+//parse_utils1.c
+bool		is_redir(char c);
+bool		is_quote(char c);
+bool		final_redir(const char *text);
+int			ft_strcmp(const char *s1, const char *s2);
+int			ft_strncmp_mod(const char *s1, const char *s2, unsigned int n);
+
+//  parse_input1.c
+char		*free_spaces(char *data);
+char		*proc_quotes(char *f_spaces, char *free_quotes);
+char		*free_quotes(char *data);
+
+//parse_input2.c
+bool		first_pipe(char *text);
+int			check_two_pipes(char *text);
+int			new_line(void);
+
+//parse_input3.c
+int			error_found(char *texto, int *i, int j, int *consecutive_errors);
+bool		check_blocks(char *texto, int *i, int *consecutive_errors);
+bool		many_blocks(char *text);
+
+//parse_input4.c
+char		*return_error_found(char *texto, int *i, int j, \
+				int *consecutive_errors);
+char		*return_check(char *texto, int *i, int *consecutive_errors);
+char		*process_many_blocks(char *text);
+int			unex_token(char *text);
+int			check_text(char *command);
+
 #endif
