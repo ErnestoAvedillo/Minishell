@@ -68,6 +68,8 @@ char	*repl_home_dir(char *str, int pos)
 	{
 		var_val[0] = ft_strdup("~");
 		var_val[1] = ft_strjoin(getenv("HOME"), "/");
+		if (!var_val[1])
+			var_val[1] = ft_strdup("");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);
 		free(var_val[1]);
@@ -82,9 +84,12 @@ char	*repl_old_dir(char *str, int pos)
 	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/'))
 	{
 		var_val[0] = ft_strdup("-");
-		var_val[1] = getenv("OLDPWD");
+		var_val[1] = ft_strdup(getenv("OLDPWD"));
+		if(!var_val[1])
+			var_val[1] = ft_strdup("");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);
+		free(var_val[1]);
 	}
 	return (str);
 }

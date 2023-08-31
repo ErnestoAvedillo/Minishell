@@ -52,6 +52,7 @@ int	cmd_cd(t_instruct *instruct)
 	char	buffer[1024];
 
 	dir[0] = get_address(instruct);
+	dir[1] = getcwd(buffer, sizeof(buffer));
 	if (chdir(dir[0]) == -1)
 	{
 		print_err("Minishell: cd: %s: No such file or directory .\n", dir[0]);
@@ -61,7 +62,7 @@ int	cmd_cd(t_instruct *instruct)
 	else
 	{
 		free(dir[0]);
-		dir[1] = getenv("PWD");
+		dir[0] = getcwd(buffer, sizeof(buffer));
 		setenv("OLDPWD", dir[1], 1);
 		dir[0] = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir[0], 1);

@@ -19,12 +19,12 @@ bool	first_pipe(char *text)
 		if (text[1] && text[1] == '|')
 		{
 			printf("Minishell: syntax error near unexpected token `||'\n");
-			data->out_status = 258;
+//			data->out_status = 258;
 		}
 		else
 		{
 			printf("Minishell: syntax error near unexpected token `|'\n");
-			data->out_status = 258;
+//			data->out_status = 258;
 		}
 		return (true);
 	}
@@ -46,7 +46,7 @@ int	check_two_pipes(char *text)
 			two_pipes[0] = '|';
 			two_pipes[1] = '\0';
 			printf("Minishell: syntax error near unexpected token: `|'\n");
-			data->out_status = 258;
+//			data->out_status = 258;
 			free (two_pipes);
 			return (0);
 		}
@@ -59,6 +59,6 @@ int	check_two_pipes(char *text)
 int	new_line(void)
 {
 	printf("Minishell: syntax error near unexpected token `newline'\n");
-	data->out_status = 258;
+//	data->out_status = 258;
 	return (0);
 }
