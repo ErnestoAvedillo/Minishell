@@ -39,6 +39,7 @@ t_data	*init_vars(char **env)
 	data->my_stdout = dup(STDOUT_FILENO);
 	data->my_stderr = dup(STDERR_FILENO);
 	data->exit = false;
+	data->pid = 0;
 	set_func_list(data);
 	return (data);
 }

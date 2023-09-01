@@ -15,7 +15,7 @@
 static size_t	ft_nextendpos(char const *s, size_t ini, char c)
 {
 	size_t	i;
-	bool quote[2];
+	bool	quote[2];
 
 	i = ini;
 	quote[0] = false;
@@ -55,12 +55,8 @@ static int	ft_nr_words(char const *s, char c)
 				rep++;
 		}
 		else
-		{
 			if (s[i - 1] == c && s[i] != c && !quote[0] && !quote[1])
-			{
 				rep++;
-			}
-		}
 		if (s[i] == '\"')
 			quote[1] = !quote[1];
 		if (s[i] == '\'')

@@ -12,25 +12,32 @@
 
 #include "../inc/minishell.h"
 
+extern t_data	*g_header;
+
 void	hndl_ctrl_c(int signal)
 {
 	(void)signal;
-	//printf ("^C %i\n", signal);
-	exit(0);
+	if (g_header->pid != 0)
+	{
+		g_header->out_status = 130;
+	}
+	else
+		g_header->out_status = 1;
+	rl_on_new_line();
 }
 
 void	hndl_ctrl_d(int signal)
 {
 	(void)signal;
-	//printf (" he marcado el Ctr-d %i\n", signal);
-	exit(0);
+	g_header->out_status = 0;
+	rl_on_new_line();
 }
 
 void	hndl_ctrl_barra(int signal)
 {
 	(void)signal;
-	//printf (" he marcado el Ctr-\\ %i\n", signal);
-	exit(0);
+	g_header->out_status = 131;
+	rl_on_new_line();
 }
 
 int	add_signals(t_data *header)

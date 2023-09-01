@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_cmd_line.c                                   :+:      :+:    :+:   */
+/*   ft_strrmallchr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frmurcia <frmurcia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,26 +12,12 @@
 
 #include "../inc/minishell.h"
 
-/*
-*   Checks that the command line does not have following errors
-*   " = " or " =" or "= " --> is not OK
-*   operands should be allways in betewwn blanks
-* || !check_syntax(data,SNTX_127_ERR,127)
-*/
-int	check_cmd_line(t_data *data)
+void	ft_strrmallchr(char *str, char c)
 {
-	char	*add_line;
+	int	i;
 
-	if (!check_pipes(data))
-		return (0);
-	if (!check_redir(data))
-		return (0);
-	if (!check_syntax(data))
-		return (0);
-	while (!quotes_ok(data->command))
-	{
-		add_line = readline("quotes>");
-		data->command = concat_cmd(data->command, add_line);
-	}
-	return (1);
+	i = -1;
+	while (str[++i])
+		if (str[i] == c)
+			ft_strrmchr(str, i);
 }

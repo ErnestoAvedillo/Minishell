@@ -12,20 +12,20 @@
 
 #include "../inc/minishell.h"
 
-int clean_n (char **str)
+int	clean_n(char **str)
 {
 	int	i;
-	int j;
+	int	j;
 
-	if(!str[1])
+	if (!str[1])
 		return (1);
 	i = 1;
 	while (str[i] && ft_strncmp(str[i], "-n", 0, 2) == 0)
 	{
 		j = 2;
-		while(str[i][j])
+		while (str[i][j])
 		{
-			if(str[i][j] != 'n')
+			if (str[i][j] != 'n')
 				return (i);
 			j++;
 		}
@@ -41,7 +41,7 @@ int	cmd_echo(t_instruct *instruct)
 
 	eol = true;
 	i = clean_n(instruct->arg);
-	if(i > 1)
+	if (i > 1)
 		eol = false;
 	while (instruct->arg[i])
 	{

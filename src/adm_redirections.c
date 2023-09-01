@@ -12,59 +12,23 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct	*g_first_instruct;
-
-int	create_pipes(void)
+int	create_pipes(t_instruct *frst_inst)
 {
 	t_instruct	*instr;
 
-	instr = g_first_instruct;
+	instr = frst_inst;
 	while (instr->next)
 	{
 		if (pipe(instr->pipefd) == -1)
 		{
-			//printf("pipe error\n");
+			print_err("Pipe error\n");
+			frst_inst->header->out_status = 127;
 			return (0);
 		}
 		instr = instr->next;
 	}
-	g_first_instruct->header->out_status = 0;
+	frst_inst->header->out_status = 0;
 	return (1);
-}
-
-void	redirect(t_instruct *cur_inst)
-{
-	t_instruct	*instr_pre;
-
-	instr_pre = cur_inst->prev;
-	output_error_file_redir(cur_inst->err);
-	if ((cur_inst->prev == NULL) && (cur_inst->next != NULL))
-	{
-		close(cur_inst->pipefd[0]);
-		input_file_redir(cur_inst->in);
-		if (!output_file_redir(cur_inst->out))
-			dup2(cur_inst->pipefd[1], STDOUT_FILENO);
-		close(cur_inst->pipefd[1]);
-	}
-	else if ((cur_inst->prev != NULL) && (cur_inst->next != NULL))
-	{
-		if(!input_file_redir(cur_inst->in))
-			dup2(instr_pre->pipefd[0], STDIN_FILENO);
-		close(cur_inst->pipefd[0]);
-		close(instr_pre->pipefd[0]);
-		if (!output_file_redir(cur_inst->out))
-			dup2(cur_inst->pipefd[1], STDOUT_FILENO);
-		close(cur_inst->pipefd[1]);
-		close(cur_inst->pipefd[1]);
-	}
-	else if ((cur_inst->prev != NULL) && (cur_inst->next == NULL))
-	{
-		if(!input_file_redir(cur_inst->in))
-			dup2(instr_pre->pipefd[0], STDIN_FILENO);
-		close(instr_pre->pipefd[0]);
-		output_file_redir(cur_inst->out);
-		close(instr_pre->pipefd[0]);
-	}
 }
 
 void	close_prev_pipes(t_instruct *cur_inst)
@@ -78,8 +42,8 @@ void	close_prev_pipes(t_instruct *cur_inst)
 	}
 	else if ((cur_inst->prev != NULL) && (cur_inst->next != NULL))
 	{
-			close(instr_pre->pipefd[0]);
-			close(cur_inst->pipefd[1]);
+		close(instr_pre->pipefd[0]);
+		close(cur_inst->pipefd[1]);
 	}
 	else if ((cur_inst->prev != NULL) && (cur_inst->next == NULL))
 	{
@@ -88,44 +52,40 @@ void	close_prev_pipes(t_instruct *cur_inst)
 	}
 }
 
-int	check_is_1_command(void)
+int	check_is_1_command(t_instruct *frst_inst)
 {
 	int			leninst;
 
-	leninst = leninstr(g_first_instruct);
-	if (leninst == 0 )
+	leninst = leninstr(frst_inst);
+	if (leninst == 0)
 		return (1);
-	if(!g_first_instruct->header->command[0])
-		return(1);
+	if (!frst_inst->header->command[0])
+		return (1);
 	if (leninst == 1)
 	{
-		work_1_command(g_first_instruct);
+		work_1_command(frst_inst);
 		return (1);
 	}
 	return (0);
 }
 
-void	adm_redirections(void)
+void	adm_redirections(t_instruct *frst_inst)
 {
 	t_instruct	*instr;
 	int			status;
 
-	if (check_is_1_command())
-	{
-		return;
-	}
-	if (!create_pipes())
+	if (check_is_1_command(frst_inst) || !create_pipes(frst_inst))
 		return ;
-	instr = g_first_instruct;
+	instr = frst_inst;
 	while (instr)
 	{
-		instr->pid = fork();
-		if (instr->pid == -1)
+		instr->header->pid = fork();
+		if (instr->header->pid == -1)
 		{
 			print_err("Fork error in piping\n");
 			return ;
 		}
-		else if (instr->pid == 0)
+		else if (instr->header->pid == 0)
 		{
 			redirect(instr);
 			work_command(instr);
@@ -134,6 +94,6 @@ void	adm_redirections(void)
 		wait(&status);
 		instr = instr->next;
 	}
-	g_first_instruct->header->out_status = WEXITSTATUS(status);
+	frst_inst->header->out_status = WEXITSTATUS(status);
 	return ;
 }

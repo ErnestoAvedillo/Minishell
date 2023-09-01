@@ -12,8 +12,6 @@
 
 #include "../inc/minishell.h"
 
-t_instruct	*g_first_instruct;
-
 /**
  *
  * Description:		Infinite while function with a readline to introduce a command
@@ -22,8 +20,13 @@ t_instruct	*g_first_instruct;
  *					
  * Returns:			NONE
  **/
+//For Testing-----------------------------------------------------------
+/**/
+
 void	get_cmd(t_data *data)
 {
+	t_instruct	*frst_inst;
+
 	while (1)
 	{
 		if (isatty(fileno(stdin)))
@@ -37,20 +40,24 @@ void	get_cmd(t_data *data)
 		}
 		if (!data->command)
 			return;
-/*				while (!data->command || data->command[0] == 0)
-					data->command = readline("Enter a command Minishell>");
-*/		
+//		while (!data->command || data->command[0] == 0)
+//			data->command = readline("Enter a command Minishell>");
 		add_history(data->command);
 		if (check_cmd_line(data))
 		{
-			g_first_instruct = tokenize(data);
-			if (!g_first_instruct)
+			frst_inst = tokenize(data);
+			if (!frst_inst)
 				print_err("Memory alloc. error\n");
 			else
-				adm_redirections();
-			free_inst();
+				adm_redirections(frst_inst);
+			free_inst(frst_inst);
 			if (data->exit)
 				break ;
+		}
+		else
+		{
+			free(data->command);
+			data->command = NULL;
 		}
 	}
 }

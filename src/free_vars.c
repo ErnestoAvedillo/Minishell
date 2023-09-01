@@ -12,8 +12,6 @@
 
 #include "../inc/minishell.h"
 
-extern t_instruct	*g_first_instruct;
-
 void	free_arrchar(char **arrchr)
 {
 	int	i;
@@ -46,10 +44,9 @@ void	free_cmd_data(t_data *data)
 	if (data->command)
 		free(data->command);
 	data->command = NULL;
-
 }
 
-void free_fd_data(t_fd_struc *fd_ptr)
+void	free_fd_data(t_fd_struc *fd_ptr)
 {
 	t_fd_struc	*ptr;
 
@@ -67,11 +64,11 @@ void free_fd_data(t_fd_struc *fd_ptr)
 	}
 }
 
-void	free_inst(void)
+void	free_inst(t_instruct *frst_inst)
 {
 	t_instruct	*instruct;
 
-	instruct = g_first_instruct;
+	instruct = frst_inst;
 	free_cmd_data(instruct->header);
 	while (instruct)
 	{
@@ -81,8 +78,8 @@ void	free_inst(void)
 		free_fd_data(instruct->in);
 		free_fd_data(instruct->out);
 		free_fd_data(instruct->err);
-		g_first_instruct = instruct->next;
+		frst_inst = instruct->next;
 		free(instruct);
-		instruct = g_first_instruct;
+		instruct = frst_inst;
 	}
 }

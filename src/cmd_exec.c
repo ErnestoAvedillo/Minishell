@@ -12,35 +12,33 @@
 
 #include "../inc/minishell.h"
 
-/*
-*	execute a given command..
-*	Argument: 	t_instruct *instruct; structure with the command and arguments.
-*	Returns: none
-*/
-char	*check_file_exists(t_instruct *instruct)
+static char	**get_arr_path(void)
 {
-	int			i;
 	char		**path_arr;
+
+	if (!getenv("PATH"))
+		path_arr = ft_split(CUR_PATH, ':');
+	else
+		path_arr = ft_split(getenv("PATH"), ':');
+	return (path_arr);
+}
+
+static char	*check_file_paths(char *file )
+{
 	char		*out;
 	struct stat	file_stat;
+	int			i;
+	char		**path_arr;
 
-	if ((instruct->arg[0][0] == '.' && instruct->arg[0][1] == '/') || \
-			instruct->arg[0][0] == '/' )
-	{
-		if (lstat(instruct->arg[0], &file_stat) == 0)
-			return (ft_strdup(instruct->arg[0]));
-		else
-			return (NULL);
-	}
+	path_arr = get_arr_path();
 	out = (char *)malloc(1024 * sizeof(char));
 	out[0] = '\0';
-	path_arr = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (path_arr && path_arr[++i])
 	{
 		ft_strlcat(out, path_arr[i], 1024);
 		ft_strlcat(out, "/", 1024);
-		ft_strlcat(out, instruct->arg[0], 1024);
+		ft_strlcat(out, file, 1024);
 		if (lstat(out, &file_stat) == 0)
 		{
 			free_arrchar(path_arr);
@@ -49,7 +47,33 @@ char	*check_file_exists(t_instruct *instruct)
 		out[0] = '\0';
 	}
 	free_arrchar(path_arr);
-	free(out);
+	free (out);
+	return (NULL);
+}
+
+/*
+*	execute a given command..
+*	Argument: 	t_instruct *instruct; structure with the command and arguments.
+*	Returns: none
+*/
+char	*check_file_exists(t_instruct *instruct)
+{
+	char		*out;
+	struct stat	file_stat;
+
+	if (!instruct->arg[0] || instruct->arg[0][0] == '\0')
+		return (NULL);
+	if ((instruct->arg[0][0] == '.' && instruct->arg[0][1] == '/') ||
+		instruct->arg[0][0] == '/')
+	{
+		if (lstat(instruct->arg[0], &file_stat) == 0)
+			return (ft_strdup(instruct->arg[0]));
+		else
+			return (NULL);
+	}
+	out = check_file_paths(instruct->arg[0]);
+	if (out != NULL)
+		return (out);
 	return (NULL);
 }
 
@@ -90,13 +114,13 @@ int	cmd_exec(t_instruct *instruct)
 {
 	char	*out;
 	int		exec;
-	
+
 	if (ft_strlen(instruct->arg[0]) == 0)
 		return (0);
 	out = check_file_exists(instruct);
 	if (!out)
 	{
-		print_err("minishell: %s : command not found\n",instruct->arg[0]);
+		print_err("minishell: %s : command not found\n", instruct->arg[0]);
 		return (127);
 	}
 	free(instruct->arg[0]);
@@ -104,7 +128,7 @@ int	cmd_exec(t_instruct *instruct)
 	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
 	if (exec == -1)
 	{
-		print_err("minishell: %s : command not foun\n",instruct->arg[0]);
+		print_err("minishell: %s : command not found\n", instruct->arg[0]);
 		free(out);
 		return (exec);
 	}

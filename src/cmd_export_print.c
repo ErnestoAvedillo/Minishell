@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrmstr.c                                      :+:      :+:    :+:   */
+/*   cmd_export_print.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eavedill <eavedill@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/10 08:46:25 by eavedill          #+#    #+#             */
-/*   Updated: 2023/08/10 08:46:28 by eavedill         ###   ########.fr       */
+/*   Created: 2023/08/21 19:43:13 by eavedill          #+#    #+#             */
+/*   Updated: 2023/08/21 19:43:17 by eavedill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_strrmstr(char *str, int start, int end)
+/**
+ *
+ * Description:		Printe the environment variables sorted
+ *					
+ * Arguments:		char **env
+ *					
+ * Returns:			NONE
+ * 
+ **/
+void	print_env_sorted(char **env)
 {
-	char	*out;
 	int		i;
-	int		k;
+	char	**aux;
 
-	if (!str || end < start)
-		return (str);
-	if (start < 0)
-		start = 0;
-	end = ft_min(end, ft_strlen(str));
+	aux = ft_cpy_str_arr(env);
+	aux = ft_strsort_arr(aux, 1);
 	i = -1;
-	k = 0;
-	out = (char *)malloc((ft_strlen(str) + 1 - start + end) * sizeof(char));
-	while (str[++i])
-	{
-		if (i < start || i >= end)
-		{
-			out[k] = str[i];
-			k++;
-		}
-	}
-	out[k] = '\0';
-	return (out);
+	while (aux[++i] != NULL)
+		ft_printf("declare -x %s\n", aux[i]);
+	free(aux);
+	return ;
 }

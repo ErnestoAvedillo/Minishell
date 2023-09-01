@@ -12,11 +12,11 @@
 
 #include "../inc/minishell.h"
 
-char *my_ft_strnstr(const char *big, const char *little, size_t len)
+char	*my_ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t i;
-	size_t j;
-	size_t k;
+	size_t	i;
+	size_t	j;
+	size_t	k;
 
 	if (!little || !little[0])
 		return ((char *)(big));
@@ -40,32 +40,10 @@ char *my_ft_strnstr(const char *big, const char *little, size_t len)
 	return (NULL);
 }
 
-char *get_start_delimit(char *str)
-{
-	int i;
-
-	i = 2;
-	while (str[i] == ' ')
-		i++;
-	return (str + i);
-}
-
-char *get_end_delimit(char *str)
-{
-	int		i;
-	char	*aux;
-
-	i = 0;
-	aux = get_start_delimit(str);
-	while (aux[i] && aux[i] != ' ' && aux[i] != '|' && aux[i] != '>')
-		i++;
-	return ((char*)aux + i);
-}
-
 char	*get_delimit(char *str)
 {
 	char	*aux[2];
-	char 	*out;
+	char	*out;
 
 	aux[0] = get_start_delimit(str);
 	aux[1] = get_end_delimit(str);
@@ -73,7 +51,7 @@ char	*get_delimit(char *str)
 	return (out);
 }
 
-char *insert_in_line(char *cmd, char *str, char *ptr)
+char	*insert_in_line(char *cmd, char *str, char *ptr)
 {
 	char	*out;
 	char	*aux;
@@ -86,36 +64,48 @@ char *insert_in_line(char *cmd, char *str, char *ptr)
 	return (out);
 }
 
+static bool	end_of_heredoc(char *str1, char *str2)
+{
+	int		i;
+
+	i = ft_max(ft_strlen(str1), ft_strlen(str2));
+	if (!ft_strncmp(str1, str2, 0, i))
+		return (false);
+	return (true);
+}
+
 /*
  *   Checks that the command line does not have following errors
  *   " = " or " =" or "= " --> is not OK
  *   operands should be allways in betewwn blanks
  *
+ * In function aux[0] corresonds to the auxiliar variable
+ * In function aux[1] corresonds to the readed variable
+ * In function aux[2] corresonds to the delimiter variable
  */
-void check_delimiter(t_instruct *instr)
+void	check_delimiter(t_instruct *instr)
 {
-	char	*readed;
-	char	*delimiter;
-	char	*aux;
+	char	*aux[3];
 
-	delimiter = ft_strdup(instr->in->fd_name);
+	aux[2] = instr->in->fd_name;
 	instr->in->fd_type = 2;
-	aux = ft_itoa(instr->header->contador);
+	aux[0] = ft_itoa(instr->header->contador);
 	instr->header->contador++;
-	instr->in->fd_name = ft_strjoin("tmp",aux);
+	instr->in->fd_name = ft_strjoin("/tmp/tmp", aux[0]);
 	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
-	free(aux);
-	aux = ft_strjoin(delimiter, ">");
-	readed = readline(aux);
-	while (ft_strncmp(readed, delimiter, 0, ft_strlen(readed)))
+	free(aux[0]);
+	aux[0] = ft_strjoin(aux[2], ">");
+	aux[1] = readline(aux[0]);
+	while (aux[1] && end_of_heredoc(aux[1], aux[2]))
 	{
-		ft_putstr_fd(readed, instr->in->fd);
-		ft_putstr_fd("\n", instr->in->fd );
-		free(readed);
-		readed = readline(aux);
+		ft_putstr_fd(aux[1], instr->in->fd);
+		ft_putstr_fd("\n", instr->in->fd);
+		free(aux[1]);
+		aux[1] = readline(aux[0]);
 	}
-	free(delimiter);
-	free(aux);
+	free(aux[2]);
+	free(aux[1]);
+	free(aux[0]);
 	close(instr->in->fd);
 	return ;
 }

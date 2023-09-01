@@ -11,28 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-/*
-static int	move_2_next_sing_quote(char *str, int pos)
-{
-	int	i;
-
-	i = pos;
-	i++;
-	while (str[i] && str[i] != '\'')
-		i++;
-	i++;
-	return (i);
-}
-*/
-static char	*get_var_name(char *str, int pos)
-{
-	int	i;
-	
-	i = pos + 1;
-	while (str[i] && (str[i] != ' ' && str[i] != '\"' && str[i] != '\'' && str[i] != '$' && str[i] != '/'))
-		i++;
-	return (ft_substr(str, pos + 1, i - pos - 1));
-}
 
 static char	*replace_command(char *str, char *variable, char *value, int pos)
 {
@@ -43,7 +21,7 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 	lenstrout = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
 	out = (char *) malloc(lenstrout * sizeof(char));
 	j = -1;
-	while (++j <= lenstrout)
+	while (++j < lenstrout)
 	{
 		if (j < pos)
 			out[j] = str[j];
@@ -65,12 +43,14 @@ char	*replace_env_var(char *str, int pos, int status)
 	var_val[0] = get_var_name(str, pos);
 	if (str[pos + 1] == '?')
 		var_val[1] = ft_itoa(status);
+	else if (str[pos + 1] == '0')
+		var_val[1] = ft_strdup("minishell");
 	else
 	{
 		aux = getenv(var_val[0]);
 		if (!aux)
 			var_val[1] = ft_strdup("");
-		else 
+		else
 			var_val[1] = ft_strdup(getenv(var_val[0]));
 	}
 	str = replace_command(str, var_val[0], var_val[1], pos);
@@ -80,14 +60,16 @@ char	*replace_env_var(char *str, int pos, int status)
 	return (str);
 }
 
-char *repl_home_dir(char *str, int pos)
+char	*repl_home_dir(char *str, int pos)
 {
-	char *var_val[2];
+	char	*var_val[2];
 
-	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/') && str[pos - 1] == ' ')
+	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/'))
 	{
 		var_val[0] = ft_strdup("~");
-		var_val[1] = ft_strjoin(getenv("HOME"),"/");
+		var_val[1] = ft_strjoin(getenv("HOME"), "/");
+		if (!var_val[1])
+			var_val[1] = ft_strdup("");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);
 		free(var_val[1]);
@@ -95,16 +77,19 @@ char *repl_home_dir(char *str, int pos)
 	return (str);
 }
 
-char *repl_old_dir(char *str, int pos)
+char	*repl_old_dir(char *str, int pos)
 {
-	char *var_val[2];
+	char	*var_val[2];
 
-	if ((str[pos + 1] == ' ' || str[pos +1] == '\0') && str[pos - 1] == ' ')
+	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/'))
 	{
 		var_val[0] = ft_strdup("-");
-		var_val[1] = getenv("OLDPWD");
+		var_val[1] = ft_strdup(getenv("OLDPWD"));
+		if(!var_val[1])
+			var_val[1] = ft_strdup("");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);
+		free(var_val[1]);
 	}
 	return (str);
 }
