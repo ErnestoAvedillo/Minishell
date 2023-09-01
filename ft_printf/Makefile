@@ -30,11 +30,11 @@ FLAGS = -Wall -Werror -Wextra
 
 CC = gcc
 
-all: $(LIBNAME) $(NAME)
+all: libft $(NAME)
 
--include $(INCLUDE))
+-include $(INCLUDE)
 
-$(NAME): $(OBJS) $(DEPS) $(LIBNAME)
+$(NAME): $(OBJS) $(DEPS) $(LIBFT)
 	@cp -p $(LIBNAME) $(NAME)
 	ar -rcs $(NAME) $(OBJS)
 
@@ -44,10 +44,7 @@ $(NAME): $(OBJS) $(DEPS) $(LIBNAME)
 %.d : %.c $(INCLUDE)
 	$(CC) -MM $(FLAGS) -c $*.c > $*.d
 
-$(LIBNAME): $(LIBFT)
-	@cp -p $(LIBFT) $(LIBNAME)
-
-$(LIBFT):
+libft:
 	@make -C$(DIRLIBFT) bonus
 
 print:
@@ -68,4 +65,4 @@ fclean:     clean
 
 re:         fclean libft_make $(NAME) 
 
-.PHONY: all re clean fclean re $(LIBFT) $(LIBNAME)
+.PHONY: all re clean fclean re libft

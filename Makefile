@@ -38,7 +38,7 @@ FLAGS:= -Werror -Wextra -Wall -O2 -g $(SANIT1)
 #-fsanitize=datarace -fsanitize=address
 RM := rm -rfd
 
-all: $(FT_PRINTF) $(NEXTLINE) $(NAME)
+all: Makefile ftprint nextline $(NAME)
 
 
 all_lk:SANIT1 = -fsanitize=address
@@ -52,7 +52,7 @@ linux_lk: all
 
 -include $(DSTS)
 
-$(NAME): $(OBJS) Makefile
+$(NAME): $(OBJS) $(NEXTLINE) $(FT_PRINTF) 
 	$(CC) $(FLAGS) $(SANIT1) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(NEXTLINE) $(LIBFT) -lreadline 
 
 #-static-libsan 
@@ -65,10 +65,10 @@ $(DIR_OBJ_DST)%.d: $(DIR_SRC)%.c $(INCLUDE)
 	@mkdir -p $(DIR_OBJ_DST)
 	@$(CC) $(FLAGS) -I$(INCDIR) -MM -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.d 
 
-$(FT_PRINTF):
+ftprint:
 	make -C$(DIR_PRINTF)
 
-$(NEXTLINE):
+nextline:
 	make -C$(DIR_NEXTLINE)
 
 clean:
@@ -94,7 +94,9 @@ print:
 	@echo DIR_OBJ_DST: $(DIR_OBJ_DST)
 	@echo INCDIR: $(INCDIR)
 	@echo INCLUDE: $(INCLUDE)
-	@echo DIRLIBFT: $(DIR_LIBFT)
-	@echo LIBFT: $(LIBFT)
+	@echo FT_PRINTF: $(FT_PRINTF)
+	@echo DIR_PRINTF: $(DIR_PRINTF)
+	@echo NEXTLINE: $(NEXTLINE)
+	@echo DIR_NEXTLINE: $(DIR_NEXTLINE)
 
-.PHONY: all re clean fclean print libft $(FT_PRINTF) $(NEXTLINE) linux_lk all_lk
+.PHONY: all re clean fclean print libft ftprint nextline linux_lk all_lk
