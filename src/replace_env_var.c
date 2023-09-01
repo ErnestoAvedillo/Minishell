@@ -85,7 +85,7 @@ char	*repl_old_dir(char *str, int pos)
 	{
 		var_val[0] = ft_strdup("-");
 		var_val[1] = ft_strdup(getenv("OLDPWD"));
-		if(!var_val[1])
+		if (!var_val[1])
 			var_val[1] = ft_strdup("");
 		str = replace_command(str, var_val[0], var_val[1], pos);
 		free(var_val[0]);

@@ -74,13 +74,13 @@ nextline:
 
 clean:
 	@$(RM) $(DIR_OBJ_DST)
-	make -C$(DIR_NEXTLINE) clean
-	make -C$(DIR_PRINTF) clean
+	make -C $(DIR_NEXTLINE) clean
+	make -C $(DIR_PRINTF) clean
 
 fclean: clean
 	@$(RM) $(NAME)
-	make -C$(DIR_NEXTLINE) fclean
-	make -C$(DIR_PRINTF) fclean
+	make -C $(DIR_NEXTLINE) fclean
+	make -C $(DIR_PRINTF) fclean
 
 re: fclean all
 

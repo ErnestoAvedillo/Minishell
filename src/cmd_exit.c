@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 static bool	check_is_num(t_instruct *inst)
 {
 	int	i;
@@ -60,10 +62,10 @@ int	cmd_exit(t_instruct *inst)
 	else
 		inst->header->exit = true;
 	if (inst->arg[1])
-		inst->header->out_status = ft_atoi(inst->arg[1]) % 256;
+		g_out_status = ft_atoi(inst->arg[1]) % 256;
 	else
 		return (0);
-	if (inst->header->out_status < 0)
-		inst->header->out_status -= 256;
-	return (inst->header->out_status);
+	if (g_out_status < 0)
+		g_out_status -= 256;
+	return (g_out_status);
 }

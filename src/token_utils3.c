@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 void	check_quotes(char *str, int pos, bool *quot)
 {
 	if (pos == -1)
@@ -88,12 +90,10 @@ void	split_args(t_instruct *inst, char *str)
 				inst->arg[j][i] = ' ';
 	}
 	i = -1;
-	while (inst->arg[++i])
-		inst->arg[i] = process_quotes(inst->arg[i]);
 }
 
 /* Parte de fill_instruct */
-char	*expand_variables(char *str, t_instruct *inst)
+char	*expand_variables(char *str)
 {
 	int		i;
 	bool	quot[3];
@@ -115,7 +115,7 @@ char	*expand_variables(char *str, t_instruct *inst)
 			;
 		else if (str[i] == '$' && !quot[0] && !quot[2])
 		{
-			str = replace_env_var(str, i, inst->header->out_status);
+			str = replace_env_var(str, i, g_out_status);
 			i--;
 		}
 	}

@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 int	cmd_env(t_instruct *instruct)
 {
 	char	buffer[1024];
@@ -27,7 +29,7 @@ int	cmd_env(t_instruct *instruct)
 		}
 		else
 		{
-			instruct->header->out_status = 127;
+			g_out_status = 127;
 			ft_printf("Too many arguments env.\n");
 		}
 		return (1);

@@ -137,10 +137,11 @@ void		replace_char_btw_quotes(char *str, unsigned int c1,
 				unsigned int c2);
 char		*check_ext_files(t_instruct *instr, char *str);
 // token_utils3
-char		*expand_variables(char *str, t_instruct *inst);
+char		*expand_variables(char *str);
 void		prepare_for_split(char *str);
 void		split_args(t_instruct *inst, char *str);
 void		check_quotes(char *str, int pos, bool *quot);
+char		*process_quotes(char *str);
 // tokenize
 t_instruct	*tokenize(t_data *data);
 //admin_fd0
@@ -217,7 +218,7 @@ char		*free_quotes(char *data);
 
 //parse_input2.c
 bool		first_pipe(char *text);
-int			check_two_pipes(char *text);
+bool		check_two_pipes(char *text);
 int			new_line(void);
 
 //parse_input3.c
@@ -226,11 +227,11 @@ bool		check_blocks(char *texto, int *i, int *consecutive_errors);
 bool		many_blocks(char *text);
 
 //parse_input4.c
-char		*return_error_found(char *texto, int *i, int j, \
+char		*return_error_found(char *texto, int *i, int *j, \
 				int *consecutive_errors);
 char		*return_check(char *texto, int *i, int *consecutive_errors);
 char		*process_many_blocks(char *text);
 int			unex_token(char *text);
-int			check_text(char *command);
+bool		check_text(char *command);
 
 #endif

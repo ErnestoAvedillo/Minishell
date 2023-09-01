@@ -132,14 +132,14 @@ void	expand_redir(t_instruct *inst)
 	cur_fd = inst->out;
 	while (cur_fd)
 	{
-		cur_fd->fd_name = expand_variables(cur_fd->fd_name, inst);
+		cur_fd->fd_name = expand_variables(cur_fd->fd_name);
 		cur_fd = cur_fd->next;
 	}
 	cur_fd = inst->in;
 	while (cur_fd)
 	{
 		if (cur_fd->fd_type == 1)
-			cur_fd->fd_name = expand_variables(cur_fd->fd_name, inst);
+			cur_fd->fd_name = expand_variables(cur_fd->fd_name);
 		else
 		{
 			ft_strrmallchr(cur_fd->fd_name, '\'');
@@ -168,7 +168,8 @@ char	*fill_instruct2(t_instruct *inst, char *str)
 	while (inst->arg[++i])
 	{
 		inst->arg[i] = expand_home_dir(inst->arg[i]);
-		inst->arg[i] = expand_variables(inst->arg[i], inst);
+		inst->arg[i] = expand_variables(inst->arg[i]);
+		inst->arg[i] = process_quotes(inst->arg[i]);
 	}
 	expand_redir(inst);
 	return (str);

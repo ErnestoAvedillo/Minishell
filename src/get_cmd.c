@@ -21,15 +21,7 @@
  * Returns:			NONE
  **/
 //For Testing-----------------------------------------------------------
-/**/
-
-void	get_cmd(t_data *data)
-{
-	t_instruct	*frst_inst;
-
-	while (1)
-	{
-		if (isatty(fileno(stdin)))
+/*		if (isatty(fileno(stdin)))
 			data->command = readline("Enter a command Minishell>");
 		else
 		{
@@ -39,9 +31,18 @@ void	get_cmd(t_data *data)
 			free(line);
 		}
 		if (!data->command)
-			return;
-//		while (!data->command || data->command[0] == 0)
-//			data->command = readline("Enter a command Minishell>");
+			return;*/
+
+void	get_cmd(t_data *data)
+{
+	t_instruct	*frst_inst;
+	char		*text;
+
+	while (1)
+	{
+		while (!data->command || data->command[0] == 0)
+			data->command = readline("Enter a command Minishell>");
+		text = ft_strdup(data->command);
 		add_history(data->command);
 		if (check_cmd_line(data))
 		{
@@ -59,5 +60,6 @@ void	get_cmd(t_data *data)
 			free(data->command);
 			data->command = NULL;
 		}
+		free (text);
 	}
 }

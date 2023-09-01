@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 int	create_pipes(t_instruct *frst_inst)
 {
 	t_instruct	*instr;
@@ -22,12 +24,12 @@ int	create_pipes(t_instruct *frst_inst)
 		if (pipe(instr->pipefd) == -1)
 		{
 			print_err("Pipe error\n");
-			frst_inst->header->out_status = 127;
+			g_out_status = 127;
 			return (0);
 		}
 		instr = instr->next;
 	}
-	frst_inst->header->out_status = 0;
+	g_out_status = 0;
 	return (1);
 }
 
@@ -94,6 +96,6 @@ void	adm_redirections(t_instruct *frst_inst)
 		wait(&status);
 		instr = instr->next;
 	}
-	frst_inst->header->out_status = WEXITSTATUS(status);
+	g_out_status = WEXITSTATUS(status);
 	return ;
 }

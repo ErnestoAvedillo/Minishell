@@ -71,6 +71,8 @@ char	*check_file_exists(t_instruct *instruct)
 		else
 			return (NULL);
 	}
+	else if (instruct->arg[0][1] == '.' && instruct->arg[0][2] == '\0')
+		return (NULL);
 	out = check_file_paths(instruct->arg[0]);
 	if (out != NULL)
 		return (out);
@@ -122,6 +124,12 @@ int	cmd_exec(t_instruct *instruct)
 	{
 		print_err("minishell: %s : command not found\n", instruct->arg[0]);
 		return (127);
+	}
+//	out = check_is_dir(instruct);
+	if (!out)
+	{
+		print_err("minishell: %s : command not found\n", instruct->arg[0]);
+		return (126);
 	}
 	free(instruct->arg[0]);
 	instruct->arg[0] = out;

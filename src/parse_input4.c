@@ -6,7 +6,7 @@
 /*   By: frmurcia <frmurcia@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 19:02:55 by frmurcia          #+#    #+#             */
-/*   Updated: 2023/08/30 17:23:31 by frmurcia         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:15:45 by frmurcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,29 @@
  * check_text lanza todo.
  *
  * */
-char	*return_error_found(char *texto, int *i, int j, int *consecutive_errors)
+char	*return_error_found(char *texto, int *i, int *j, 
+		int *consecutive_errors)
 {
-	const char	*error_bl[] = {">|", "|", "<<<", "<<", ">>", "<>", "<", ">"};
+	const char	*error_bl[] = {">|", "||", "|", "<<<", "<<", ">>", "<>", 
+		">", "<"};
 	int			block_length;
 	char		*error;
 
 	error = NULL;
-	block_length = ft_strlen(error_bl[j]);
-	if (ft_strncmp_mod(&texto[*i], error_bl[j], block_length) == 0)
+	block_length = ft_strlen(error_bl[*j]);
+	if (ft_strncmp_mod(&texto[*i], error_bl[*j], block_length) == 0)
 	{
 		*i += block_length;
 		(*consecutive_errors)++;
 		if (*consecutive_errors == 1)
+		{
+			*j = -1;
 			return (F_E_F);
+		}
 		if (*consecutive_errors == 2)
 		{
-			error = (char *)malloc(block_length + 1);
-			if (error != NULL)
-				error = ft_strdup (error_bl[j]);
+			error = ft_strdup(error_bl[*j]);
+			*j = -1;
 			return (error);
 		}
 	}
@@ -47,10 +51,10 @@ char	*return_check(char *texto, int *i, int *consecutive_errors)
 	int		j;
 	char	*ch_error;
 
-	j = 0;
 	while (texto[*i])
 	{
-		while (j < 8)
+		j = 0;
+		while (j < 9)
 		{
 			if (texto[*i] == ' ' && texto[*i + 1])
 				(*i)++;
@@ -59,11 +63,11 @@ char	*return_check(char *texto, int *i, int *consecutive_errors)
 				*consecutive_errors = 0;
 				(*i)++;
 			}
-			ch_error = return_error_found(texto, i, j, consecutive_errors);
+			ch_error = return_error_found(texto, i, &j, consecutive_errors);
 			if (ch_error != NULL && (ft_strcmp(ch_error, F_E_F) != 0))
 				return (ch_error);
-			else if (ch_error != NULL && (ft_strcmp(ch_error, F_E_F)) == 0)
-				j = -1;
+			else if (ch_error != NULL && (ft_strcmp(ch_error, F_E_F) == 0))
+				break ;
 			else if (ch_error == NULL)
 				j++;
 		}
@@ -104,28 +108,34 @@ int	unex_token(char *text)
 
 	unexpected = process_many_blocks(text);
 	printf("Minishell: syntax error near unexpected token: `%s'\n", unexpected);
-	return (0);
+	return (1);
 }
 
-int	check_text(char *command)
+bool	check_text(char *command)
 {
 	char	*texts;
 
 	texts = ft_strdup(command);
 	texts = free_quotes(texts);
 	if (first_pipe(texts))
-		return (0);
+		return (false);
 	else if (check_two_pipes(texts))
-		return (0);
+		return (false);
 	else if (!many_blocks(texts))
 	{
 		if (final_redir(texts))
+		{
 			new_line();
+			return (false);
+		}
 	}
 	else if (many_blocks(texts))
+	{
 		unex_token(texts);
+		return (false);
+	}
 	free (texts);
-	return (0);
+	return (true);
 }
 /*
 int main() {

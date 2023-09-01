@@ -6,7 +6,7 @@
 /*   By: frmurcia <frmurcia@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:49:50 by frmurcia          #+#    #+#             */
-/*   Updated: 2023/08/30 17:18:36 by frmurcia         ###   ########.fr       */
+/*   Updated: 2023/09/01 19:25:40 by frmurcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,21 @@ bool	first_pipe(char *text)
 	if (text[0] == '|')
 	{
 		if (text[1] && text[1] == '|')
-		{
 			printf("Minishell: syntax error near unexpected token `||'\n");
-//			data->out_status = 258;
-		}
 		else
-		{
 			printf("Minishell: syntax error near unexpected token `|'\n");
-//			data->out_status = 258;
-		}
+		return (true);
+	}
+	else if (text[0] == '.' && text[1] == '\0')
+	{
+		printf("Minishell: .: filename argument required \n");
+		printf(".: usage: . filename [arguments]\n");
 		return (true);
 	}
 	return (false);
 }
 
-int	check_two_pipes(char *text)
+bool	check_two_pipes(char *text)
 {
 	int		i;
 	char	*two_pipes;
@@ -46,19 +46,17 @@ int	check_two_pipes(char *text)
 			two_pipes[0] = '|';
 			two_pipes[1] = '\0';
 			printf("Minishell: syntax error near unexpected token: `|'\n");
-//			data->out_status = 258;
 			free (two_pipes);
-			return (0);
+			return (true);
 		}
 		else
 			i++;
 	}
-	return (0);
+	return (false);
 }
 
 int	new_line(void)
 {
 	printf("Minishell: syntax error near unexpected token `newline'\n");
-//	data->out_status = 258;
-	return (0);
+	return (1);
 }

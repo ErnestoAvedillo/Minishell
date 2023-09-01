@@ -32,13 +32,13 @@ CC = gcc
 
 all: libft $(NAME)
 
--include $(INCLUDE)
+#-include $(INCLUDE)
 
 $(NAME): $(OBJS) $(DEPS) $(LIBFT)
-	@cp -p $(LIBNAME) $(NAME)
-	ar -rcs $(NAME) $(OBJS)
+	cp -p $(LIBFT) $(NAME)
+	ar -rcs $(NAME) $(OBJS) $(LIBFT)
 
-%.o : %.c $(INCLUDE)
+%.o : %.c 
 	$(CC) $(FLAGS) -c $*.c -o $*.o
 
 %.d : %.c $(INCLUDE)

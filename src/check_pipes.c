@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 int	check_pipes(t_data *data)
 {
 	int	i;
@@ -19,7 +21,7 @@ int	check_pipes(t_data *data)
 	if (data->command[0] == '|')
 	{
 		print_err("Minishell: syntax error near unexpected token '|'\n");
-		data->out_status = 258;
+		g_out_status = 258;
 		return (0);
 	}
 	i = -1;
@@ -32,7 +34,7 @@ int	check_pipes(t_data *data)
 			if (data->command[i] == '|')
 			{
 				print_err("Minishell: syntax error near unexpected token '|'\n");
-				data->out_status = 258;
+				g_out_status = 258;
 				return (0);
 			}
 		}

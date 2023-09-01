@@ -12,17 +12,19 @@
 
 #include "../inc/minishell.h"
 
-static int	print_redir_nl(t_data *data)
+extern int	g_out_status;
+
+static int	print_redir_nl(void)
 {
 	print_err("Minishell: syntax error near unexpected token 'newline'\n");
-	data->out_status = 258;
+	g_out_status = 258;
 	return (0);
 }
 
-static int	print_redir_tok(t_data *data, char c)
+static int	print_redir_tok(char c)
 {
 	print_err("Minishell: syntax error near unexpected token '%c'\n", c);
-	data->out_status = 258;
+	g_out_status = 258;
 	return (0);
 }
 
@@ -38,13 +40,13 @@ int	check_redir(t_data *data)
 		if (data->command[i] == '>' || data->command[i] == '<')
 		{
 			if (data->command[i + 1] == '\0')
-				return (print_redir_nl(data));
+				return (print_redir_nl());
 			while (data->command[++i] == ' ')
 				if (!blank)
 					blank = !blank;
 		}
 		if ((data->command[i] == '>' || data->command[i] == '<') && blank)
-			return (print_redir_tok(data, data->command[i]));
+			return (print_redir_tok(data->command[i]));
 	}
 	return (1);
 }

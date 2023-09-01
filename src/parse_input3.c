@@ -6,7 +6,7 @@
 /*   By: frmurcia <frmurcia@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:55:29 by frmurcia          #+#    #+#             */
-/*   Updated: 2023/08/30 17:04:29 by frmurcia         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:04:08 by frmurcia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 int	error_found(char *texto, int *i, int j, int *consecutive_errors)
 {
-	const char	*error_bl[] = {">|", "|", "<<<", "<<", ">>", "<>", "<", ">"};
+	const char	*error_bl[] = {">|", "||", "|", "<<<", "<<", ">>", "<>",
+		"<", ">"};
 	int			block_length;
 
 	block_length = ft_strlen(error_bl[j]);
@@ -39,7 +40,7 @@ bool	check_blocks(char *texto, int *i, int *consecutive_errors)
 	int	k;
 
 	j = 0;
-	while (j < 8)
+	while (j < 9)
 	{
 		k = error_found(texto, i, j, consecutive_errors);
 		if (texto[*i] == ' ')

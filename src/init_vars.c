@@ -33,7 +33,6 @@ t_data	*init_vars(char **env)
 	data->oper_list = ft_split(OPERANDS, ' ');
 	data->env = ft_cpy_str_arr(env);
 	data->command = NULL;
-	data->out_status = 0;
 	data->contador = 0;
 	data->my_stdin = dup(STDIN_FILENO);
 	data->my_stdout = dup(STDOUT_FILENO);

@@ -26,6 +26,8 @@ char	*get_var_name(char *str, int pos)
 	i = pos + 1;
 	if (ft_isdigit(str[i]))
 		return (ft_substr(str, pos + 1, 1));
+	if (str[i] == '?')
+		return (ft_substr(str, pos + 1, 1));
 	i++;
 	while (str[i] && is_limit_char(str[i]))
 		i++;

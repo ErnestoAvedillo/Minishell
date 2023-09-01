@@ -12,31 +12,31 @@
 
 #include "../inc/minishell.h"
 
-extern t_data	*g_header;
+extern int	g_out_status;
 
 void	hndl_ctrl_c(int signal)
 {
 	(void)signal;
-	if (g_header->pid != 0)
+	if (g_out_status == 0)
 	{
-		g_header->out_status = 130;
+		g_out_status = 130;
 	}
 	else
-		g_header->out_status = 1;
+		g_out_status = 1;
 	rl_on_new_line();
 }
 
 void	hndl_ctrl_d(int signal)
 {
 	(void)signal;
-	g_header->out_status = 0;
+	g_out_status = 0;
 	rl_on_new_line();
 }
 
 void	hndl_ctrl_barra(int signal)
 {
 	(void)signal;
-	g_header->out_status = 131;
+	g_out_status = 131;
 	rl_on_new_line();
 }
 

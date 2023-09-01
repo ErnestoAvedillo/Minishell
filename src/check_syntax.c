@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;	
+
 static void	ft_rm_btw_quotes_1(char *str)
 {
 	int		i;
@@ -70,7 +72,7 @@ int	check_syntax(t_data *data)
 		{
 			print_err("Minishell: syntax error near unexpected token %s\n", \
 				out[i] + ft_strlen(out[i]) - 1);
-			data->out_status = 258;
+			g_out_status = 258;
 			free_arrchar(out);
 			free (aux);
 			return (0);

@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 static void	back_2_screen(t_instruct *instr)
 {
 	if (dup2(instr->header->my_stdin, STDIN_FILENO) == -1)
@@ -31,7 +33,7 @@ static void	exec_ext_cmd(t_instruct *instr)
 	if (!out)
 	{
 		print_err("minishell: %s : command not found\n", instr->arg[0]);
-		instr->header->out_status = 127;
+		g_out_status = 127;
 		free(out);
 		return ;
 	}
@@ -46,7 +48,7 @@ static void	exec_ext_cmd(t_instruct *instr)
 	else if (instr->header->pid == 0)
 		cmd_exec(instr);
 	wait(&status);
-	instr->header->out_status = WEXITSTATUS(status);
+	g_out_status = WEXITSTATUS(status);
 }
 
 static int	is_build_in_cmd(char *str1, char *str2)
@@ -70,14 +72,14 @@ void	work_1_command(t_instruct *instr)
 			if (instr->arg[0] && !is_build_in_cmd(instr->arg[0], \
 				instr->header->cmd_list[i]))
 			{
-				instr->header->out_status = ((int (*)(t_instruct *)) \
+				g_out_status = ((int (*)(t_instruct *)) \
 						((void **)instr->header->functions_ptr)[i])(instr);
 				back_2_screen(instr);
 				return ;
 			}
 		}
 		if (is_char_in_str(instr->arg[0], '='))
-			instr->header->out_status = cmd_setenv(instr);
+			g_out_status = cmd_setenv(instr);
 		else
 			exec_ext_cmd(instr);
 	}
