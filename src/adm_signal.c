@@ -16,13 +16,21 @@ extern int	g_out_status;
 
 void	hndl_ctrl_c(int signal)
 {
+	char ctrld;
+
+	ctrld = 4;
 	(void)signal;
-	if (g_out_status == 0)
+	if (g_out_status == -1)
 	{
+		write (0, &ctrld, 1);
+		write (0, "\n", 1);
 		g_out_status = 130;
 	}
 	else
+	{
 		g_out_status = 1;
+		write (0, &ctrld, 1);
+	}
 	rl_on_new_line();
 }
 

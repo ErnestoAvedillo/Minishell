@@ -113,7 +113,7 @@ int			cmd_exec(t_instruct *instruct);
 int			check_file_exists(t_instruct *instruct);
 // Work_command
 void		work_command(t_instruct *instr);
-void		work_1_command(t_instruct *instr);
+int		work_1_command(t_instruct *instr);
 // check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_syntax

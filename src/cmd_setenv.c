@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 /*
  *   Descriptinon:	Checks the syntaxis of the instruction.
  *   Arguments:		char *str The instruction
@@ -28,7 +30,8 @@ static int	syntax_error(char **str)
 	{
 		if (!is_char_in_str(str[i], '='))
 		{
-			print_err("Command not found.\n");
+			print_err("Command not 3found.\n");
+			g_out_status = 127;
 			return (1);
 		}
 	}

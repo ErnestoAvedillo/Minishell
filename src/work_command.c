@@ -24,34 +24,35 @@ static void	back_2_screen(t_instruct *instr)
 		print_err("error al devolver fd error a pantalla \n");
 }
 
-static void	exec_ext_cmd(t_instruct *instr)
+static int	exec_ext_cmd(t_instruct *instr)
 {
 	int status;
 
 	g_out_status = check_file_exists(instr);
 	if (g_out_status == 1)
 	{
-		print_err("minishell: %s : command not found\n", instr->arg[0]);
+		print_err("minishell: %s : command not 4found\n", instr->arg[0]);
 		g_out_status = 127;
-		return ;
+		return (127);
 	}
 	else if (g_out_status == 2)
 	{
 		print_err("minishell: %s : is a directory\n", instr->arg[0]);
 		g_out_status = 126;
-		return ;
+		return (126);
 	}
 	g_out_status = -1;
 	instr->header->pid = fork();
 	if (instr->header->pid == -1)
 	{
 		print_err("minishell: error while forking");
-		return ;
+		return (1);
 	}
 	else if (instr->header->pid == 0)
 		cmd_exec(instr);
 	wait(&status);
 	g_out_status = WEXITSTATUS(status);
+	return (g_out_status);
 }
 
 static int	is_build_in_cmd(char *str1, char *str2)
@@ -62,7 +63,7 @@ static int	is_build_in_cmd(char *str1, char *str2)
 	return (i);
 }
 
-void	work_1_command(t_instruct *instr)
+int	work_1_command(t_instruct *instr)
 {
 	int	i;
 
@@ -78,15 +79,16 @@ void	work_1_command(t_instruct *instr)
 				g_out_status = ((int (*)(t_instruct *)) \
 						((void **)instr->header->functions_ptr)[i])(instr);
 				back_2_screen(instr);
-				return ;
+				return (g_out_status);
 			}
 		}
 		if (is_char_in_str(instr->arg[0], '='))
 			g_out_status = cmd_setenv(instr);
 		else
-			exec_ext_cmd(instr);
+			return (exec_ext_cmd(instr));
 	}
 	back_2_screen(instr);
+	return (g_out_status);
 }
 
 void	work_command(t_instruct *instr)

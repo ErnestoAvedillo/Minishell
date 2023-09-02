@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 static char	**get_arr_path(void)
 {
 	char		**path_arr;
@@ -31,6 +33,7 @@ static char	*check_file_paths(char *file )
 	char		**path_arr;
 
 	path_arr = get_arr_path();
+	print_arr(path_arr);
 	out = (char *)malloc(1024 * sizeof(char));
 	out[0] = '\0';
 	i = -1;
@@ -131,19 +134,22 @@ int	cmd_exec(t_instruct *instruct)
 	out = check_file_exists(instruct);
 	if (out == 1)
 	{
-		print_err("minishell: %s : command not found\n", instruct->arg[0]);
+		print_err("minishell: %s : command not 1found\n", instruct->arg[0]);
+		g_out_status = 127;
 		return (127);
 	}
 	else if (out == 2)
 	{
 		print_err("minishell: %s : is a directory\n", instruct->arg[0]);
+		g_out_status = 126;
 		return (126);
 	}
 	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
 	if (exec == -1)
 	{
-		print_err("minishell: %s : command not found\n", instruct->arg[0]);
-		return (exec);
+		print_err("minishell: %s : command not 2found\n", instruct->arg[0]);
+		g_out_status = 127;
+		return (127);
 	}
 	return (0);
 }

@@ -65,8 +65,7 @@ int	check_is_1_command(t_instruct *frst_inst)
 		return (1);
 	if (leninst == 1)
 	{
-		work_1_command(frst_inst);
-		return (1);
+		return (work_1_command(frst_inst));
 	}
 	return (0);
 }

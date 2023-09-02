@@ -110,7 +110,7 @@ char	*expand_variables(char *str)
 			i--;
 		}
 		else if (str[i] == '$' && ((str[i + 1] == '\"' && quot[1]) \
-				|| str[i + 1] == '\0' || str[i + 1] == ' ' \
+				|| str[i + 1] == '\0' || str[i + 1] == (char)0xff \
 				|| (str[i + 1] == '\'' && quot[0]) || (str[i + 1] == '/')))
 			;
 		else if (str[i] == '$' && !quot[0] && !quot[2])

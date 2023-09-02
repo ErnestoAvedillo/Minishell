@@ -25,8 +25,8 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 	{
 		if (j < pos)
 			out[j] = str[j];
-		else if (j > pos + (int)ft_strlen(value) - 1)
-			out[j] = str[j + (int)(ft_strlen(variable) - ft_strlen(value) + 1)];
+		else if (j >= pos + (int)ft_strlen(value))
+			out[j] = str[j + (int)(ft_strlen(variable) - ft_strlen(value))];
 		else if (value)
 			out[j] = value[j - pos];
 	}
@@ -37,26 +37,28 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 
 char	*replace_env_var(char *str, int pos, int status)
 {
-	char	*var_val[2];
+	char	*var_val[3];
 	char	*aux;
 
 	var_val[0] = get_var_name(str, pos);
+	var_val[1] = ft_substr(var_val[0], 1, ft_strlen(var_val[0]) - 1);
 	if (str[pos + 1] == '?')
-		var_val[1] = ft_itoa(status);
+		var_val[2] = ft_itoa(status);
 	else if (str[pos + 1] == '0')
-		var_val[1] = ft_strdup("minishell");
+		var_val[2] = ft_strdup("minishell");
 	else
 	{
-		aux = getenv(var_val[0]);
+		aux = getenv(var_val[1]);
 		if (!aux)
-			var_val[1] = ft_strdup("");
+			var_val[2] = ft_strdup("");
 		else
-			var_val[1] = ft_strdup(getenv(var_val[0]));
+			var_val[2] = ft_strdup(getenv(var_val[1]));
 	}
-	str = replace_command(str, var_val[0], var_val[1], pos);
+	str = replace_command(str, var_val[0], var_val[2], pos);
 	free(var_val[0]);
-	if (var_val[1])
-		free(var_val[1]);
+	free(var_val[1]);
+	if (var_val[2])
+		free(var_val[2]);
 	return (str);
 }
 
@@ -67,7 +69,7 @@ char	*repl_home_dir(char *str, int pos)
 	if ((str[pos + 1] == ' ' || str[pos + 1] == '\0' || str[pos + 1] == '/'))
 	{
 		var_val[0] = ft_strdup("~");
-		var_val[1] = ft_strjoin(getenv("HOME"), "/");
+		var_val[1] = ft_strdup(getenv("HOME"));
 		if (!var_val[1])
 			var_val[1] = ft_strdup("");
 		str = replace_command(str, var_val[0], var_val[1], pos);
