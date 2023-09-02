@@ -81,6 +81,7 @@ void	adm_redirections(t_instruct *frst_inst)
 	instr = frst_inst;
 	while (instr)
 	{
+		g_out_status = -1;
 		instr->header->pid = fork();
 		if (instr->header->pid == -1)
 		{

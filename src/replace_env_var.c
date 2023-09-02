@@ -19,7 +19,7 @@ static char	*replace_command(char *str, char *variable, char *value, int pos)
 	char	*out;
 
 	lenstrout = (int)(ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
-	out = (char *) malloc(lenstrout * sizeof(char));
+	out = (char *) malloc((lenstrout + 1) * sizeof(char));
 	j = -1;
 	while (++j < lenstrout)
 	{

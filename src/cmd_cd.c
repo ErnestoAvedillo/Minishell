@@ -51,8 +51,8 @@ int	cmd_cd(t_instruct *instruct)
 	char	*dir[2];
 	char	buffer[1024];
 
-	dir[0] = get_address(instruct);
 	dir[1] = getcwd(buffer, sizeof(buffer));
+	dir[0] = get_address(instruct);
 	if (chdir(dir[0]) == -1)
 	{
 		print_err("Minishell: cd: %s: No such file or directory .\n", dir[0]);
@@ -61,17 +61,16 @@ int	cmd_cd(t_instruct *instruct)
 	}
 	else
 	{
-		free(dir[0]);
-		dir[0] = getcwd(buffer, sizeof(buffer));
 		setenv("OLDPWD", dir[1], 1);
+		dir[1] = concat_env("OLDPWD");
+		instruct->header->env = actualize_env(instruct->header->env, dir[1], 1);
+		free(dir[1]);
+		free(dir[0]);
 		dir[0] = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir[0], 1);
 		dir[0] = concat_env("PWD");
 		instruct->header->env = actualize_env(instruct->header->env, dir[0], 1);
 		free(dir[0]);
-		dir[1] = concat_env("OLDPWD");
-		instruct->header->env = actualize_env(instruct->header->env, dir[1], 1);
-		free(dir[1]);
 	}
 	return (0);
 }

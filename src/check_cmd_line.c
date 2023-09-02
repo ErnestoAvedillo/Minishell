@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 /*
 *   Checks that the command line does not have following errors
 *   " = " or " =" or "= " --> is not OK
@@ -22,6 +24,8 @@ int	check_cmd_line(t_data *data)
 {
 	char	*add_line;
 
+	if (!data->command)
+		return (0);
 	if (!check_pipes(data))
 		return (0);
 	if (!check_redir(data))
@@ -30,7 +34,8 @@ int	check_cmd_line(t_data *data)
 		return (0);
 	while (!quotes_ok(data->command))
 	{
-		add_line = readline("quotes>");
+		g_out_status = -2;
+		add_line = cmd_read("quotes>");
 		data->command = concat_cmd(data->command, add_line);
 	}
 	return (1);

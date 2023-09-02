@@ -42,41 +42,50 @@ static char	*check_file_paths(char *file )
 		if (lstat(out, &file_stat) == 0)
 		{
 			free_arrchar(path_arr);
+			free(file);
 			return (out);
 		}
 		out[0] = '\0';
 	}
 	free_arrchar(path_arr);
 	free (out);
-	return (NULL);
+	return (file);
 }
 
 /*
-*	execute a given command..
-*	Argument: 	t_instruct *instruct; structure with the command and arguments.
-*	Returns: none
+*	Description:	check that the file exists and that thit is not  directory
+*	Argument: 		t_instruct *instruct; structure with the command and arguments.
+*	Returns: 		integger : 	0 success 
+*								1, file not found
+*								2, it is a directory
 */
-char	*check_file_exists(t_instruct *instruct)
+int	check_file_exists(t_instruct *instruct)
 {
 	char		*out;
-	struct stat	file_stat;
+	struct stat	info;
 
 	if (!instruct->arg[0] || instruct->arg[0][0] == '\0')
-		return (NULL);
+		return (1);
 	if ((instruct->arg[0][0] == '.' && instruct->arg[0][1] == '/') ||
 		instruct->arg[0][0] == '/')
 	{
-		if (lstat(instruct->arg[0], &file_stat) == 0)
-			return (ft_strdup(instruct->arg[0]));
+		out = ft_strdup(instruct->arg[0]);
+		lstat(instruct->arg[0], &info);
+		free(out);
+		if (S_ISDIR(info.st_mode))
+			return (2);
+		else if (info.st_mode & S_IXUSR || info.st_mode & S_IXGRP || \
+			info.st_mode & S_IXOTH)
+			return (0);
 		else
-			return (NULL);
+			return (1);
 	}
 	else if (instruct->arg[0][1] == '.' && instruct->arg[0][2] == '\0')
-		return (NULL);
-	out = check_file_paths(instruct->arg[0]);
-	if (out != NULL)
-		return (out);
-	return (NULL);
+		return (1);
+	instruct->arg[0] = check_file_paths(instruct->arg[0]);
+	if (instruct->arg[0] != NULL)
+		return (0);
+	return (1);
 }
 
 /*
@@ -114,30 +123,26 @@ char	**add_dir_to_arg(char **arr, char *str)
 */
 int	cmd_exec(t_instruct *instruct)
 {
-	char	*out;
-	int		exec;
+	int	out;
+	int	exec;
 
 	if (ft_strlen(instruct->arg[0]) == 0)
 		return (0);
 	out = check_file_exists(instruct);
-	if (!out)
+	if (out == 1)
 	{
 		print_err("minishell: %s : command not found\n", instruct->arg[0]);
 		return (127);
 	}
-//	out = check_is_dir(instruct);
-	if (!out)
+	else if (out == 2)
 	{
-		print_err("minishell: %s : command not found\n", instruct->arg[0]);
+		print_err("minishell: %s : is a directory\n", instruct->arg[0]);
 		return (126);
 	}
-	free(instruct->arg[0]);
-	instruct->arg[0] = out;
 	exec = execve(instruct->arg[0], instruct->arg, instruct->header->env);
 	if (exec == -1)
 	{
 		print_err("minishell: %s : command not found\n", instruct->arg[0]);
-		free(out);
 		return (exec);
 	}
 	return (0);

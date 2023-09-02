@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 char	*my_ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;
@@ -87,6 +89,7 @@ void	check_delimiter(t_instruct *instr)
 {
 	char	*aux[3];
 
+	g_out_status = -3;
 	aux[2] = instr->in->fd_name;
 	instr->in->fd_type = 2;
 	aux[0] = ft_itoa(instr->header->contador);
@@ -95,13 +98,13 @@ void	check_delimiter(t_instruct *instr)
 	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
 	free(aux[0]);
 	aux[0] = ft_strjoin(aux[2], ">");
-	aux[1] = readline(aux[0]);
+	aux[1] = cmd_read(aux[0]);
 	while (aux[1] && end_of_heredoc(aux[1], aux[2]))
 	{
 		ft_putstr_fd(aux[1], instr->in->fd);
 		ft_putstr_fd("\n", instr->in->fd);
 		free(aux[1]);
-		aux[1] = readline(aux[0]);
+		aux[1] = cmd_read(aux[0]);
 	}
 	free(aux[2]);
 	free(aux[1]);

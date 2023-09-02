@@ -110,7 +110,7 @@ int			cmd_unset(t_instruct *instruct);
 int			cmd_setenv(t_instruct *instruct);
 //cmd_exec
 int			cmd_exec(t_instruct *instruct);
-char		*check_file_exists(t_instruct *instruct);
+int			check_file_exists(t_instruct *instruct);
 // Work_command
 void		work_command(t_instruct *instr);
 void		work_1_command(t_instruct *instr);
@@ -203,7 +203,8 @@ char		**ft_split_instr(char const *s, char c);
 char		*ft_strrmstr(char *str, int start, int end);
 //print_err
 int			print_err(char *str, ...);
-
+//cmd_read
+char		*cmd_read(char *str);
 //parse_utils1.c
 bool		is_redir(char c);
 bool		is_quote(char c);

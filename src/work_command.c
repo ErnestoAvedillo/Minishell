@@ -26,19 +26,22 @@ static void	back_2_screen(t_instruct *instr)
 
 static void	exec_ext_cmd(t_instruct *instr)
 {
-	int		status;
-	char	*out;
+	int status;
 
-	out = check_file_exists(instr);
-	if (!out)
+	g_out_status = check_file_exists(instr);
+	if (g_out_status == 1)
 	{
 		print_err("minishell: %s : command not found\n", instr->arg[0]);
 		g_out_status = 127;
-		free(out);
 		return ;
 	}
-	free(instr->arg[0]);
-	instr->arg[0] = out;
+	else if (g_out_status == 2)
+	{
+		print_err("minishell: %s : is a directory\n", instr->arg[0]);
+		g_out_status = 126;
+		return ;
+	}
+	g_out_status = -1;
 	instr->header->pid = fork();
 	if (instr->header->pid == -1)
 	{

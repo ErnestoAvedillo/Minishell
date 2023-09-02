@@ -133,13 +133,17 @@ void	expand_redir(t_instruct *inst)
 	while (cur_fd)
 	{
 		cur_fd->fd_name = expand_variables(cur_fd->fd_name);
+		cur_fd->fd_name = process_quotes(cur_fd->fd_name);
 		cur_fd = cur_fd->next;
 	}
 	cur_fd = inst->in;
 	while (cur_fd)
 	{
 		if (cur_fd->fd_type == 1)
+		{
 			cur_fd->fd_name = expand_variables(cur_fd->fd_name);
+			cur_fd->fd_name = process_quotes(cur_fd->fd_name);
+		}
 		else
 		{
 			ft_strrmallchr(cur_fd->fd_name, '\'');
@@ -163,14 +167,12 @@ char	*fill_instruct2(t_instruct *inst, char *str)
 
 	str = check_ext_files(inst, str);
 	prepare_for_split(str);
+	str = expand_home_dir(str);
+	str = expand_variables(str);
 	split_args(inst, str);
 	i = -1;
 	while (inst->arg[++i])
-	{
-		inst->arg[i] = expand_home_dir(inst->arg[i]);
-		inst->arg[i] = expand_variables(inst->arg[i]);
 		inst->arg[i] = process_quotes(inst->arg[i]);
-	}
 	expand_redir(inst);
 	return (str);
 }
