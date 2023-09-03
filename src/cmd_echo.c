@@ -20,10 +20,7 @@ int	clean_n(char **str)
 	if (!str[1])
 		return (1);
 	i = 1;
-/*	if(ft_strncmp(str[i], "-n", 0, 2) == 0)
-		return (2);
-	return (1);
-*/	while (str[i] && ft_strncmp(str[i], "-n", 0, 2) == 0)
+	while (str[i] && ft_strncmp(str[i], "-n", 0, 2) == 0)
 	{
 		j = 2;
 		while (str[i][j])
@@ -35,7 +32,6 @@ int	clean_n(char **str)
 		i++;
 	}
 	return (i);
-
 }
 
 int	cmd_echo(t_instruct *instruct)

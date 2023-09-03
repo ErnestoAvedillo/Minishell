@@ -12,6 +12,25 @@
 
 #include "../inc/minishell.h"
 
+int	check_old_dir(t_instruct *instruct)
+{
+	if (!instruct->arg[1])
+		return (0);
+	if (instruct->arg[1][0] == '-' && (instruct->arg[1][1] == '\0' || \
+		(instruct->arg[1][1] == '-' && instruct->arg[1][2] == '\0' )))
+	{
+		if (instruct->arg[1][1] == '-')
+			ft_strrmchr(instruct->arg[1], 1);
+		instruct->arg[1] = repl_old_dir(instruct->arg[1]);
+		if (!instruct->arg[1])
+		{
+			print_err("minishell: cd: OLDPWD not set\n");
+			return (1);
+		}
+	}
+	return (0);
+}
+
 /**
  *
  * Description:		creates the complete address in case ~ is given or
@@ -51,6 +70,8 @@ int	cmd_cd(t_instruct *instruct)
 	char	*dir[2];
 	char	buffer[1024];
 
+	if (check_old_dir(instruct))
+		return (1);
 	dir[1] = getcwd(buffer, sizeof(buffer));
 	dir[0] = get_address(instruct);
 	if (chdir(dir[0]) == -1)

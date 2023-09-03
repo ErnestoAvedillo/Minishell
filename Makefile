@@ -39,6 +39,10 @@ FLAGS:= -Werror -Wextra -Wall -O2 -g $(SANIT1)
 #-fsanitize=datarace -fsanitize=address
 RM := rm -rfd
 
+#readline flags
+LINKING_FLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib
+COMFILE_FLAGS = -I${HOME}/.brew/opt/readline/include
+
 all: Makefile ftprint nextline $(NAME)
 
 
@@ -54,13 +58,13 @@ linux_lk: all
 -include $(DSTS)
 
 $(NAME): $(OBJS) $(NEXTLINE) $(FT_PRINTF) 
-	$(CC) $(FLAGS) $(SANIT1) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(NEXTLINE) $(LIBFT) -lreadline 
+	$(CC) $(FLAGS) $(COMFILE_FLAGS) ${LINKING_FLAGS} $(SANIT1) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(NEXTLINE) $(LIBFT) 
 
 #-static-libsan 
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d
 	@mkdir -p $(DIR_OBJ_DST)
 	@printf "\rCompiling: $(notdir $<).\r"
-	@$(CC) $(FLAGS) -I$(INCDIR) $(SANIT2) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
+	@$(CC) $(FLAGS) $(COMFILE_FLAGS) -I$(INCDIR) $(SANIT2) -c $(DIR_SRC)$*.c -o $(DIR_OBJ_DST)$*.o 
 
 $(DIR_OBJ_DST)%.d: $(DIR_SRC)%.c $(INCLUDE)
 	@mkdir -p $(DIR_OBJ_DST)

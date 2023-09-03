@@ -12,76 +12,19 @@
 
 #include "../inc/minishell.h"
 
-/*
-*   Descriptinon:	returns the pre_operation of the instruction. 
-*					NOTE: pos in the string should be at least 1 or 2 to 
-*					have some operands. 
-*   Arguments:		char *str The variable where it is the instruction.
-*					int pos position where is starting the instruction
-*					int end where yhe instruction ends.
-*   Returns:		The pointer of the string
-*/
-/*char	*get_pre_oper(char *str, int pos)
+static bool	check_qt_heredoc(char *str)
 {
-	char	*pre_oper;
+	int	i;
 
-	pre_oper = NULL;
-	if (pos > 1)
+	i = -1;
+	while (str[++i])
 	{
-		if (str[pos - 1] == '<' && str[pos - 2] == '<')
-			pre_oper = ft_strdup ("<<");
-		if (str[pos - 1] == '>' && str[pos - 2] == '>')
-			pre_oper = ft_strdup (">>");
-		if (pre_oper != NULL)
-			return (pre_oper);
+		if (str[i] == '\'' || str[i] == '\"')
+			return (false);
 	}
-	if (pos > 0)
-	{
-		if (str[pos - 1] == '<')
-			pre_oper = ft_strdup ("<");
-		else if (str[pos - 1] == '>')
-			pre_oper = ft_strdup (">");
-		else if (str[pos - 1] == '|')
-			pre_oper = ft_strdup ("|");
-	}
-	return (pre_oper);
-}
-*/
-/*
-*   Descriptinon:	returns the pre_operation of the instruction.
-*   Arguments:		char *str The variable where it is the instruction.
-*					int pos position where is ending the instruction
-*					int end where yhe instruction ends.
-*   Returns:		The pointer of the string
-*/
-/*char	*get_post_oper(char *str, int pos)
-{
-	char	*post_oper;
-
-	post_oper = NULL;
-	if (pos < (int)ft_strlen(str) - 2)
-	{
-		if (str[pos] == '<' && str[pos + 1] == '<')
-			post_oper = ft_strdup ("<<");
-		if (str[pos] == '>' && str[pos + 1] == '>')
-			post_oper = ft_strdup (">>");
-		if (post_oper != NULL)
-			return (post_oper);
-	}
-	if (pos < (int)ft_strlen(str) - 1)
-	{
-		if (str[pos] == '<')
-			post_oper = ft_strdup ("<");
-		else if (str[pos] == '>')
-			post_oper = ft_strdup (">");
-		else if (str[pos] == '|')
-			post_oper = ft_strdup ("|");
-	}
-	return (post_oper);
+	return (true);
 }
 
-
-*/
 /*
  *   Descriptinon:	Replace all charachtes of the string equal of c1 
  *					and replaces them from c2.
@@ -110,8 +53,6 @@ char	*expand_home_dir(char *str)
 		check_quotes (str, i, quot);
 		if (str[i] == '~' && !quot[0] && !quot[1])
 			str = repl_home_dir(str, i);
-		if (str[i] == '-' && !quot[0] && !quot[1])
-			str = repl_old_dir(str, i);
 		i++;
 	}
 	return (str);
@@ -146,6 +87,7 @@ void	expand_redir(t_instruct *inst)
 		}
 		else
 		{
+			cur_fd->expand = check_qt_heredoc(cur_fd->fd_name);
 			ft_strrmallchr(cur_fd->fd_name, '\'');
 			ft_strrmallchr(cur_fd->fd_name, '\"');
 		}

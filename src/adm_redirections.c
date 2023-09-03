@@ -65,7 +65,8 @@ int	check_is_1_command(t_instruct *frst_inst)
 		return (1);
 	if (leninst == 1)
 	{
-		return (work_1_command(frst_inst));
+		work_1_command(frst_inst);
+		return (1);
 	}
 	return (0);
 }
@@ -89,13 +90,15 @@ void	adm_redirections(t_instruct *frst_inst)
 		}
 		else if (instr->header->pid == 0)
 		{
-			redirect(instr);
+			signal(SIGINT, han_c_fork2);
+			signal(SIGINT, hndl_ctrl_slash_frk);
 			work_command(instr);
 		}
 		close_prev_pipes(instr);
 		wait(&status);
 		instr = instr->next;
 	}
-	g_out_status = WEXITSTATUS(status);
+	if (g_out_status != 130)
+		g_out_status = WEXITSTATUS(status);
 	return ;
 }

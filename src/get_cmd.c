@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 /**
  *
  * Description:		Infinite while function with a readline(cmd_read) 
@@ -27,6 +29,7 @@ void	get_cmd(t_data *data)
 
 	while (1)
 	{
+		add_signals(data);
 		data->command = cmd_read("Enter a command Minishell>");
 		add_history(data->command);
 		if (check_cmd_line(data))
@@ -34,7 +37,7 @@ void	get_cmd(t_data *data)
 			frst_inst = tokenize(data);
 			if (!frst_inst)
 				print_err("Memory alloc. error\n");
-			else
+			else if (data->execute)
 				adm_redirections(frst_inst);
 			free_inst(frst_inst);
 			if (data->exit)
@@ -47,5 +50,6 @@ void	get_cmd(t_data *data)
 			free(data->command);
 			data->command = NULL;
 		}
+
 	}
 }

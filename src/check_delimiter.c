@@ -76,6 +76,25 @@ static bool	end_of_heredoc(char *str1, char *str2)
 	return (true);
 }
 
+void	fill_heredoc(t_instruct *instr, char *delimit)
+{
+	char	*texto;
+	char	*out;
+
+	texto = ft_strjoin(delimit, ">");
+	out = cmd_read(texto);
+	while (out && end_of_heredoc(out, delimit) && g_out_status == -3)
+	{
+		if (instr->in->expand)
+			out = expand_variables(out);
+		ft_putstr_fd(out, instr->in->fd);
+		ft_putstr_fd("\n", instr->in->fd);
+		free(out);
+		out = cmd_read(texto);
+	}
+	free(texto);
+}
+
 /*
  *   Checks that the command line does not have following errors
  *   " = " or " =" or "= " --> is not OK
@@ -87,28 +106,36 @@ static bool	end_of_heredoc(char *str1, char *str2)
  */
 void	check_delimiter(t_instruct *instr)
 {
-	char	*aux[3];
+	char	*aux[2];
+	int		pid;
+	int		status;
 
 	g_out_status = -3;
-	aux[2] = instr->in->fd_name;
 	instr->in->fd_type = 2;
+	aux[1] = ft_strdup(instr->in->fd_name);
 	aux[0] = ft_itoa(instr->header->contador);
 	instr->header->contador++;
 	instr->in->fd_name = ft_strjoin("/tmp/tmp", aux[0]);
 	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
-	free(aux[0]);
-	aux[0] = ft_strjoin(aux[2], ">");
-	aux[1] = cmd_read(aux[0]);
-	while (aux[1] && end_of_heredoc(aux[1], aux[2]))
+	reset_signals();
+	pid = fork();
+	if (pid == -1)
 	{
-		ft_putstr_fd(aux[1], instr->in->fd);
-		ft_putstr_fd("\n", instr->in->fd);
-		free(aux[1]);
-		aux[1] = cmd_read(aux[0]);
+		print_err("minishell: error while forking");
+		g_out_status = 1;
+		return ;
 	}
-	free(aux[2]);
-	free(aux[1]);
-	free(aux[0]);
+	else if (pid == 0)
+	{
+		signal(SIGINT, han_c_fork);
+		fill_heredoc(instr, aux[1]);
+	}
+	wait(&status);
+	g_out_status = WEXITSTATUS(status);
+	if (g_out_status == 130 || g_out_status == 131)
+		instr->header->execute = false;
 	close(instr->in->fd);
+	free(aux[0]);
+	free(aux[1]);
 	return ;
 }

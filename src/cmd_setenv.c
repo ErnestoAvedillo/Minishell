@@ -32,7 +32,7 @@ static int	syntax_error(char **str)
 		{
 			print_err("Command not 3found.\n");
 			g_out_status = 127;
-			return (1);
+			return (g_out_status);
 		}
 	}
 	return (0);

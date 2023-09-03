@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+extern int	g_out_status;
+
 char	*cmd_read(char *str)
 {
 	char	*line;

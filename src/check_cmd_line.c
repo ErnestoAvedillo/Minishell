@@ -22,8 +22,6 @@ extern int	g_out_status;
 */
 int	check_cmd_line(t_data *data)
 {
-	char	*add_line;
-
 	if (!data->command)
 		return (0);
 	if (!check_pipes(data))
@@ -32,11 +30,12 @@ int	check_cmd_line(t_data *data)
 		return (0);
 	if (!check_syntax(data))
 		return (0);
-	while (!quotes_ok(data->command))
+	if (!quotes_ok(data->command))
 	{
-		g_out_status = -2;
-		add_line = cmd_read("quotes>");
-		data->command = concat_cmd(data->command, add_line);
+		print_err("Minishell: quotes not closed\n");
+		g_out_status = 258;
+		return (0);
 	}
+	data->execute = true;
 	return (1);
 }

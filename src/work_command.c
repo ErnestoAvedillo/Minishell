@@ -26,32 +26,26 @@ static void	back_2_screen(t_instruct *instr)
 
 static int	exec_ext_cmd(t_instruct *instr)
 {
-	int status;
+	int	status;
 
-	g_out_status = check_file_exists(instr);
-	if (g_out_status == 1)
-	{
-		print_err("minishell: %s : command not 4found\n", instr->arg[0]);
-		g_out_status = 127;
-		return (127);
-	}
-	else if (g_out_status == 2)
-	{
-		print_err("minishell: %s : is a directory\n", instr->arg[0]);
-		g_out_status = 126;
-		return (126);
-	}
 	g_out_status = -1;
+	reset_signals();
 	instr->header->pid = fork();
 	if (instr->header->pid == -1)
 	{
 		print_err("minishell: error while forking");
+		g_out_status = 1;
 		return (1);
 	}
 	else if (instr->header->pid == 0)
+	{
+		signal(SIGINT, han_c_fork2);
+		signal(SIGINT, hndl_ctrl_slash_frk);
 		cmd_exec(instr);
+	}
 	wait(&status);
-	g_out_status = WEXITSTATUS(status);
+	if (g_out_status != 130)
+		g_out_status = WEXITSTATUS(status);
 	return (g_out_status);
 }
 
@@ -63,7 +57,7 @@ static int	is_build_in_cmd(char *str1, char *str2)
 	return (i);
 }
 
-int	work_1_command(t_instruct *instr)
+void	work_1_command(t_instruct *instr)
 {
 	int	i;
 
@@ -79,23 +73,26 @@ int	work_1_command(t_instruct *instr)
 				g_out_status = ((int (*)(t_instruct *)) \
 						((void **)instr->header->functions_ptr)[i])(instr);
 				back_2_screen(instr);
-				return (g_out_status);
+				return ;
 			}
 		}
 		if (is_char_in_str(instr->arg[0], '='))
 			g_out_status = cmd_setenv(instr);
 		else
-			return (exec_ext_cmd(instr));
+			g_out_status = exec_ext_cmd(instr);
 	}
 	back_2_screen(instr);
-	return (g_out_status);
+	return ;
 }
 
 void	work_command(t_instruct *instr)
 {
 	int	i;
+	int	status;
 
+	redirect(instr);
 	i = -1;
+	status = 0;
 	if (instr->arg[0] == NULL)
 		exit(0);
 	while (++i <= EXIT_CMD)
@@ -103,14 +100,14 @@ void	work_command(t_instruct *instr)
 		if (instr->arg[0] && !is_build_in_cmd(instr->arg[0], \
 				instr->header->cmd_list[i]))
 		{
-			((int (*)(t_instruct *)) \
+			status = ((int (*)(t_instruct *)) \
 					((void **)instr->header->functions_ptr)[i])(instr);
-			exit(0);
+			exit(status);
 		}
 	}
 	if (is_char_in_str(instr->arg[0], '='))
-		cmd_setenv(instr);
+		status = cmd_setenv(instr);
 	else
-		cmd_exec(instr);
-	exit(0);
+		status = cmd_exec(instr);
+	exit(status);
 }

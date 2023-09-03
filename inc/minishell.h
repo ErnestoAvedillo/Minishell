@@ -56,6 +56,7 @@ typedef struct s_fd_struc
 	int		fd;
 	int		fd_type;
 	char	*fd_name;
+	bool	expand;
 	void	*next;
 }	t_fd_struc;
 
@@ -72,6 +73,7 @@ typedef struct s_data
 	int				out_status;
 	int				contador;
 	bool			exit;
+	bool			execute;
 	pid_t			pid;
 	struct termios	term;
 }	t_data;
@@ -113,7 +115,7 @@ int			cmd_exec(t_instruct *instruct);
 int			check_file_exists(t_instruct *instruct);
 // Work_command
 void		work_command(t_instruct *instr);
-int		work_1_command(t_instruct *instr);
+void		work_1_command(t_instruct *instr);
 // check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_syntax
@@ -170,11 +172,15 @@ char		*get_var_name(char *str, int pos);
 // replace_env_var
 char		*replace_env_var(char *str, int pos, int status);
 char		*repl_home_dir(char *str, int pos);
-char		*repl_old_dir(char *str, int pos);
+char		*repl_old_dir(char *str);
 // actualize_env
 char		**actualize_env(char **env, char *str, int k);
 // adm_signals
 int			add_signals(t_data *header);
+void		reset_signals();
+void		han_c_fork(int signal);
+void		han_c_fork2(int signal);
+void		hndl_ctrl_slash_frk(int signal);
 // concat_cmd
 char		*concat_cmd(char *str1, char *str2);
 // get_cmd

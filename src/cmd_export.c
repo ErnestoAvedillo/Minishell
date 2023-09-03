@@ -31,7 +31,7 @@ static char	*check_all_chars(char *str)
 		return (str);
 	aux[1] = ft_strchr(str, 0, '=');
 	if (!str[1])
-		return (str);
+		aux[1] = aux[0] + ft_strlen(str) + 1;
 	aux[0] = ft_strdup("+.{}-#@!^~");
 	i = 0;
 	while (aux[0][i])
