@@ -84,9 +84,7 @@ void	check_delimiter(t_instruct *instr)
 	aux[1] = ft_strdup(instr->in->fd_name);
 	aux[0] = ft_itoa(instr->header->contador);
 	instr->header->contador++;
-	free(instr->in->fd_name);
-	instr->in->fd_name = ft_strjoin("/tmp/tmp", aux[0]);
-	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
+	actualize_fdname(instr, aux[0]);
 	reset_signals();
 	pid = fork();
 	if (pid == -1)

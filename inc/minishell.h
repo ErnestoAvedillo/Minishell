@@ -132,6 +132,8 @@ void		check_delimiter(t_instruct *instr);
 char		*get_start_delimit(char *str);
 char		*get_end_delimit(char *str);
 void		fill_heredoc(t_instruct *instr, char *delimit);
+// check_delimiter1
+void		actualize_fdname(t_instruct *instr, char *str);
 // check_quotes
 bool		quotes_ok(char *str);
 // token_utils
