@@ -59,3 +59,13 @@ t_instruct	*init_instructions(t_data *data)
 	first_inst->err = NULL;
 	return (first_inst);
 }
+
+void	save_signals_status(t_data *header)
+{
+	(void)header;
+	if (tcgetattr(STDIN_FILENO, &header->term) == -1)
+		exit(1);
+	header->term.c_lflag &= ~(ECHOCTL);
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &header->term) == -1)
+		exit(1);
+}

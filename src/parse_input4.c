@@ -17,10 +17,10 @@
  * check_text lanza todo.
  *
  * */
-char	*return_error_found(char *texto, int *i, int *j, 
+char	*return_error_found(char *texto, int *i, int *j, \
 		int *consecutive_errors)
 {
-	const char	*error_bl[] = {">|", "||", "|", "<<<", "<<", ">>", "<>", 
+	const char	*error_bl[] = {">|", "||", "|", "<<<", "<<", ">>", "<>", \
 		">", "<"};
 	int			block_length;
 	char		*error;

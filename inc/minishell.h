@@ -96,6 +96,7 @@ typedef struct s_instruct
 // init_vars
 t_data		*init_vars(char **env);
 t_instruct	*init_instructions(t_data *data);
+void		save_signals_status(t_data *header);
 // freevars
 void		free_vars(t_data *data);
 void		free_arrchar(char **arrchr);
@@ -130,6 +131,7 @@ void		check_delimiter(t_instruct *instr);
 // check_delimiter1
 char		*get_start_delimit(char *str);
 char		*get_end_delimit(char *str);
+void		fill_heredoc(t_instruct *instr, char *delimit);
 // check_quotes
 bool		quotes_ok(char *str);
 // token_utils
@@ -176,11 +178,9 @@ char		*repl_old_dir(char *str);
 // actualize_env
 char		**actualize_env(char **env, char *str, int k);
 // adm_signals
-int			add_signals(t_data *header);
-void		reset_signals();
+void		adm_signals_readline(void);
+void		reset_signals(void);
 void		han_c_fork(int signal);
-void		han_c_fork2(int signal);
-void		hndl_ctrl_slash_frk(int signal);
 // concat_cmd
 char		*concat_cmd(char *str1, char *str2);
 // get_cmd

@@ -40,9 +40,8 @@ FLAGS:= -Werror -Wextra -Wall -O2 -g $(SANIT1)
 RM := rm -rfd
 
 #readline flags
-LINKING_FLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib
-COMFILE_FLAGS = -I${HOME}/.brew/opt/readline/include
-
+all: LINKING_FLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib
+all: COMFILE_FLAGS = -I${HOME}/.brew/opt/readline/include
 all: Makefile ftprint nextline $(NAME)
 
 
@@ -50,15 +49,18 @@ all_lk:SANIT1 = -fsanitize=address
 all_lk:SANIT2 = -static-libsan
 all_lk: all
 
+linux: LINKING_FLAGS = -lreadline -L/usr/local/lib
+linux: COMFILE_FLAGS = -I/usr/local/include
+linux: Makefile ftprint nextline $(NAME)
 
 linux_lk: SANIT1 = -fsanitize=address
 linux_lk: SANIT2 = -static-libasan
-linux_lk: all
+linux_lk: linux
 
 -include $(DSTS)
 
 $(NAME): $(OBJS) $(NEXTLINE) $(FT_PRINTF) 
-	$(CC) $(FLAGS) $(COMFILE_FLAGS) ${LINKING_FLAGS} $(SANIT1) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(NEXTLINE) $(LIBFT) 
+	$(CC) $(FLAGS) $(COMFILE_FLAGS)  $(SANIT1) -v $(OBJS) -o $(NAME) $(FT_PRINTF) $(NEXTLINE) $(LIBFT) ${LINKING_FLAGS}
 
 #-static-libsan 
 $(DIR_OBJ_DST)%.o: $(DIR_SRC)%.c $(DIR_OBJ_DST)%.d
@@ -106,4 +108,4 @@ print:
 	@echo NEXTLINE: $(NEXTLINE)
 	@echo DIR_NEXTLINE: $(DIR_NEXTLINE)
 
-.PHONY: all re clean fclean print libft ftprint nextline linux_lk all_lk re_lk
+.PHONY: all re clean fclean print libft ftprint nextline linux_lk all_lk re_lk linux

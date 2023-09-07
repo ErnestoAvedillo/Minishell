@@ -66,35 +66,6 @@ char	*insert_in_line(char *cmd, char *str, char *ptr)
 	return (out);
 }
 
-static bool	end_of_heredoc(char *str1, char *str2)
-{
-	int		i;
-
-	i = ft_max(ft_strlen(str1), ft_strlen(str2));
-	if (!ft_strncmp(str1, str2, 0, i))
-		return (false);
-	return (true);
-}
-
-void	fill_heredoc(t_instruct *instr, char *delimit)
-{
-	char	*texto;
-	char	*out;
-
-	texto = ft_strjoin(delimit, ">");
-	out = cmd_read(texto);
-	while (out && end_of_heredoc(out, delimit) && g_out_status == -3)
-	{
-		if (instr->in->expand)
-			out = expand_variables(out);
-		ft_putstr_fd(out, instr->in->fd);
-		ft_putstr_fd("\n", instr->in->fd);
-		free(out);
-		out = cmd_read(texto);
-	}
-	free(texto);
-}
-
 /*
  *   Checks that the command line does not have following errors
  *   " = " or " =" or "= " --> is not OK
@@ -102,7 +73,6 @@ void	fill_heredoc(t_instruct *instr, char *delimit)
  *
  * In function aux[0] corresonds to the auxiliar variable
  * In function aux[1] corresonds to the readed variable
- * In function aux[2] corresonds to the delimiter variable
  */
 void	check_delimiter(t_instruct *instr)
 {
@@ -110,11 +80,11 @@ void	check_delimiter(t_instruct *instr)
 	int		pid;
 	int		status;
 
-	g_out_status = -3;
 	instr->in->fd_type = 2;
 	aux[1] = ft_strdup(instr->in->fd_name);
 	aux[0] = ft_itoa(instr->header->contador);
 	instr->header->contador++;
+	free(instr->in->fd_name);
 	instr->in->fd_name = ft_strjoin("/tmp/tmp", aux[0]);
 	instr->in->fd = open(instr->in->fd_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
 	reset_signals();
@@ -126,16 +96,10 @@ void	check_delimiter(t_instruct *instr)
 		return ;
 	}
 	else if (pid == 0)
-	{
-		signal(SIGINT, han_c_fork);
 		fill_heredoc(instr, aux[1]);
-	}
 	wait(&status);
 	g_out_status = WEXITSTATUS(status);
-	if (g_out_status == 130 || g_out_status == 131)
-		instr->header->execute = false;
 	close(instr->in->fd);
 	free(aux[0]);
 	free(aux[1]);
-	return ;
 }

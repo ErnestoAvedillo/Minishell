@@ -33,3 +33,34 @@ char	*get_end_delimit(char *str)
 		i++;
 	return ((char *)aux + i);
 }
+
+static bool	end_of_heredoc(char *str1, char *str2)
+{
+	int	i;
+
+	i = ft_max(ft_strlen(str1), ft_strlen(str2));
+	if (!ft_strncmp(str1, str2, 0, i))
+		return (false);
+	return (true);
+}
+
+void	fill_heredoc(t_instruct *instr, char *delimit)
+{
+	char	*texto;
+	char	*out;
+
+	signal(SIGINT, han_c_fork);
+	texto = ft_strjoin(delimit, ">");
+	out = cmd_read(texto);
+	while (out && end_of_heredoc(out, delimit))
+	{
+		if (instr->in->expand)
+			out = expand_variables(out);
+		ft_putstr_fd(out, instr->in->fd);
+		ft_putstr_fd("\n", instr->in->fd);
+		free(out);
+		out = cmd_read(texto);
+	}
+	free(texto);
+	exit(0);
+}

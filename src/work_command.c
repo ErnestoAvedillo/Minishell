@@ -29,7 +29,6 @@ static int	exec_ext_cmd(t_instruct *instr)
 	int	status;
 
 	g_out_status = -1;
-	reset_signals();
 	instr->header->pid = fork();
 	if (instr->header->pid == -1)
 	{
@@ -38,11 +37,7 @@ static int	exec_ext_cmd(t_instruct *instr)
 		return (1);
 	}
 	else if (instr->header->pid == 0)
-	{
-		signal(SIGINT, han_c_fork2);
-		signal(SIGINT, hndl_ctrl_slash_frk);
 		cmd_exec(instr);
-	}
 	wait(&status);
 	if (g_out_status != 130)
 		g_out_status = WEXITSTATUS(status);
@@ -62,7 +57,6 @@ void	work_1_command(t_instruct *instr)
 	int	i;
 
 	i = -1;
-	adm_file_redir(instr);
 	if (instr->arg[0])
 	{
 		while (++i <= EXIT_CMD)

@@ -27,6 +27,7 @@ int	main(int av, char **ac, char **environ)
 
 	g_out_status = 0;
 	header = init_vars(environ);
+	save_signals_status(header);
 	get_cmd(header);
 	free_vars(header);
 	return (g_out_status);

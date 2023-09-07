@@ -56,6 +56,17 @@ char	*get_address(t_instruct *instruct)
 	return (dir);
 }
 
+void	actualize_oldpwd(t_instruct *instr, char *dir)
+{
+	char	*str;
+
+	setenv("OLDPWD", dir, 1);
+	str = concat_env("OLDPWD");
+	instr->header->env = actualize_env(instr->header->env, str, 1);
+	free(str);
+	return ;
+}
+
 /**
  *
  * Description:		Changes the directory 
@@ -82,10 +93,7 @@ int	cmd_cd(t_instruct *instruct)
 	}
 	else
 	{
-		setenv("OLDPWD", dir[1], 1);
-		dir[1] = concat_env("OLDPWD");
-		instruct->header->env = actualize_env(instruct->header->env, dir[1], 1);
-		free(dir[1]);
+		actualize_oldpwd(instruct, dir[1]);
 		free(dir[0]);
 		dir[0] = getcwd(buffer, sizeof(buffer));
 		setenv("PWD", dir[0], 1);

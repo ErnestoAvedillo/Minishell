@@ -30,8 +30,8 @@ static char	*check_all_chars(char *str)
 	if (str[0] == '=' || str[0] == '?' || ft_isdigit(str[0]))
 		return (str);
 	aux[1] = ft_strchr(str, 0, '=');
-	if (!str[1])
-		aux[1] = aux[0] + ft_strlen(str) + 1;
+	if (!aux[1])
+		aux[1] = str + ft_strlen(str) + 1;
 	aux[0] = ft_strdup("+.{}-#@!^~");
 	i = 0;
 	while (aux[0][i])

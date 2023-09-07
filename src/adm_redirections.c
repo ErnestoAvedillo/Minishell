@@ -89,11 +89,7 @@ void	adm_redirections(t_instruct *frst_inst)
 			return ;
 		}
 		else if (instr->header->pid == 0)
-		{
-			signal(SIGINT, han_c_fork2);
-			signal(SIGINT, hndl_ctrl_slash_frk);
 			work_command(instr);
-		}
 		close_prev_pipes(instr);
 		wait(&status);
 		instr = instr->next;

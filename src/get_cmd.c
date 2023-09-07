@@ -29,7 +29,7 @@ void	get_cmd(t_data *data)
 
 	while (1)
 	{
-		add_signals(data);
+		adm_signals_readline();
 		data->command = cmd_read("Enter a command Minishell>");
 		add_history(data->command);
 		if (check_cmd_line(data))
@@ -43,13 +43,10 @@ void	get_cmd(t_data *data)
 			if (data->exit)
 				break ;
 		}
-		else if (data->command == NULL)
-			return ;
 		else
 		{
 			free(data->command);
 			data->command = NULL;
 		}
-
 	}
 }
