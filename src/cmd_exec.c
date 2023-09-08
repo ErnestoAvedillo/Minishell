@@ -147,5 +147,5 @@ void	cmd_exec(t_instruct *instruct)
 		print_err("minishell: %s : command not 2found\n", instruct->arg[0]);
 		exit(127);
 	}
-	exit (0);
+	exit(0);
 }

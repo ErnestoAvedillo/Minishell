@@ -63,26 +63,29 @@ bool	output_error_file_redir(t_fd_struc *err)
 	return (true);
 }
 
-void	adm_file_redir(t_instruct *inst)
+bool	adm_file_redir(t_instruct *inst)
 {
+	bool		out;
 	t_fd_struc	*redir;
 
+	out = true;
 	redir = inst->in;
 	while (redir)
 	{
-		input_file_redir(redir);
+		out = input_file_redir(redir);
 		redir = redir->next;
 	}
 	redir = inst->out;
 	while (redir)
 	{
-		output_file_redir(redir);
+		out = output_file_redir(redir);
 		redir = redir->next;
 	}
 	redir = inst->err;
 	while (redir)
 	{
-		output_error_file_redir(redir);
+		out = output_error_file_redir(redir);
 		redir = redir->next;
 	}
+	return (out);
 }

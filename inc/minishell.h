@@ -204,7 +204,7 @@ char		**ft_str_arr_rem(char **arr, int pos);
 // ft_strrmallchr
 void		ft_strrmallchr(char *str, char c);
 // adm_fileredir
-void		adm_file_redir(t_instruct *intr);
+bool		adm_file_redir(t_instruct *intr);
 bool		output_file_redir(t_fd_struc *out);
 bool		output_error_file_redir(t_fd_struc *err);
 bool		input_file_redir(t_fd_struc *in);

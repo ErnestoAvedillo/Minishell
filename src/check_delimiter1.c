@@ -46,19 +46,12 @@ static bool	end_of_heredoc(char *str1, char *str2)
 	return (true);
 }
 
-void	han_c_fork(int signal)
-{
-	(void)signal;
-	printf("\n");
-	exit (1);
-}
-
 void	fill_heredoc(t_instruct *instr, char **delimit)
 {
 	char	*out;
 
-	//signal(SIGINT, han_c_fork);
 	g_out_status = -2;
+	adm_signals_readline();
 	out = cmd_read(delimit[2]);
 	while (out && end_of_heredoc(out, delimit[1]))
 	{

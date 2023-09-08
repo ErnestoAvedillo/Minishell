@@ -86,7 +86,7 @@ void	check_delimiter(t_instruct *instr)
 	aux[2] = ft_strjoin(aux[1], "> ");
 	instr->header->contador++;
 	actualize_fdname(instr, aux[0]);
-	//reset_signals();
+	reset_signals();
 	pid = fork();
 	if (pid == -1)
 	{

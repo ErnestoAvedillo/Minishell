@@ -57,8 +57,7 @@ void	work_1_command(t_instruct *instr)
 	int	i;
 
 	i = -1;
-	adm_file_redir(instr);
-	if (instr->arg[0])
+	if (adm_file_redir(instr) && instr->arg[0])
 	{
 		while (++i <= EXIT_CMD)
 		{

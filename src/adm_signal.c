@@ -32,10 +32,8 @@ void	hndl_ctrl_c(int signal)
 	}
 	else if (g_out_status == -2)
 	{
-//		rl_on_new_line();
-		rl_replace_line("", 1);
-		exit (1);
-//		rl_redisplay();
+		printf("\n");
+		exit(1);
 	}
 	else
 	{

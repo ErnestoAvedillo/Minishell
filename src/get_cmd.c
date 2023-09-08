@@ -30,7 +30,6 @@ void	get_cmd(t_data *data)
 	while (1)
 	{
 		data->command = cmd_read("Enter a command Minishell> ");
-		printf("Hola/n")
 		if (!data->command)
 			break ;
 		add_history(data->command);
