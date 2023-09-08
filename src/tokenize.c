@@ -24,7 +24,7 @@ void	link_instr(t_instruct	**instr, t_data *data)
 
 void	check_status( t_data *data)
 {
-	if (g_out_status == 130 || g_out_status == 131)
+	if (g_out_status == 1 && !data->execute)
 		data->execute = false;
 }
 

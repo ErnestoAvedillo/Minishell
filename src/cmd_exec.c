@@ -123,13 +123,13 @@ char	**add_dir_to_arg(char **arr, char *str)
 *	Returns: 		integger : 	0 success 
 *								1, error
 */
-int	cmd_exec(t_instruct *instruct)
+void	cmd_exec(t_instruct *instruct)
 {
 	int	out;
 	int	exec;
 
 	if (ft_strlen(instruct->arg[0]) == 0)
-		return (0);
+		exit (0);
 	out = check_file_exists(instruct);
 	if (out == 1)
 	{
@@ -147,5 +147,5 @@ int	cmd_exec(t_instruct *instruct)
 		print_err("minishell: %s : command not 2found\n", instruct->arg[0]);
 		exit(127);
 	}
-	return (0);
+	exit (0);
 }

@@ -25,22 +25,25 @@ void	hndl_ctrl_c(int signal)
 	(void)signal;
 	if (g_out_status == -1)
 	{
-		if (write (1, "^C\n", 3))
-		{
-			rl_replace_line("", 1);
-			rl_on_new_line();
-			g_out_status = 130;
-		}
+		printf("^C\n");
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		g_out_status = 130;
+	}
+	else if (g_out_status == -2)
+	{
+//		rl_on_new_line();
+		rl_replace_line("", 1);
+		exit (1);
+//		rl_redisplay();
 	}
 	else
 	{
-		if (write(1, "\n", 1))
-		{
-			rl_replace_line("", 1);
-			rl_on_new_line();
-			rl_redisplay();
-			g_out_status = 1;
-		}
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+		g_out_status = 1;
 	}
 }
 
@@ -56,13 +59,6 @@ void	hndl_ctrl_slash(int signal)
 	}
 	else
 		rl_redisplay();
-}
-
-void	han_c_fork(int signal)
-{
-	(void)signal;
-	if (write (0, "\n", 1))
-		exit (130);
 }
 
 void	adm_signals_readline(void)

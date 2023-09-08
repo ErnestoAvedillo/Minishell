@@ -29,7 +29,7 @@ void	check_quotes(char *str, int pos, bool *quot)
 		quot[1] = !quot[1];
 	if (str[pos] == '\\' && (str[pos + 1] == '\\' || str[pos + 1] == '$'))
 		quot[2] = !quot[2];
-	else if (str[pos] != '$' && str[pos - 1] != '\\')
+	else if (pos > 0 && str[pos] != '$' && str[pos - 1] != '\\')
 		quot[2] = false;
 }
 

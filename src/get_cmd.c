@@ -29,8 +29,10 @@ void	get_cmd(t_data *data)
 
 	while (1)
 	{
-		adm_signals_readline();
-		data->command = cmd_read("Enter a command Minishell>");
+		data->command = cmd_read("Enter a command Minishell> ");
+		printf("Hola/n")
+		if (!data->command)
+			break ;
 		add_history(data->command);
 		if (check_cmd_line(data))
 		{

@@ -53,17 +53,17 @@ char	*get_delimit(char *str)
 	return (out);
 }
 
-char	*insert_in_line(char *cmd, char *str, char *ptr)
+void	print_error(void)
 {
-	char	*out;
-	char	*aux;
+	print_err("minishell: error while forking");
+	g_out_status = 1;
+}
 
-	out = ft_substr(cmd, 0, (size_t)(ptr - cmd));
-	out = concat_cmd(out, str);
-	aux = ft_strdup(get_end_delimit(ptr));
-	out = concat_cmd(out, aux);
-	free(cmd);
-	return (out);
+void	free_aux(char **aux)
+{
+	free(aux[0]);
+	free(aux[1]);
+	free(aux[2]);
 }
 
 /*
@@ -76,28 +76,29 @@ char	*insert_in_line(char *cmd, char *str, char *ptr)
  */
 void	check_delimiter(t_instruct *instr)
 {
-	char	*aux[2];
+	char	*aux[3];
 	int		pid;
 	int		status;
 
 	instr->in->fd_type = 2;
 	aux[1] = ft_strdup(instr->in->fd_name);
 	aux[0] = ft_itoa(instr->header->contador);
+	aux[2] = ft_strjoin(aux[1], "> ");
 	instr->header->contador++;
 	actualize_fdname(instr, aux[0]);
-	reset_signals();
+	//reset_signals();
 	pid = fork();
 	if (pid == -1)
 	{
-		print_err("minishell: error while forking");
-		g_out_status = 1;
+		print_error();
 		return ;
 	}
 	else if (pid == 0)
-		fill_heredoc(instr, aux[1]);
+		fill_heredoc(instr, aux);
 	wait(&status);
 	g_out_status = WEXITSTATUS(status);
+	if (g_out_status == 1)
+		instr->header->execute = false;
 	close(instr->in->fd);
-	free(aux[0]);
-	free(aux[1]);
+	free_aux(aux);
 }

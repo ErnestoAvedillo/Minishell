@@ -30,6 +30,7 @@ int	main(int av, char **ac, char **environ)
 	save_signals_status(header);
 	get_cmd(header);
 	free_vars(header);
+	printf("Exit\n");
 	return (g_out_status);
 	(void) av;
 	(void) ac;

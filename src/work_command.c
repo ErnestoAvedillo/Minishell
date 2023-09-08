@@ -14,7 +14,7 @@
 
 extern int	g_out_status;
 
-static void	back_2_screen(t_instruct *instr)
+void	back_2_screen(t_instruct *instr)
 {
 	if (dup2(instr->header->my_stdin, STDIN_FILENO) == -1)
 		print_err("error al devolver fd in a teclado\n");
@@ -39,7 +39,7 @@ static int	exec_ext_cmd(t_instruct *instr)
 	else if (instr->header->pid == 0)
 		cmd_exec(instr);
 	wait(&status);
-	if (g_out_status != 130)
+	if (g_out_status != 130 && g_out_status != 131)
 		g_out_status = WEXITSTATUS(status);
 	return (g_out_status);
 }
@@ -103,6 +103,6 @@ void	work_command(t_instruct *instr)
 	if (is_char_in_str(instr->arg[0], '='))
 		status = cmd_setenv(instr);
 	else
-		status = cmd_exec(instr);
+		cmd_exec(instr);
 	exit(status);
 }

@@ -19,6 +19,7 @@ char	*cmd_read(char *str)
 	char	*line;
 	char	*out;
 
+	adm_signals_readline();
 	if (isatty(fileno(stdin)))
 		out = readline(str);
 	else

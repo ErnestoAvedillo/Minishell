@@ -33,7 +33,8 @@ int	check_pipes(t_data *data)
 				;
 			if (data->command[i] == '|')
 			{
-				print_err("Minishell: syntax error near unexpected token '|'\n");
+				print_err("Minishell: syntax e rror near \
+					unexpected token '|'\n");
 				g_out_status = 258;
 				return (0);
 			}

@@ -29,6 +29,8 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <limits.h>
+# include <term.h>
+# include <curses.h>
 //list of all accepted commands.
 # define COMMANDS	"echo cd pwd export unset env exit"
 # define ECHO_CMD	0
@@ -112,11 +114,12 @@ int			cmd_pwd(t_instruct *instruct);
 int			cmd_unset(t_instruct *instruct);
 int			cmd_setenv(t_instruct *instruct);
 //cmd_exec
-int			cmd_exec(t_instruct *instruct);
+void		cmd_exec(t_instruct *instruct);
 int			check_file_exists(t_instruct *instruct);
 // Work_command
 void		work_command(t_instruct *instr);
 void		work_1_command(t_instruct *instr);
+void		back_2_screen(t_instruct *instr);
 // check_cmd_line
 int			check_cmd_line(t_data *data);
 //check_syntax
@@ -131,7 +134,8 @@ void		check_delimiter(t_instruct *instr);
 // check_delimiter1
 char		*get_start_delimit(char *str);
 char		*get_end_delimit(char *str);
-void		fill_heredoc(t_instruct *instr, char *delimit);
+void		fill_heredoc(t_instruct *instr, char **delimit);
+char		*insert_in_line(char *cmd, char *str, char *ptr);
 // check_delimiter1
 void		actualize_fdname(t_instruct *instr, char *str);
 // check_quotes
